@@ -1,0 +1,43 @@
+.container {
+  position: relative;
+}
+
+.container label {
+  text-transform: uppercase;
+  color: #a0a4b1;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.container input {
+  border-radius: 12px;
+  border: 2px solid #e6e8ec;
+  width: 100%;
+  padding: 10px 10px;
+  color: #555;
+  background-color: #fff;
+  /* min-height: 46px; */
+}
+
+@media screen and (min-width: 400px) {
+  .container input {
+    padding: 10px 15px;
+  }
+}
+
+.container input:focus {
+  outline: none;
+}
+
+.container.error input {
+  border: 2px solid var(--app-red);
+}
+
+.error-message {
+  position: absolute;
+  margin-top: 3px;
+  color: var(--app-red);
+  font-size: 0.8rem;
+}

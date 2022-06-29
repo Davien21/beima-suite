@@ -1,0 +1,56 @@
+.container {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background: var(--app-purple);
+  width: 100%;
+  border-radius: 5px;
+  padding: 8px 20px;
+  text-align: center;
+  transition: 0.5s;
+}
+
+.container.secondary {
+  background-color: inherit;
+  border: 1px solid var(--app-purple);
+  color: #000;
+}
+
+.container.secondary:hover {
+  color: #fff;
+  background-color: var(--app-purple);
+}
+
+.container:not(.secondary):hover {
+  color: #fff;
+}
+
+.container:not(:disabled)::before {
+  content: "";
+  display: block;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+  width: 70px;
+  height: 100%;
+  top: 0;
+  filter: blur(15px);
+  transform: translateX(-170px) skewX(-15deg);
+}
+
+.container:not(:disabled)::after {
+  content: "";
+  display: block;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.4);
+  width: 50px;
+  height: 100%;
+  top: 0;
+  filter: blur(15px);
+  transform: translateX(-170px) skewX(-15deg);
+}
+
+.container:not(:disabled):hover::before,
+.container:not(:disabled):hover::after {
+  transform: translateX(280px) skewX(-15deg);
+  transition: 1s;
+}
