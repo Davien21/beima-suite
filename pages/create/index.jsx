@@ -50,7 +50,7 @@ function CreatePage(props) {
             <div className="col-span-1 lg:col-span-4">
               <div className="mb-5 md:mt-5">
                 <h1 className="text-4xl ">
-                  <span className="">Generate documentation for your </span>
+                  <span className="">Document your</span>
                   <span className={`mx-2 ${styles["gradient-text"]}`}>smart contract</span>
                 </h1>
               </div>
@@ -62,7 +62,7 @@ function CreatePage(props) {
                 </p>
               </div>
               <DragAndDropInput name="file" formik={formik} />
- 
+              
             </div>
            
           </div>

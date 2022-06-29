@@ -61,9 +61,9 @@
 * {
   padding: 0px;
   margin: 0px;
-  font-family: helvetica, var(--app-primary-font), -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: helvetica, var(--app-primary-font), -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+    "Open Sans", "Helvetica Neue", sans-serif;
   /* font-weight: 400 !important; */
 }
 
@@ -101,4 +101,11 @@ a:focus {
 button:focus {
   outline: none;
 }
- 
+
+.gradient-text {
+  background: -webkit-linear-gradient(45deg, #09009f, #ec4899 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 550;
+}
