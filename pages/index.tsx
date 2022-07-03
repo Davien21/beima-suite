@@ -135,9 +135,8 @@ const Home: NextPage = () => {
                     Welcome to Beima Suite
                   </h2>
                   <p className="">
-                    Collaborate in real-time and establish a single source of
-                    truth for all smart contracts workflow and build your
-                    documentations
+                    Easily document your smart contracts, test and collaborate
+                    in real-time with your teammates.
                   </p>
                 </div>
               </div>
