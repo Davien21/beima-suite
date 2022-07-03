@@ -2,26 +2,28 @@
   position: relative;
   overflow: hidden;
   color: #fff;
-  background: var(--app-purple);
-  width: 100%;
-  border-radius: 5px;
-  padding: 8px 20px;
+  background: var(--app-blue);
+  width: auto;
+  border-radius: 10px;
+  padding: 10px 33px;
   text-align: center;
   transition: 0.5s;
 }
 
 .container.secondary {
   background-color: inherit;
-  border: 1px solid var(--app-purple);
-  color: #000;
+  border: 1px solid var(--app-blue);
+  color: var(--app-blue);
 }
 
-.container.secondary:hover {
+.container.secondary:hover,
+.container.secondary:focus {
   color: #fff;
-  background-color: var(--app-purple);
+  background-color: var(--app-blue);
 }
 
-.container:not(.secondary):hover {
+.container:not(.secondary):hover,
+.container:not(.secondary):focus {
   color: #fff;
 }
 
@@ -50,7 +52,9 @@
 }
 
 .container:not(:disabled):hover::before,
-.container:not(:disabled):hover::after {
+.container:not(:disabled):focus::before,
+.container:not(:disabled):hover::after,
+.container:not(:disabled):focus::after {
   transform: translateX(280px) skewX(-15deg);
   transition: 1s;
 }

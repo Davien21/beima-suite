@@ -22,7 +22,7 @@
 }
 
 .container:hover {
-  cursor: pointer !important;
+  /* cursor: pointer !important; */
 }
 
 .container svg path {

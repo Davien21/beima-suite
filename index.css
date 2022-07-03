@@ -22,9 +22,11 @@
 
 :root {
   /* Color settings */
-  --app-bg-light: #f3f3f3;
-
+  --app-bg-light: #fff;
+  --app-grey: #6e6d6d;
+  /*  */
   --app-green-200: #00cf8e;
+  --app-blue: #3b4ef2;
   --app-blue-100: #e5ecff;
   --app-blue-200: #00bdff;
   --app-blue-300: #668eff;
@@ -43,7 +45,7 @@
   --app-red: #f84550;
   --app-purple: #764afd;
   /* Font settings */
-  --app-primary-font: "Open Sans", helvetica;
+  --app-primary-font: "Roboto", helvetica;
   --app-secondary-font: "Coolvetica", sans-serif;
   --app-border-radius-sm: 10px;
   --app-letter-spacing-lg: 0.5rem;
@@ -56,6 +58,8 @@
   --modal-z-index: 2000;
   --loader-z-index: 2500;
   --toast-z-index: 2500;
+  /* settings */
+  --app-header-height: 67px;
 }
 
 * {
@@ -99,7 +103,7 @@ a:focus {
 }
 
 button:focus {
-  outline: none;
+  outline: 1px dotted var(--app-blue);
 }
 
 .gradient-text {
@@ -108,4 +112,57 @@ button:focus {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 550;
+}
+
+.app-text-grey {
+  color: var(--app-grey);
+}
+
+.function-icon {
+  /* padding: 1rem; */
+  /* margin-right: 0.5rem; */
+  color: #fff;
+  font-weight: 500;
+  background-color: #1661ff;
+  font-size: 18px;
+}
+
+.import {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  /* background-color: #eef0ff !important; */
+}
+
+.func,
+.event,
+.meta {
+  font-weight: 700;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.func {
+  background-color: #ffe2e2;
+  color: #c10f0f;
+}
+
+.event {
+  background-color: #fff9e2;
+  color: #c1b00f;
+}
+
+.meta {
+  background-color: #e8e8e8;
+}
+
+.screen-size-msg {
+  line-height: 3rem;
+}
+
+@media screen and (min-width: 1024px) and (max-width) {
+  .left {
+    /* width: 100px; */
+  }
 }

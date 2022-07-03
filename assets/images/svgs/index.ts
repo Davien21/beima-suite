@@ -12,6 +12,14 @@ import CurrencyIcon from "./currency.svg";
 import FilterIcon from "./filter.svg";
 import FilterCloseIcon from "./filter-close.svg";
 import EmptySearchIcon from "./empty-search.svg";
+import EmptyFileIcon from "./empty-file.svg";
+import SearchIcon from "./search.svg";
+import NotificationIcon from "./notification.svg";
+import SettingsIcon from "./settings.svg";
+import FilesIcon from "./files.svg";
+import WorkspaceIcon from "./workspace.svg";
+import TooltipIcon from "./tooltip.svg";
+import WelcomeImg from "./welcome-img.svg";
 
 export {
   LogoIcon,
@@ -28,4 +36,12 @@ export {
   FilterIcon,
   FilterCloseIcon,
   EmptySearchIcon,
+  SearchIcon,
+  NotificationIcon,
+  SettingsIcon,
+  FilesIcon,
+  WorkspaceIcon,
+  TooltipIcon,
+  EmptyFileIcon,
+  WelcomeImg,
 };
