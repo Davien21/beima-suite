@@ -82,9 +82,9 @@ function CreatePage(props: any) {
         />
         <meta
           name="keywords"
-          content="Splinter, Documentation, Smart Contract, Postman"
+          content="Beima Suite, Documentation, Smart Contract, Postman"
         ></meta>
-        <title>Splinter | Document Smart Contract </title>
+        <title>Beima Suite | Document Smart Contract </title>
       </Head>
       <main className={`${styles["container"]} container`}>
         <section className="my-10 ">
