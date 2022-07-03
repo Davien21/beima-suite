@@ -60,7 +60,7 @@
 }
 
 .right {
-  height: calc(100vh - var(--app-header-height));
+  height: calc(100vh - var(--app-header-height)) !important;
 }
 
 .right > div {

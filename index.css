@@ -161,7 +161,7 @@ button:focus {
   line-height: 3rem;
 }
 
-@media screen and (min-width: 1024px) and (max-width) {
+@media screen and (min-width: 1280px) and (max-width) {
   .left {
     /* width: 100px; */
   }

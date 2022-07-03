@@ -33,8 +33,14 @@ module.exports = {
         roboto: ["Roboto", "helvetica"],
       },
       screens: {
-        xmd: "1440px",
-        xlg: "1720px",
+        sm: "768px",
+        md: "1024px",
+        lg: "1280px",
+        xl: "1440px",
+        "2xl": "1536px",
+        "3xl": "1720px",
+        "4xl": "1800px",
+        "5xl": "2160px",
       },
     },
     container: {
@@ -62,19 +68,22 @@ module.exports = {
           "@screen md": {
             maxWidth: "1024px",
           },
-          "@screen xmd": {
-            maxWidth: "1440px",
-          },
           "@screen lg": {
-            maxWidth: "1536px",
-          },
-          "@screen xlg": {
-            maxWidth: "1720px",
+            maxWidth: "1280px",
           },
           "@screen xl": {
-            maxWidth: "1800px",
+            maxWidth: "1440px",
           },
           "@screen 2xl": {
+            maxWidth: "1536px",
+          },
+          "@screen 3xl": {
+            maxWidth: "1720px",
+          },
+          "@screen 4xl": {
+            maxWidth: "1800px",
+          },
+          "@screen 5xl": {
             maxWidth: "2160px",
           },
         },
