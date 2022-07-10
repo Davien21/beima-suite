@@ -1,0 +1,42 @@
+.container {
+  position: relative;
+  overflow: hidden;
+  /* color: #fff; */
+  width: auto;
+  border-radius: 10px;
+  padding: 10px 33px;
+  text-align: center;
+  transition: 0.25s;
+}
+/* 
+.container:not(:disabled)::before {
+  content: "";
+  display: block;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+  width: 70px;
+  height: 100%;
+  top: 0;
+  filter: blur(15px);
+  transform: translateX(-170px) skewX(-15deg);
+}
+
+.container:not(:disabled)::after {
+  content: "";
+  display: block;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.4);
+  width: 50px;
+  height: 100%;
+  top: 0;
+  filter: blur(15px);
+  transform: translateX(-170px) skewX(-15deg);
+}
+
+.container:not(:disabled):hover::before,
+.container:not(:disabled):focus::before,
+.container:not(:disabled):hover::after,
+.container:not(:disabled):focus::after {
+  transform: translateX(280px) skewX(-15deg);
+  transition: 1s;
+} */

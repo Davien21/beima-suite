@@ -3,6 +3,7 @@ import styles from "./button.module.css";
 import { toast } from "react-toastify";
 
 function Button({
+  disabled,
   secondary,
   children,
   className,
@@ -10,6 +11,7 @@ function Button({
   type,
   ...rest
 }: {
+  disabled?: boolean;
   secondary?: any;
   children: React.ReactNode;
   className?: string;
@@ -17,14 +19,19 @@ function Button({
   type?: "button" | "submit" | "reset";
   rest?: any;
 }) {
-  onClick = () => toast.info("This is coming soon!");
   let containerClass = styles.container;
   let form = "primary";
   if (secondary !== undefined) form = `secondary`;
-  if (containerClass) containerClass += ` ${styles[form]} btn ${className}`;
+  if (containerClass) containerClass += ` ${styles[form]} ${className}`;
   if (!type) type = "button";
   return (
-    <button type={type} onClick={onClick} className={containerClass} {...rest}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={containerClass}
+      {...rest}
+      disabled={disabled}
+    >
       {children}
     </button>
   );

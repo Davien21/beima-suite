@@ -4,4 +4,11 @@ const getRandomKey = (length: number = 7) => {
   return crypto.randomBytes(length).toString("hex");
 };
 
-export { getRandomKey };
+const addIds = (data: any[]) => {
+  return data.map((item) => {
+    item.id = getRandomKey();
+    return item;
+  });
+};
+
+export { getRandomKey, addIds };

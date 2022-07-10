@@ -1,0 +1,18 @@
+.container button:not(.active) {
+  color: #707070;
+}
+
+.container button {
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 10px;
+}
+
+.container button:not(.active) {
+  background-color: #f2f2f2;
+}
+
+button.active {
+  /* background-color: var(--app-blue); */
+  /* color: #fff; */
+}

@@ -1,0 +1,108 @@
+.active-tab {
+}
+.tab .contract {
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  color: #828282;
+  font-size: 14px;
+  font-weight: 550;
+  cursor: alias !important;
+}
+
+.tab .contract:not(.active) .open-btn path {
+  fill: #5b5b5b;
+}
+
+.tab .contract.active {
+  background-color: #eef0ff;
+  border-radius: 10px;
+  color: #828282;
+  font-size: 14px;
+  font-weight: 550;
+  cursor: alias !important;
+}
+
+.tab .contract .name {
+  color: #828282;
+  font-size: 14px;
+  font-weight: 550;
+  cursor: alias !important;
+  white-space: nowrap;
+  width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+@media screen and (min-width: 1440px) {
+  .tab .contract .name {
+    width: 160px;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .tab .contract .name {
+    width: 185px;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .tab .contract .name {
+    width: 230px;
+  }
+}
+
+.tab .contract:hover {
+}
+
+.tab .toggler {
+  right: -10px;
+  position: relative;
+}
+
+.options {
+  width: 240px !important;
+  background-color: #fff;
+  border-radius: 10px;
+  position: absolute;
+  z-index: var(--select-z-index);
+  width: 100%;
+  box-shadow: rgb(98 100 183 / 10%) 0px 1px 8px;
+  padding: 10px 8px;
+}
+
+.options ul li {
+  font-size: 14px !important;
+  border-radius: 5px;
+}
+
+.options ul li:not(.disabled) {
+  cursor: pointer;
+}
+
+.options ul li:not(.disabled):hover,
+.options ul li:not(.disabled):focus {
+  background: #f2f2f2;
+  background: #ebf1ffb3;
+  outline: none;
+}
+
+.control-switch button:not(.active) {
+  color: #707070;
+}
+
+.control-switch button {
+  font-size: 14px;
+  padding: 8px 13px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.control-switch button:not(.active) {
+  background-color: #f2f2f2;
+}
+
+.control-switch button.active {
+  /* background-color: var(--app-blue); */
+  /* color: #fff; */
+}

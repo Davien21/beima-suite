@@ -1,6 +1,8 @@
+import Link from "next/link";
 import React from "react";
 import { toast } from "react-toastify";
 import {
+  LogoIcon,
   NotificationIcon,
   SearchIcon,
   SettingsIcon,
@@ -14,7 +16,7 @@ function Header() {
       <div className="flex px-8 py-3 justify-between items-center border-b">
         <div>
           <span className={`${styles["logo"]} font-semibold text-gray-500`}>
-            Beima Suite
+            <LogoIcon />
           </span>
         </div>
         <div className="flex gap-x-6 items-center">
@@ -31,14 +33,22 @@ function Header() {
             <SettingsIcon />
           </div>
           <div className="flex gap-x-4">
-            <Button className="text-sm font-semibold" secondary>
-              Log In
-            </Button>
-            <Button className="text-sm">
-              <span className="whitespace-nowrap font-semibold">
-                Create Account
-              </span>
-            </Button>
+            <Link href="login">
+              <a>
+                <Button className="text-sm font-semibold" secondary>
+                  Log In
+                </Button>
+              </a>
+            </Link>
+            <Link href="signup">
+              <a>
+                <Button className="text-sm">
+                  <span className="whitespace-nowrap font-semibold">
+                    Create Account
+                  </span>
+                </Button>
+              </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,0 +1,47 @@
+.container input {
+  display: none;
+}
+
+.container .checkbox.false path:last-child {
+  display: none;
+}
+
+.container.false .checkbox.false path {
+  stroke: #c1c1c1 !important;
+}
+
+.container.false {
+  color: #c1c1c1 !important;
+}
+
+.container label div span:first-child {
+  font-weight: 800;
+  text-align: center;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.container.false label div span:first-child {
+  background-color: #eeeeee !important;
+  color: #373636 !important;
+}
+
+.container .checkbox.true path:last-child {
+  display: block;
+}
+
+.container.false .function,
+.container.false .event {
+  color: #373636;
+}
+
+.container .function {
+  background-color: #ffe2e2;
+  color: #c10f0f;
+}
+
+.container .event {
+  background-color: #fff9e2;
+  color: #c1b00f;
+}

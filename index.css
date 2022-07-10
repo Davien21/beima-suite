@@ -23,9 +23,10 @@
 :root {
   /* Color settings */
   --app-bg-light: #fff;
+  --app-bg-default: #fdfdff;
   --app-grey: #6e6d6d;
   /*  */
-  --app-green-200: #00cf8e;
+  --app-green: #318509;
   --app-blue: #3b4ef2;
   --app-blue-100: #e5ecff;
   --app-blue-200: #00bdff;
@@ -56,10 +57,12 @@
   --form-z-index: 2000;
   --overlay-z-index: 2000;
   --modal-z-index: 2000;
+  --select-z-index: 2000;
   --loader-z-index: 2500;
   --toast-z-index: 2500;
   /* settings */
   --app-header-height: 67px;
+  --auth-header-height: 74px;
 }
 
 * {
@@ -103,7 +106,8 @@ a:focus {
 }
 
 button:focus {
-  outline: 1px dotted var(--app-blue);
+  outline: none;
+  /* outline: 1px dashed var(--app-blue); */
 }
 
 .gradient-text {
@@ -133,7 +137,7 @@ button:focus {
   /* background-color: #eef0ff !important; */
 }
 
-.func,
+.function,
 .event,
 .meta {
   font-weight: 700;
@@ -143,7 +147,17 @@ button:focus {
   font-size: 14px;
 }
 
-.func {
+.function.mini,
+.event.mini,
+.meta.mini {
+  font-weight: 800;
+  text-align: center;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.function {
   background-color: #ffe2e2;
   color: #c10f0f;
 }
@@ -165,4 +179,108 @@ button:focus {
   .left {
     /* width: 100px; */
   }
+}
+
+.wrapper {
+  width: auto;
+}
+
+.toggler-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.content {
+  width: 300px !important;
+  background-color: #fff;
+  /* border-radius: 7px; */
+  border-radius: 10px;
+  position: absolute;
+  right: -12px;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: rgb(98 100 183 / 10%) 0px 1px 8px;
+}
+
+.content .options {
+  margin-top: 10px;
+  padding-right: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 25px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  /* background-color: #a5aeff; */
+  border-radius: 25px;
+}
+
+.options li {
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  font-size: 14px !important;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.options li:hover,
+.options li:focus {
+  background: #f2f2f2;
+  background: #ebf1ffb3;
+  outline: none;
+}
+
+.sticky-default {
+  position: sticky;
+  top: 0;
+  z-index: var(--header-z-index);
+}
+
+.bg-default {
+  background-color: var(--app-bg-default);
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.link-text {
+  color: var(--app-blue);
+  text-decoration: none;
+}
+
+.big-logo svg {
+  transform: scale(1.8);
+}
+
+.tab {
+  border-bottom: 1px solid #ededed;
+}
+
+.tab.active {
+  border-bottom: 1px solid #3b4ef2;
+}
+
+.tab.active {
+  color: #3b4ef2;
+}
+
+.tab > div {
+  border-bottom: 3px solid #3b4ef2;
+}
+
+.grey {
+  color: #c0c0c0;
 }

@@ -55,7 +55,7 @@ function Input({
         onClick={onClick}
         onFocus={() => setIsFocused(true)}
         {...rest}
-        placeholder={placeholder}
+        placeholder={placeholder || label}
       />
       {error && <div className={`${styles["error-message"]}`}>{error}</div>}
     </div>

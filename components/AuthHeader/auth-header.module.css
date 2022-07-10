@@ -1,0 +1,7 @@
+.container > div {
+  /* border-bottom: 1px solid #ededed; */
+}
+
+.container svg {
+  transform: scale(0.9);
+}

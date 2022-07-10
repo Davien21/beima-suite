@@ -1,38 +1,26 @@
-.container label {
-  width: 100%;
-  height: 180px;
-  background-color: #fff;
-  border-radius: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  cursor: pointer !important;
+.drop-box {
+  border-radius: 8px;
+  outline: 1px dashed #e5e7eb;
 }
 
-.container.active svg path {
-  fill: var(--app-purple);
+.file-box {
+  border-radius: 8px;
+  background-color: #f8f8f8;
 }
 
-.container.active p {
-  background: -webkit-linear-gradient(45deg, #09009f, #ec4899 80%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+.drop-box {
+  cursor: pointer;
 }
 
-.container:hover {
-  /* cursor: pointer !important; */
+.drop-box.active {
+  outline: 1px dashed #e5e7eb;
 }
 
-.container svg path {
-  fill: var(--app-gray);
+.drop-box.active,
+.drop-box:hover {
+  outline: 1px dashed var(--app-blue);
 }
 
-.container:hover svg path {
-  fill: var(--app-purple);
-}
-
-span.error {
-  color: var(--app-red);
+.drop-box.active svg path {
+  fill: var(--app-blue);
 }

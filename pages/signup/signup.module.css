@@ -1,0 +1,44 @@
+.grey {
+  color: #c0c0c0;
+}
+
+@media screen and (min-width: 1280px) {
+  .container main {
+    height: calc(100vh - var(--auth-header-height));
+  }
+}
+
+.link {
+  color: #3b4ef2;
+}
+
+.container form {
+  background-color: var(--app-bg-light);
+  border-radius: 20px;
+}
+
+.container .agreed path {
+  display: none;
+}
+
+.container .agreed.active path {
+  display: block;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0s forwards;
+}
+
+.container .agreed.active path,
+.container .agreed.active circle {
+  stroke: var(--app-blue);
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.container section > div {
+  max-width: 1600px;
+}

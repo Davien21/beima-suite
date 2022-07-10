@@ -1,0 +1,52 @@
+.container {
+  content: "";
+  padding: 5px;
+  min-width: 39px;
+  width: 39px;
+  height: 20px;
+  border: 2px solid var(--app-blue);
+  border-radius: 50px;
+  border: 2px solid #000;
+}
+
+.container.disabled {
+  border: 2px solid #adacac;
+  background-color: #fff;
+}
+
+.container,
+.container * {
+  transition: all 0.3s ease-in-out !important;
+}
+
+.container input {
+  display: none;
+}
+
+.container.active:not(.disabled) {
+  border: 2px solid var(--app-blue);
+  background: var(--app-blue);
+}
+
+.btn {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
+  background: #000;
+  margin-left: 1px;
+}
+
+.container.active:not(.disabled) .btn {
+  background: white;
+  margin-left: 15.5px;
+}
+
+.container.disabled .btn {
+  background: #adacac;
+  margin-left: 0px;
+}
+
+.container + label {
+  font-size: 14px !important;
+}
