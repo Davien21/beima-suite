@@ -18,3 +18,4 @@ export * from "./UploadModal";
 export * from "./WelcomeScreen";
 export * from "./BottomPanel";
 export * from "./FunctionDisplay";
+export * from "./BigFileIcon";

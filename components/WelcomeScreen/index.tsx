@@ -3,7 +3,11 @@ import styles from "./welcome-screen.module.css";
 import { Button } from "components";
 import { WelcomeImg } from "assets/images";
 
-export function WelcomeScreen() {
+export function WelcomeScreen({
+  onOpenUploadModal,
+}: {
+  onOpenUploadModal: () => void;
+}) {
   return (
     <div className={`${styles["container"]} mx-auto text-center mt-32`}>
       <div className="flex justify-center mb-4">
@@ -21,7 +25,9 @@ export function WelcomeScreen() {
         </div>
       </div>
       <div className="mb-20">
-        <Button secondary>Create Your First Documentation</Button>
+        <Button secondary onClick={onOpenUploadModal}>
+          Create Your First Documentation
+        </Button>
       </div>
       <div className="flex justify-center items-center gap-x-5">
         <span>Important Tips:</span>
