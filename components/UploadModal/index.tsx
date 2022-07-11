@@ -12,6 +12,7 @@ import {
   resetUploadState,
   setDocumentation,
 } from "store/slices/uploadSlice";
+import { useKeypress } from "hooks";
 
 type ModalProps = {
   isActive: boolean;
@@ -19,6 +20,7 @@ type ModalProps = {
 };
 
 export function UploadModal({ isActive, setIsActive }: ModalProps) {
+  useKeypress("Escape", () => setIsActive(false));
   const { activeTab, contractData, abiFile } = useSelector(
     (state: any) => state.upload
   );

@@ -146,6 +146,7 @@ button:focus {
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 14px;
+  user-select: none;
 }
 
 .function.mini,

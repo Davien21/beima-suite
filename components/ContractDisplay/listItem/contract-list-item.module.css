@@ -2,11 +2,11 @@
   display: none;
 }
 
-.container .checkbox.false path:last-child {
+.container.false .checkbox path:last-child {
   display: none;
 }
 
-.container.false .checkbox.false path {
+.container.false .checkbox path {
   stroke: #c1c1c1 !important;
 }
 
