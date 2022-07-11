@@ -38,11 +38,17 @@ export default function LoginPage() {
     : `${styles["agreed"]}`;
 
   return (
-    <div className={`${styles["container"]} h-screen flex flex-col justify-center`}>
+    <div
+      className={`${styles["container"]} h-screen flex flex-col justify-center`}
+    >
       <header className="bg-default">
         <nav className="">
           <div className="flex justify-center px-14 pb-20 big-logo">
-            <LogoIcon />
+            <Link href="/">
+              <a className={` cursor-pointer`}>
+                <LogoIcon />
+              </a>
+            </Link>
           </div>
         </nav>
       </header>

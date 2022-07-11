@@ -21,9 +21,9 @@ export function ListItem({
 
   return (
     <div
-      className={`${styles.container} ${styles[
-        isChecked
-      ].toString()} flex items-center mb-5`}
+      className={`${styles.container} ${
+        isChecked ? styles["true"] : styles["false"]
+      } flex items-center mb-5`}
     >
       <button
         className="mr-3"
@@ -33,7 +33,9 @@ export function ListItem({
         }}
       >
         <CheckboxIcon
-          className={`${styles["checkbox"]} ${styles[isChecked].toString()}`}
+          className={`${styles["checkbox"]} ${
+            isChecked ? styles["true"] : styles["false"]
+          }}`}
         />
       </button>
       <label className="capitalize cursor-pointer">

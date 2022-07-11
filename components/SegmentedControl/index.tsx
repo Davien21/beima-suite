@@ -1,6 +1,7 @@
 import React from "react";
 import { HollowButton } from "components";
 import styles from "./segmented-control.module.css";
+import { getRandomKey } from "@utils/randomKey";
 
 export function SegmentedControl({
   controls,
@@ -20,6 +21,7 @@ export function SegmentedControl({
         }
         return (
           <HollowButton
+            key={getRandomKey()}
             onClick={() => onChangeControl(control)}
             className={`${btnClass}`}
           >

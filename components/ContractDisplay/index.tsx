@@ -17,7 +17,7 @@ export function ContractDisplay() {
       dispatch(addContract(documentation));
       dispatch(resetUploadState);
     }
-  }, [documentation]);
+  }, [documentation, dispatch]);
 
   const [activeId, setactiveId] = useState<string>("");
   const isActiveContract = (id: string) => {

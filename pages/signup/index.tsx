@@ -85,7 +85,6 @@ export default function SignUpPage() {
                     <span
                       className={`${styles["link"]} font-semibold cursor-pointer`}
                     >
-                      {" "}
                       Log In Here
                     </span>
                   </Link>
