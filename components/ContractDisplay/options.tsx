@@ -41,7 +41,10 @@ export function ContractOptions() {
         initial={initialAnimation}
         animate={isOpen ? "open" : "closed"}
         variants={arrowVariants}
-        onClick={toggleOpen}
+        onClick={(e) => {
+          toggleOpen();
+          e.stopPropagation();
+        }}
         ref={dropDownArrowRef}
       >
         <OptionDotsIcon />

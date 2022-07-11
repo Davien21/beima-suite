@@ -1,5 +1,4 @@
 import { IEvent, IFunction } from "interfaces";
-import { TestSmartContract } from "./filterSmartContract";
 import { getRandomKey } from "./randomKey";
 
 export const getContractItemNames = (content: string) => {
@@ -57,6 +56,12 @@ const getContractSchema = (name: string, data: IFunction[] | IEvent[]) => {
     name,
     alias: name,
     data,
+    isOpen: false,
+    showInherited: {
+      functions: false,
+      events: false,
+    },
+    activeControl: "function",
   };
 };
 
@@ -112,15 +117,4 @@ const generateEventSchema = (item: any, isNative: boolean) => {
     meta: item.meta,
   };
   return data as IEvent;
-};
-
-export const filterABI = (content: string) => {
-  let ABIContent = JSON.parse(content);
-  if (ABIContent.abi) ABIContent = ABIContent.abi;
-  const data = ABIContent.filter((item: any) => {
-    // if (!item.type.match(/function|event/)) return;
-    return `${capitalize(item.type)} ${item.name}`;
-  });
-  console.log(data);
-  return ABIContent;
 };

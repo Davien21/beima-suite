@@ -20,11 +20,17 @@ export interface IEvent {
 }
 
 export interface IContract {
-  id?: string;
+  id: string;
   creator_id?: string;
   name: string;
-  alias?: string;
+  alias: string;
   data: IFunction[];
+  isOpen?: boolean;
+  showInherited: {
+    function: boolean;
+    event: boolean;
+  };
+  activeControl: "function" | "event";
 }
 
 export interface IHiddenContractItem {

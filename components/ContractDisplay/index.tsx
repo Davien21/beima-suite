@@ -5,25 +5,20 @@ import { ContractTab } from "./tab";
 import styles from "./contract-display.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { addContract } from "store/slices";
+import { resetUploadState } from "store/slices/uploadSlice";
 
 export function ContractDisplay() {
   const contracts = useSelector((state: any) => state.contracts);
-  const [contractArr, setcontractArr] = useState(contracts);
   const { documentation } = useSelector((state: any) => state.upload);
   const dispatch = useDispatch();
-  console.log("documentation", documentation);
+
   useEffect(() => {
     if (documentation) {
       dispatch(addContract(documentation));
-      const newContractArr = [...contractArr, documentation];
-      setcontractArr(newContractArr);
-      // dispatch(resetUploadState);
+      dispatch(resetUploadState);
     }
   }, [documentation]);
-  // const contracts = sampleContractData;
-  // useEffect(() => {
-  //   setallContracts(contracts);
-  // });
+
   const [activeId, setactiveId] = useState<string>("");
   const isActiveContract = (id: string) => {
     return activeId === id ? true : false;
@@ -33,10 +28,10 @@ export function ContractDisplay() {
 
   return (
     <>
-      {contractArr.map((contract: any, index) => {
+      {contracts.map((contract: any, index: number) => {
         return (
           <div key={getRandomKey()} className={`mb-3`}>
-            <ContractTab contract={contract} />
+            <ContractTab index={index} />
           </div>
         );
       })}

@@ -57,7 +57,6 @@ export const uploadSlice = createSlice({
           state.abiData
         );
       }
-      console.log(state.documentation);
     },
     activateABITab: (state) => {
       state.activeTab = "abi";

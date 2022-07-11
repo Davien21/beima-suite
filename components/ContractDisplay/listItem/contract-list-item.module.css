@@ -36,12 +36,12 @@
   color: #373636;
 }
 
-.container .function {
+.function {
   background-color: #ffe2e2;
   color: #c10f0f;
 }
 
-.container .event {
+.event {
   background-color: #fff9e2;
   color: #c1b00f;
 }

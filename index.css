@@ -25,6 +25,7 @@
   --app-bg-light: #fff;
   --app-bg-default: #fdfdff;
   --app-grey: #6e6d6d;
+  --app-grey-light: #ededed;
   /*  */
   --app-green: #318509;
   --app-blue: #3b4ef2;
@@ -266,7 +267,7 @@ button:focus {
 }
 
 .tab {
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid var(--app-grey-light);
 }
 
 .tab.active {

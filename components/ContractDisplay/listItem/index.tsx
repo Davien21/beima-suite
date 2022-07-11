@@ -1,22 +1,21 @@
 import { CheckboxIcon } from "assets/images";
+import { toggleHiddenItem } from "store/slices";
 import styles from "./contract-list-item.module.css";
-
+import { useDispatch } from "react-redux";
 export function ListItem({
+  index,
   isChecked,
   name,
-  onToggle,
   type,
 }: {
+  index: number;
   isChecked: boolean;
   name: string;
-  onToggle: () => void;
   type: string;
 }) {
-  const toggleIsChecked = () => {
-    // const updatedFilters = [...allFilters];
-    // updatedFilters[filterIndex][name] = !isChecked;
-    // onFilter(updatedFilters);
-    // onFilter()
+  const dispatch = useDispatch();
+  const onToggle = () => {
+    dispatch(toggleHiddenItem({ index, name }));
   };
   const initial = type.charAt(0).toUpperCase();
 
@@ -26,7 +25,13 @@ export function ListItem({
         isChecked
       ].toString()} flex items-center mb-5`}
     >
-      <button className="mr-3" onClick={onToggle}>
+      <button
+        className="mr-3"
+        onClick={(e) => {
+          onToggle();
+          e.stopPropagation();
+        }}
+      >
         <CheckboxIcon
           className={`${styles["checkbox"]} ${styles[isChecked].toString()}`}
         />
@@ -36,12 +41,11 @@ export function ListItem({
           type="checkbox"
           name={name}
           id={name}
-          value={isChecked}
           checked={isChecked}
           onChange={onToggle}
         />
         <div className="flex gap-x-2 items-center">
-          <span className={`${styles["event"]}"`}>
+          <span className={`${styles[type]}`}>
             {type.charAt(0).toUpperCase()}
           </span>
           <span>{name}</span>

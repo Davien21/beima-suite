@@ -8,8 +8,9 @@ import "../index.css";
 import Head from "next/head";
 import { ContractProvider, AppProvider } from "contexts";
 import { AnimatePresence } from "framer-motion";
-import { store } from "store";
 import { Provider as StoreProvider } from "react-redux";
+import { persistor, store } from "../store";
+import { PersistGate } from "redux-persist/integration/react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -31,11 +32,13 @@ function MyApp({ Component, pageProps }: AppProps) {
           <title>Beima Suite | Document Smart Contract </title>
         </Head>
         <StoreProvider store={store}>
-          <AnimatePresence exitBeforeEnter={true}>
-            <ContractProvider>
-              <Component {...pageProps} />
-            </ContractProvider>
-          </AnimatePresence>
+          <PersistGate loading={null} persistor={persistor}>
+            <AnimatePresence exitBeforeEnter={true}>
+              <ContractProvider>
+                <Component {...pageProps} />
+              </ContractProvider>
+            </AnimatePresence>
+          </PersistGate>
         </StoreProvider>
       </AppProvider>
     </>

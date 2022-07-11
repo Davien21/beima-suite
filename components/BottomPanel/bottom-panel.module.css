@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  border-top: 1px solid var(--app-grey-light);
+}
+
+.container.active {
+  flex-direction: column;
+}
+
+.container .close-panel-btn {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+}
+
+.container.active .close-panel-btn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+}
+
+.container:not(.active) .close-panel-btn svg {
+  transform: rotateX(180deg);
+}
+
+.container.active .body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container:not(.active) .body {
+  display: flex;
+  align-items: center;
+}

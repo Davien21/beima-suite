@@ -7,10 +7,10 @@ export function ControlSwitch({
   onChangeControl,
 }: {
   activeControl: string;
-  onChangeControl: (control: string) => void;
+  onChangeControl: (control: "function" | "event") => void;
 }) {
   const btnClass = (control: string) => {
-    let btnClass = activeControl.toLowerCase().replace(/s/, "");
+    let btnClass = activeControl;
     if (control === activeControl) {
       return (btnClass += ` ${Pstyles["active"]} `);
     }
@@ -19,15 +19,15 @@ export function ControlSwitch({
   return (
     <div className={`${Pstyles["control-switch"]} flex gap-x-2`}>
       <HollowButton
-        onClick={() => onChangeControl("Functions")}
-        className={`${btnClass("Functions")}`}
+        onClick={() => onChangeControl("function")}
+        className={`${btnClass("function")}`}
       >
         <span className="5xl:hidden">F</span>
         <span className="hidden 5xl:block">Functions</span>
       </HollowButton>
       <HollowButton
-        onClick={() => onChangeControl("Events")}
-        className={`${btnClass("Events")}`}
+        onClick={() => onChangeControl("event")}
+        className={`${btnClass("event")}`}
       >
         <span className="5xl:hidden">E</span>
         <span className="hidden 5xl:block">Events</span>

@@ -9,6 +9,18 @@ export const contractsSlice = createSlice({
   name: "contracts",
   initialState,
   reducers: {
+    toggleShowInherited: (
+      state,
+      action: PayloadAction<{ type: string; index: number; name: string }>
+    ) => {
+      const { index, type } = action.payload;
+      const functions = state[index].data.map((item: any) => {
+        if (type === item.type && item.isNative === false)
+          item.isHidden = !item.isHidden;
+        return item;
+      });
+      state[index].data = functions;
+    },
     changeName: (
       state,
       action: PayloadAction<{ id: string; name: string }>
@@ -20,15 +32,30 @@ export const contractsSlice = createSlice({
     },
     toggleHiddenItem: (
       state,
-      action: PayloadAction<{ id: string; name: string }>
+      action: PayloadAction<{ index: number; name: string }>
     ) => {
-      const { id, name } = action.payload;
-      const contractIndex = state.findIndex((item) => item.id === id);
-      const functionIndex = state[contractIndex].data.findIndex(
-        (item) => item.name === name
-      );
-      state[contractIndex].data[functionIndex].isHidden =
-        !state[contractIndex].data[functionIndex].isHidden;
+      console.log("woorks");
+      const { index, name } = action.payload;
+      const functions = state[index].data;
+      const fIndex = functions.findIndex((x) => x.name === name);
+      state[index].data[fIndex].isHidden = !state[index].data[fIndex].isHidden;
+    },
+    toggleContractOpen: (state, action: PayloadAction<number>) => {
+      state[action.payload].isOpen = !state[action.payload].isOpen;
+    },
+    toggleInheritedSwitch: (
+      state,
+      action: PayloadAction<{ type: "function" | "event"; index: number }>
+    ) => {
+      const { type, index } = action.payload;
+      state[index].showInherited[type] = !state[index].showInherited[type];
+    },
+    toggleActiveControl: (
+      state,
+      action: PayloadAction<{ control: "function" | "event"; index: number }>
+    ) => {
+      const { control, index } = action.payload;
+      state[index].activeControl = control;
     },
     addContract: (state, action: PayloadAction<IContract>) => {
       state.push(action.payload);
@@ -37,7 +64,14 @@ export const contractsSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeName, toggleHiddenItem, addContract } =
-  contractsSlice.actions;
+export const {
+  changeName,
+  toggleHiddenItem,
+  addContract,
+  toggleShowInherited,
+  toggleContractOpen,
+  toggleInheritedSwitch,
+  toggleActiveControl,
+} = contractsSlice.actions;
 
 export default contractsSlice.reducer;

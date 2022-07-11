@@ -6,19 +6,24 @@ import {
   SearchBox,
   ContractDisplay,
   UploadModal,
+  WelcomeScreen,
+  BottomPanel,
 } from "components";
 
 import {
+  AltFilesIcon,
   FilesIcon,
   FilterIcon,
   TooltipIcon,
-  WelcomeImg,
   WorkspaceIcon,
 } from "assets/images";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
 
 function DashboardLayout() {
-  const [hasData, sethasData] = useState<boolean>(true);
+  const contracts = useSelector((state: any) => state.contracts);
+  const dispatch = useDispatch();
+
   const [isShowingFilter, setisShowingFilter] = useState<boolean>(false);
   const toggleFilter = () => {
     setisShowingFilter(!isShowingFilter);
@@ -105,88 +110,51 @@ function DashboardLayout() {
                 <FilterIcon />
               </button>
             </div>
-            {!hasData && <EmptyWorkspace />}
-            {hasData && (
+            {!contracts.length && <EmptyWorkspace />}
+            {contracts.length && (
               <div className="px-6 py-6">
                 <ContractDisplay />
               </div>
             )}
           </div>
-          <div className={`col-span-9 ${styles["right"]} w-full`}>
-            <div className="mx-auto text-center mt-32">
-              <div className="flex justify-center mb-4">
-                <WelcomeImg />
-              </div>
-              <div className="text-center flex justify-center mb-14">
-                <div className="w-7/12">
-                  <h2 className="text-3xl font-semibold mb-6">
-                    Welcome to Beima Suite
-                  </h2>
-                  <p className="">
-                    Easily document your smart contracts, test and collaborate
-                    in real-time with your teammates.
-                  </p>
+          <div className={`col-span-9 ${styles["right"]} w-full flex flex-col`}>
+            {!contracts.length && <WelcomeScreen />}
+            {contracts.length && (
+              <div className="flex flex-col justify-center items-center h-full">
+                <div className="pt- 64">
+                  <BigFileIcon className={`${styles["big-file"]} mb-3`} />
                 </div>
+                <p className="grey text-base">
+                  Select a function to start documenting
+                </p>
               </div>
-              <div className="mb-20">
-                <Button secondary>Create Your First Documentation</Button>
-              </div>
-              <div className="flex justify-center items-center gap-x-5">
-                <span>Important Tips:</span>
-                <div className="flex gap-x-4">
-                  <div className="flex items-center">
-                    <div className="function mr-2">F</div>
-                    <span
-                      style={{ color: "#939393" }}
-                      className="text-sm font-semibold"
-                    >
-                      Function
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="event mr-2">E</div>
-                    <span
-                      style={{ color: "#939393" }}
-                      className="text-sm font-semibold"
-                    >
-                      Events
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="meta mr-2">Pb</div>
-                    <span
-                      style={{ color: "#939393" }}
-                      className="text-sm font-semibold"
-                    >
-                      Public
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="meta mr-2">V</div>
-                    <span
-                      style={{ color: "#939393" }}
-                      className="text-sm font-semibold"
-                    >
-                      View
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="meta mr-2">Pa</div>
-                    <span
-                      style={{ color: "#939393" }}
-                      className="text-sm font-semibold"
-                    >
-                      Payable
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            )}
+            <BottomPanel />
+
+            {/* {contracts.length && <WelcomeScreen />} */}
           </div>
         </div>
       </section>
     </>
   );
 }
+
+const BigFileIcon = ({ className }: { className: string }) => {
+  return (
+    <svg
+      className={className}
+      width="54"
+      height="60"
+      viewBox="0 0 54 60"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0.750011 18.3335L18.2588 0.833496H50.3275C51.9375 0.833496 53.25 2.16058 53.25 3.72683V56.2735C53.2492 57.0411 52.9438 57.777 52.4007 58.3196C51.8576 58.8621 51.1214 59.1668 50.3538 59.1668H3.64626C3.26324 59.1642 2.88449 59.0861 2.53164 58.937C2.1788 58.788 1.85877 58.5709 1.58982 58.2981C1.32088 58.0254 1.10829 57.7024 0.964197 57.3475C0.820101 56.9926 0.74732 56.6128 0.750011 56.2297V18.3335ZM21.1667 6.66683V21.2502H6.58334V53.3335H47.4167V6.66683H21.1667Z"
+        fill="#E2DCDC"
+      />
+    </svg>
+  );
+};
 
 export { DashboardLayout };

@@ -15,3 +15,6 @@ export * from "./Tooltip";
 export * from "./MultipleInput";
 export * from "./AuthHeader";
 export * from "./UploadModal";
+export * from "./WelcomeScreen";
+export * from "./BottomPanel";
+export * from "./FunctionDisplay";
