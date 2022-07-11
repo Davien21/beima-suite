@@ -1,5 +1,4 @@
 import { deslugify } from "./deslugify";
-import { filterContract } from "./filterSmartContract";
 import { formatDate } from "./formatDate";
 import { getRandomKey } from "./randomKey";
 import { formatFileSize } from "./formatFileSize";
@@ -15,7 +14,6 @@ export {
   deslugify,
   formatDate,
   getRandomKey,
-  filterContract,
   formatFileSize,
   getContractItemNames,
   generateDocSchema,

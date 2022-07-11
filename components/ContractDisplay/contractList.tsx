@@ -1,11 +1,9 @@
-import { useContractContext } from "contexts";
 import { getRandomKey } from "utils/randomKey";
-import { IContract, IEvent, IFunction } from "interfaces";
+import { IEvent, IFunction } from "interfaces";
 import React, { useState } from "react";
 import { ListItem } from "./listItem";
 import { motion } from "framer-motion";
-import { useSelector, useDispatch } from "react-redux";
-import { toggleHiddenItem } from "store/slices";
+import { useSelector } from "react-redux";
 
 export function ContractList({
   showInherited,

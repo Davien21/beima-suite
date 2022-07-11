@@ -10,12 +10,9 @@ import {
   setUploadedABIData,
   setUploadedContractName,
 } from "store/slices/uploadSlice";
-import { TestSmartContract } from "utils/filterSmartContract";
-import { getContractItemNames, getContractName, getDocItemNames } from "utils/generateDoc";
+import { getContractItemNames, getContractName } from "utils/generateDoc";
 
 export default function UploadTabs() {
-  getDocItemNames(TestSmartContract);
-
   const { activeTab, contractData, documentation, contractFile, abiFile } =
     useSelector((state: any) => state.upload);
 
