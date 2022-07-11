@@ -9,7 +9,7 @@ export * from "./EmptyWorkspace";
 export * from "./DashboardLayout";
 export * from "./Switch";
 export * from "./SegmentedControl";
-// export * from "./Select";
+export * from "./Select";
 export * from "./ContractDisplay";
 export * from "./Tooltip";
 export * from "./MultipleInput";

@@ -14,7 +14,7 @@ export function Select({
   toggleIcon,
   isSearchable,
 }: {
-  list: string[] | React.ReactNode[];
+  list: string[];
   children: React.ReactNode;
   toggleIcon?: React.ReactNode;
   isSearchable?: boolean;
@@ -89,7 +89,7 @@ export function Select({
                       tabIndex={0}
                       className="li"
                       key={item}
-                      onFocus={onItemFocus}
+                      onFocus={() => {}}
                     >
                       <span>{item}</span>
                     </li>
