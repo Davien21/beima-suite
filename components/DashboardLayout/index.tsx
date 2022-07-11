@@ -110,16 +110,18 @@ function DashboardLayout() {
                 <FilterIcon />
               </button>
             </div>
-            {!contracts.length && <EmptyWorkspace />}
-            {contracts.length && (
+            {!contracts.length ? <EmptyWorkspace /> : ""}
+            {!contracts.length ? (
               <div className="px-6 py-6">
                 <ContractDisplay />
               </div>
+            ) : (
+              ""
             )}
           </div>
           <div className={`col-span-9 ${styles["right"]} w-full flex flex-col`}>
-            {!contracts.length && <WelcomeScreen />}
-            {contracts.length && (
+            {!contracts.length ? <WelcomeScreen /> : ""}
+            {contracts.length ? (
               <div className="flex flex-col justify-center items-center h-full">
                 <div className="pt- 64">
                   <BigFileIcon className={`${styles["big-file"]} mb-3`} />
@@ -128,6 +130,8 @@ function DashboardLayout() {
                   Select a function to start documenting
                 </p>
               </div>
+            ) : (
+              ""
             )}
             <BottomPanel />
 

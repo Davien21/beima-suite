@@ -22,7 +22,7 @@ export function BottomPanel() {
   let closePanelBtnClass = `${styles["close-panel-btn"]} gap-x-3`;
   return (
     <>
-      {hasContracts && (
+      {hasContracts ? (
         <motion.div
           initial="grow"
           animate={isOpen ? "grow" : "shrink"}
@@ -41,6 +41,8 @@ export function BottomPanel() {
             <span className="grey">{isOpen ? "Close" : "Open"} Panel</span>
           </div>
         </motion.div>
+      ) : (
+        ""
       )}
     </>
   );
