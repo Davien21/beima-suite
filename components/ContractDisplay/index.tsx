@@ -9,14 +9,6 @@ import { resetUploadState } from "store/slices/uploadSlice";
 export function ContractDisplay() {
   const contracts = useSelector((state: any) => state.contracts);
   const { documentation } = useSelector((state: any) => state.upload);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (documentation) {
-      dispatch(addContract(documentation));
-      dispatch(resetUploadState);
-    }
-  }, [documentation, dispatch]);
 
   return (
     <>

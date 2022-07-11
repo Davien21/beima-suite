@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
 import {
   Button,
@@ -18,10 +18,20 @@ import {
 } from "assets/images";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
+import { addContract } from "store/slices";
+import { resetUploadState } from "store/slices/uploadSlice";
 
 function DashboardLayout() {
   const contracts = useSelector((state: any) => state.contracts);
+  const { documentation } = useSelector((state: any) => state.upload);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (documentation) {
+      dispatch(addContract(documentation));
+      dispatch(resetUploadState());
+    }
+  }, [documentation, dispatch]);
 
   const [isShowingFilter, setisShowingFilter] = useState<boolean>(false);
   const toggleFilter = () => {
