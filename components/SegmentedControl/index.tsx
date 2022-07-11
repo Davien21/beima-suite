@@ -1,7 +1,7 @@
 import React from "react";
 import { HollowButton } from "components";
 import styles from "./segmented-control.module.css";
-import { getRandomKey } from "@utils/randomKey";
+import { getRandomKey } from "utils";
 
 export function SegmentedControl({
   controls,
