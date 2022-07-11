@@ -1,5 +1,4 @@
-import { addIds, getRandomKey } from "utils/randomKey";
-import { sampleContractData } from "data/samples";
+import { getRandomKey } from "utils/randomKey";
 import React, { useEffect, useState } from "react";
 import { ContractTab } from "./tab";
 import styles from "./contract-display.module.css";
@@ -18,13 +17,6 @@ export function ContractDisplay() {
       dispatch(resetUploadState);
     }
   }, [documentation, dispatch]);
-
-  const [activeId, setactiveId] = useState<string>("");
-  const isActiveContract = (id: string) => {
-    return activeId === id ? true : false;
-  };
-
-  // console.log("ContractDisplay", contracts);
 
   return (
     <>

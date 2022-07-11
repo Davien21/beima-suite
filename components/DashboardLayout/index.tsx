@@ -11,7 +11,6 @@ import {
 } from "components";
 
 import {
-  AltFilesIcon,
   FilesIcon,
   FilterIcon,
   TooltipIcon,
@@ -111,7 +110,7 @@ function DashboardLayout() {
               </button>
             </div>
             {!contracts.length ? <EmptyWorkspace /> : ""}
-            {!contracts.length ? (
+            {contracts.length ? (
               <div className="px-6 py-6">
                 <ContractDisplay />
               </div>
