@@ -62,25 +62,25 @@ export function ContractOptions() {
               animate={isOpen ? "enter" : "exit"}
               variants={menuVariants}
             >
-              <ul className="options">
-                <li className="p-4">
-                  <span className="flex gap-x-2">
+              <ul className="options" onClick={(e) => e.stopPropagation()}>
+                <li className="p-4" onClick={toggleOpen}>
+                  <span className="flex items-center gap-x-2">
                     <span>
                       <PublishIcon />
                     </span>
                     <span>Publish Documentation</span>
                   </span>
                 </li>
-                <li className="p-4">
-                  <span className="flex gap-x-2">
+                <li className="p-4" onClick={toggleOpen}>
+                  <span className="flex items-center gap-x-2">
                     <span>
                       <EditIcon />
                     </span>
                     <span>Edit Details</span>
                   </span>
                 </li>
-                <li className="p-4">
-                  <span className="flex gap-x-2">
+                <li className="p-4" onClick={toggleOpen}>
+                  <span className="flex items-center gap-x-2">
                     <span>
                       <PublishIcon />
                     </span>

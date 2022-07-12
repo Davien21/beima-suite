@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { IFunction, IEvent, IContract } from "interfaces";
-import { sampleContractData } from "data/samples";
+import { IContract } from "interfaces";
 
 const initialState: IContract[] = [];
 
@@ -34,7 +33,6 @@ export const contractsSlice = createSlice({
       state,
       action: PayloadAction<{ index: number; name: string }>
     ) => {
-      console.log("woorks");
       const { index, name } = action.payload;
       const functions = state[index].data;
       const fIndex = functions.findIndex((x) => x.name === name);

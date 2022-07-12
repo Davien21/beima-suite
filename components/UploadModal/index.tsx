@@ -13,14 +13,15 @@ import {
   setDocumentation,
 } from "store/slices/uploadSlice";
 import { useKeypress } from "hooks";
+import { setIsUploadModalOpen } from "store/slices/modalSlice";
+import { IStore } from "interfaces";
 
-type ModalProps = {
-  isActive: boolean;
-  setIsActive: (status: boolean) => void;
-};
-
-export function UploadModal({ isActive, setIsActive }: ModalProps) {
-  useKeypress("Escape", () => setIsActive(false));
+export function UploadModal() {
+  const { isUploadModalOpen } = useSelector((state: IStore) => state.modal);
+  
+  useKeypress("Escape", () => {
+    dispatch(setIsUploadModalOpen(false));
+  });
   const { activeTab, contractData, abiFile } = useSelector(
     (state: any) => state.upload
   );
@@ -31,7 +32,7 @@ export function UploadModal({ isActive, setIsActive }: ModalProps) {
   const [modalHeight, setmodalHeight] = useState<number>(0);
 
   const closeModal = () => {
-    setIsActive(false);
+    dispatch(setIsUploadModalOpen(false));
   };
 
   useEffect(() => {
@@ -42,12 +43,12 @@ export function UploadModal({ isActive, setIsActive }: ModalProps) {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isActive]);
+  }, [isUploadModalOpen]);
 
   return (
     <motion.div
       initial={{ opacity: 0, display: "none" }}
-      animate={isActive ? "enter" : "exit"}
+      animate={isUploadModalOpen ? "enter" : "exit"}
       variants={ModalParentVariants}
       exit={{ opacity: 0, transition: { when: "afterChildren" } }}
       className={`${styles["container"]}`}
@@ -55,10 +56,10 @@ export function UploadModal({ isActive, setIsActive }: ModalProps) {
     >
       <motion.div
         initial={{ y: "-100%" }}
-        animate={isActive ? { y: `100px` } : { y: "-100%" }}
+        animate={isUploadModalOpen ? { y: `100px` } : { y: "-100%" }}
         exit={{ y: "-100%" }}
         ref={modalRef}
-        className={`${styles["modal-body"]} `}
+        className={`${styles["modal-body"]}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="px-8 pt-8 lg:px-8 lg:pt-8">

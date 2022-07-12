@@ -1,5 +1,23 @@
+.container {
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 .container input {
   display: none;
+}
+
+.container:not(.false) label {
+  cursor: pointer;
+}
+
+.container.active:not(.false),
+.container:not(.false):hover {
+  background-color: var(--app-blue-light);
+}
+
+.container.active.false {
+  background-color: #f2f2f2;
 }
 
 .container.false .checkbox path:last-child {
@@ -14,28 +32,23 @@
   color: #c1c1c1 !important;
 }
 
-.container label div span:first-child {
+.container :where(.function, .event) {
   font-weight: 800;
   text-align: center;
   padding: 3px 7px;
   border-radius: 4px;
   font-size: 11px;
+  user-select: none;
 }
 
-.container.false label div span:first-child {
+.container.false :where(.function, .event) {
   background-color: #eeeeee !important;
-  color: #373636 !important;
+  color: var(--app-grey);
 }
 
-.container .checkbox.true path:last-child {
-  display: block;
+.container.false.active :where(.function, .event) {
+  background-color: #dfdfdf !important;
 }
-
-.container.false .function,
-.container.false .event {
-  color: #373636;
-}
-
 .function {
   background-color: #ffe2e2;
   color: #c10f0f;

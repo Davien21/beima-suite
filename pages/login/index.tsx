@@ -41,7 +41,7 @@ export default function LoginPage() {
     <div
       className={`${styles["container"]} h-screen flex flex-col justify-center`}
     >
-      <header className="bg-default">
+      <header className="bg-color">
         <nav className="">
           <div className="flex justify-center px-14 pb-20 big-logo">
             <Link href="/">
@@ -52,7 +52,7 @@ export default function LoginPage() {
           </div>
         </nav>
       </header>
-      <main className="hidden lg:block bg-default">
+      <main className="hidden lg:block bg-color">
         <section className=" flex justify-center items-center">
           <div className=" container gap-x-32">
             <div className="flex flex-col items-center ">

@@ -7,7 +7,7 @@
 }
 
 .container form {
-  background-color: var(--app-bg-light);
+  background-color: var(--app-bg-color);
   border-radius: 20px;
 }
 

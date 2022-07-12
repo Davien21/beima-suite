@@ -11,6 +11,7 @@ import {
   toggleContractOpen,
   toggleInheritedSwitch,
 } from "store/slices/contractSlice";
+import { capitalize } from "utils";
 
 export function ContractTab({ index }: { index: number }) {
   const contract = useSelector((state: any) => state.contracts[index]);
@@ -40,7 +41,7 @@ export function ContractTab({ index }: { index: number }) {
         <div>
           <div className="flex py-3 justify-between">
             <Switch
-              label={`Inherited ${contract.activeControl}s`}
+              label={`Inherited ${capitalize(contract.activeControl)}s`}
               isDisabled={false}
               checked={!contract.showInherited[contract.activeControl]}
               setChecked={() => {

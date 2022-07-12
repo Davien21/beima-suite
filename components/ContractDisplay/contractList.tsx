@@ -29,7 +29,7 @@ export function ContractList({
   return (
     <>
       {isOpen && (
-        <div className="border-l pl-6 ml-8 mt-5">
+        <div className="border-l pl-2 ml-6 3xl:ml-8 mt-4">
           {items.map((item: IFunction | IEvent) => {
             return (
               <ListItem

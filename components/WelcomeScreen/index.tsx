@@ -2,12 +2,11 @@ import React from "react";
 import styles from "./welcome-screen.module.css";
 import { Button } from "components";
 import { WelcomeImg } from "assets/images";
+import { setIsUploadModalOpen } from "store/slices/modalSlice";
+import { useDispatch } from "react-redux";
+export function WelcomeScreen() {
+  const dispatch = useDispatch();
 
-export function WelcomeScreen({
-  onOpenUploadModal,
-}: {
-  onOpenUploadModal: () => void;
-}) {
   return (
     <div className={`${styles["container"]} mx-auto text-center mt-32`}>
       <div className="flex justify-center mb-4">
@@ -25,7 +24,12 @@ export function WelcomeScreen({
         </div>
       </div>
       <div className="mb-20">
-        <Button secondary onClick={onOpenUploadModal}>
+        <Button
+          secondary
+          onClick={() => {
+            dispatch(setIsUploadModalOpen(true));
+          }}
+        >
           Create Your First Documentation
         </Button>
       </div>

@@ -12,7 +12,6 @@ export function Switch({
   checked: boolean;
   setChecked: (checked: boolean) => void;
 }) {
- 
   let switchClass = `${styles["container"]} ${checked ? styles["active"] : ""}`;
   if (isDisabled) switchClass += ` ${isDisabled ? styles["disabled"] : ""}`;
 
@@ -24,7 +23,9 @@ export function Switch({
         <input type="checkbox" onChange={() => toggle()} checked={checked} />
         <div onClick={() => toggle()} className={`${styles["btn"]}`}></div>
       </div>
-      <label onClick={() => toggle()}>{label}</label>
+      <label className="cursor-pointer" onClick={() => toggle()}>
+        {label}
+      </label>
     </div>
   );
 }

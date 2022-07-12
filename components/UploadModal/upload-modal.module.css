@@ -20,7 +20,7 @@
 .container .modal-body {
   /* min-height: 100vh; */
   margin: auto;
-  background-color: var(--app-white);
+  background-color: var(--app-bg-color);
   border-radius: var(--app-border-radius-sm);
   width: 100%;
   max-width: 360px;

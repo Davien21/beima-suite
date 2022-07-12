@@ -1,31 +1,36 @@
 import { UpIcon } from "assets/images";
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { SearchBox } from "components";
 import { motion } from "framer-motion";
-import { createPopper } from "@popperjs/core";
-import { usePopper } from "react-popper";
-import { useOnClickOutside } from "usehooks-ts";
-import { useClickOutside } from "hooks";
-import { arrowVariants, list, menuVariants } from "./meta";
+import { menuVariants } from "animations";
 
 export function Select({
-  list,
   children,
   toggleIcon,
   isSearchable,
 }: {
-  list: string[];
   children: React.ReactNode;
   toggleIcon?: React.ReactNode;
   isSearchable?: boolean;
 }) {
-  const [referenceElement, setReferenceElement] = useState<any>(null);
-  const [popperElement, setPopperElement] = useState<any>(null);
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: "right-start",
-  });
-  const popcornRef = useRef<any>(null);
-  const dropDownArrowRef = useRef<any>(null);
+  const list = [
+    "Australia",
+    "Columbia",
+    "Denmark",
+    "Germany",
+    "Indonesia",
+    "Nigeria",
+    "Belgium",
+    "Rome",
+    "Greece",
+    "Iceland",
+  ];
+  const arrowVariants = {
+    open: { rotate: 0 },
+    closed: { rotate: 180 },
+  };
+
+  const initialAnimation = { rotate: 180, transition: { duration: 0 } };
   const [isOpen, setisOpen] = useState<boolean>(false);
   const [activeList, setactiveList] = useState<string[]>(list);
 
@@ -39,69 +44,27 @@ export function Select({
     });
     setactiveList(filteredList);
   };
-  useClickOutside(popcornRef, toggleOpen, dropDownArrowRef);
-
-  const onItemFocus = (e: FocusEvent) => {
-    console.log(e.target);
-  };
-
-  const initialAnimation = { rotate: 180, transition: { duration: 0 } };
-
   return (
-    <div className="flex" ref={setReferenceElement}>
-      {children}
-      <motion.span
-        className="p-3 cursor-pointer toggler"
-        initial={initialAnimation}
-        animate={isOpen ? "open" : "closed"}
-        variants={arrowVariants}
-        onClick={toggleOpen}
-        ref={dropDownArrowRef}
+    <div className="wrapper relative">
+      <div onClick={toggleOpen}>{children}</div>
+      <motion.div
+        className={`content ${isSearchable ? "p-2" : "pt-0 pb-3 px-2"}`}
+        initial="exit"
+        animate={isOpen ? "enter" : "exit"}
+        variants={menuVariants}
       >
-        {toggleIcon || <UpIcon />}
-      </motion.span>
-      {isOpen ? (
-        <div className="wrapper" ref={popcornRef}>
-          {/* <div className="toggler-container " ref={setReferenceElement}></div> */}
-          <div
-            ref={setPopperElement}
-            style={styles.popper}
-            {...attributes.popper}
-            className={`content ${isSearchable ? "p-2" : "pt-0 pb-3 px-2"}`}
-            // initial="exit"
-            // animate={isOpen ? "enter" : "exit"}
-            // variants={menuVariants}
-          >
-            <motion.div
-              initial="exit"
-              animate={isOpen ? "enter" : "exit"}
-              variants={menuVariants}
-            >
-              {isSearchable && <SearchBox query={query} onChange={onSearch} />}
+        {isSearchable && <SearchBox query={query} onChange={onSearch} />}
 
-              <ul className="options">
-                {activeList.map((item: string) => {
-                  return (
-                    <li
-                      onClick={() => {
-                        setactiveList([...activeList, "aaa"]);
-                      }}
-                      tabIndex={0}
-                      className="li"
-                      key={item}
-                      onFocus={() => {}}
-                    >
-                      <span>{item}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
+        <ul className="options">
+          {activeList.map((item: string) => {
+            return (
+              <li tabIndex={0} className="li" key={item}>
+                <span>{item}</span>
+              </li>
+            );
+          })}
+        </ul>
+      </motion.div>
     </div>
   );
 }

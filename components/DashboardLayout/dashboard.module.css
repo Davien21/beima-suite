@@ -7,7 +7,7 @@
 }
 
 .left .tab {
-  background-color: #fdfdff;
+  background-color: var(--app-bg-color-alt);
   border-left: 6px solid transparent;
   color: #bebebe;
   transition: 0.2s border ease-in-out;
@@ -29,7 +29,7 @@
 }
 
 .middle {
-  background-color: #fdfdff;
+  background-color: var(--app-bg-color-alt);
   border-left: 1px solid #e5e7eb;
   border-right: 1px solid #e5e7eb;
   height: calc(100vh - var(--app-header-height));

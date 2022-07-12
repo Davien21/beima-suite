@@ -19,3 +19,6 @@ export * from "./WelcomeScreen";
 export * from "./BottomPanel";
 export * from "./FunctionDisplay";
 export * from "./BigFileIcon";
+export * from "./Breadcrumbs";
+export * from "./InputsBox";
+export * from "./OutputsBox";

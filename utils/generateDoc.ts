@@ -1,4 +1,4 @@
-import { IEvent, IFunction } from "interfaces";
+import { IContract, IContractInputs, IEvent, IFunction } from "interfaces";
 import { getRandomKey } from "./randomKey";
 
 export const getContractItemNames = (content: string) => {
@@ -58,11 +58,11 @@ const getContractSchema = (name: string, data: IFunction[] | IEvent[]) => {
     data,
     isOpen: false,
     showInherited: {
-      functions: false,
-      events: false,
+      function: false,
+      event: false,
     },
     activeControl: "function",
-  };
+  } as IContract;
 };
 
 const generateInputSchema = (item: any[]) => {
@@ -77,7 +77,7 @@ const generateInputSchema = (item: any[]) => {
     };
     inputs.push(result);
   });
-  return inputs;
+  return inputs as IContractInputs[];
 };
 
 const generateOutputSchema = (item: any[]) => {

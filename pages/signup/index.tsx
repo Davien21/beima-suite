@@ -45,7 +45,7 @@ export default function SignUpPage() {
 
   return (
     <div className={`${styles["container"]}`}>
-      <header className="bg-default">
+      <header className="bg-color">
         <nav className="px-14 py-5">
           <div>
             <Link href="/">
@@ -56,7 +56,7 @@ export default function SignUpPage() {
           </div>
         </nav>
       </header>
-      <main className="hidden lg:block bg-default">
+      <main className="hidden lg:block bg-color">
         <section className="h-full flex justify-center items-center">
           <div className="h-full grid grid-cols-2 container gap-x-32 place-content-center">
             <div className="text-center  flex flex-col items-center justify-center">

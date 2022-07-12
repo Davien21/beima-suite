@@ -1,0 +1,19 @@
+.tooltip {
+  /* background-color: var(--app-tooltip-bg); */
+  color: var(--app-bg-color-alt);
+  border-radius: 3px;
+  font-size: 14px;
+  max-width: 200px;
+  text-align: center;
+  background: hsla(0, 0%, 0%, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid var(--app-tooltip-bg);
+  margin: auto;
+}

@@ -12,7 +12,7 @@
 }
 
 .tab.active .contract {
-  background-color: #eef0ff;
+  background-color: var(--app-blue-light);
   border-radius: 10px;
   color: #828282;
   font-size: 14px;

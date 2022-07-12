@@ -1,21 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { generateDocSchema } from "utils";
-import { IContract } from "interfaces";
-import { addContract } from "./contractSlice";
+import { IUpload } from "interfaces";
 
-interface ISliceProps {
-  name: string;
-  contractData: string[] | null;
-  documentation: any | null;
-  contractFile: File | null;
-  abiFile: File | null;
-  abiData: any[] | null;
-  step: number;
-  activeTab: string;
-}
-
-const initialState: ISliceProps = {
+const initialState: IUpload = {
   name: "",
   contractData: null,
   contractFile: null,

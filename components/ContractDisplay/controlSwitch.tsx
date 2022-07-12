@@ -1,5 +1,4 @@
 import React from "react";
-import { HollowButton } from "components";
 import Pstyles from "./contract-display.module.css";
 
 export function ControlSwitch({
@@ -12,26 +11,27 @@ export function ControlSwitch({
   const btnClass = (control: string) => {
     let btnClass = activeControl;
     if (control === activeControl) {
-      return (btnClass += ` ${Pstyles["active"]} `);
+      btnClass += ` ${Pstyles["active"]} `;
     }
+    return btnClass;
   };
 
   return (
     <div className={`${Pstyles["control-switch"]} flex gap-x-2`}>
-      <HollowButton
+      <button
         onClick={() => onChangeControl("function")}
         className={`${btnClass("function")}`}
       >
         <span className="5xl:hidden">F</span>
         <span className="hidden 5xl:block">Functions</span>
-      </HollowButton>
-      <HollowButton
+      </button>
+      <button
         onClick={() => onChangeControl("event")}
         className={`${btnClass("event")}`}
       >
         <span className="5xl:hidden">E</span>
         <span className="hidden 5xl:block">Events</span>
-      </HollowButton>
+      </button>
     </div>
   );
 }
