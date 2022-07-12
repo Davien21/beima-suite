@@ -35,7 +35,7 @@ export interface IContract {
   creator_id?: string;
   name: string;
   alias: string;
-  data: IFunction[];
+  data: IFunction[] | IEvent[];
   isOpen?: boolean;
   showInherited: {
     function: boolean;

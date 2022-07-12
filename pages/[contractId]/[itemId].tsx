@@ -15,22 +15,25 @@ import styles from "./item-page.module.css";
 import { EditIcon, SettingsIcon } from "assets/images";
 import { capitalize, getRandomKey } from "utils";
 
+type ItemType = IFunction | IEvent;
 export default function ItenPage() {
   const router = useRouter();
 
   const contracts = useSelector((state: IStore) => state.contracts);
   const { contractId, itemId } = router.query;
   const contract = contracts.find((c: IContract) => c.id === contractId);
-  const events = contract?.data
-    .filter((c: IFunction | IEvent) => c.type === "event")
-    .map((e: IFunction | IEvent) => e.name);
-  const item = contract?.data.find((i: any) => i.name === itemId);
+  const events = (contract?.data as Array<any>)
+    .filter((c: ItemType) => c.type === "event")
+    .map((e: ItemType) => e.name);
+  const item = (contract?.data as Array<any>).find(
+    (i: ItemType) => i.name === itemId
+  );
   const isValidRoute = contracts.some((c: IContract) => c.id === contractId);
 
   useEffect(() => {
     if (!contractId) return;
-    if (!isValidRoute) router.replace("/");
-  }, [contractId, isValidRoute, router]);
+    if (!isValidRoute || item?.type === "event") router.replace("/");
+  }, [contractId, isValidRoute, item?.type, router]);
   if (!contract || !item) return "";
 
   const hasMeta = item.meta;
