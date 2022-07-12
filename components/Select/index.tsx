@@ -29,7 +29,8 @@ export function Select({
   };
   const itemRef = useRef<HTMLDivElement>(null);
   const selectRef = useRef<any>(null);
-  useClickOutside(selectRef, toggleOpen, itemRef);
+  // fix this, its rerendering all the time because it is still in dom.
+  useClickOutside(selectRef, () => setisOpen(false), itemRef);
 
   return (
     <div className={`${styles["container"]} "`}>
