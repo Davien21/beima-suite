@@ -116,7 +116,7 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
                 </Button>
               </div>
               <div className="sticky-default bg-color flex justify-between items-center px-6 py-7 border-b gap-x-3">
-                <SearchBox />
+                <SearchBox placeholder="Search using anything in the smart contract" />
                 <button
                   className={`${styles["filter"]} ${
                     isShowingFilter && styles["active"]

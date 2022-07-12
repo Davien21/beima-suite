@@ -1,39 +1,22 @@
-import { UpIcon } from "assets/images";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import { SearchBox } from "components";
 import { motion } from "framer-motion";
 import { menuVariants } from "animations";
+import styles from "./select.module.css";
+import { useClickOutside } from "hooks";
 
 export function Select({
+  list,
   children,
-  toggleIcon,
   isSearchable,
 }: {
+  list: string[];
   children: React.ReactNode;
   toggleIcon?: React.ReactNode;
   isSearchable?: boolean;
 }) {
-  const list = [
-    "Australia",
-    "Columbia",
-    "Denmark",
-    "Germany",
-    "Indonesia",
-    "Nigeria",
-    "Belgium",
-    "Rome",
-    "Greece",
-    "Iceland",
-  ];
-  const arrowVariants = {
-    open: { rotate: 0 },
-    closed: { rotate: 180 },
-  };
-
-  const initialAnimation = { rotate: 180, transition: { duration: 0 } };
   const [isOpen, setisOpen] = useState<boolean>(false);
   const [activeList, setactiveList] = useState<string[]>(list);
-
   const toggleOpen = () => setisOpen(!isOpen);
   const [query, setquery] = useState<string>("");
   const onSearch = (e: ChangeEvent) => {
@@ -44,21 +27,35 @@ export function Select({
     });
     setactiveList(filteredList);
   };
+  const itemRef = useRef<HTMLDivElement>(null);
+  const selectRef = useRef<any>(null);
+  useClickOutside(selectRef, toggleOpen, itemRef);
+
   return (
-    <div className="wrapper relative">
-      <div onClick={toggleOpen}>{children}</div>
+    <div className={`${styles["container"]} "`}>
+      <div ref={itemRef} onClick={toggleOpen}>
+        {children}
+      </div>
       <motion.div
-        className={`content ${isSearchable ? "p-2" : "pt-0 pb-3 px-2"}`}
+        className={`${styles["content"]} ${
+          isSearchable ? "p-2" : "pt-0 pb-3 px-2"
+        }`}
         initial="exit"
         animate={isOpen ? "enter" : "exit"}
         variants={menuVariants}
       >
-        {isSearchable && <SearchBox query={query} onChange={onSearch} />}
+        {isSearchable && (
+          <SearchBox
+            placeholder="Try searching for the item"
+            query={query}
+            onChange={onSearch}
+          />
+        )}
 
-        <ul className="options">
+        <ul ref={selectRef}>
           {activeList.map((item: string) => {
             return (
-              <li tabIndex={0} className="li" key={item}>
+              <li key={item}>
                 <span>{item}</span>
               </li>
             );

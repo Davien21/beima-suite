@@ -6,9 +6,11 @@ import styles from "./search-box.module.css";
 function SearchBox({
   query,
   onChange,
+  placeholder,
 }: {
   query?: string;
   onChange?: (query: any) => void;
+  placeholder: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const isFocused = useFocus(inputRef);
@@ -30,7 +32,7 @@ function SearchBox({
           ref={inputRef}
           type="search"
           className="block px-4 py-2 pl-10 w-full text-sm border border-gray-300 "
-          placeholder="Search using anything in the smart contract"
+          placeholder={placeholder}
         />
       </div>
     </form>

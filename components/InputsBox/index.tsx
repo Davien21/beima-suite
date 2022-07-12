@@ -6,24 +6,30 @@ import styles from "./inputs-box.module.css";
 import { Tooltip } from "components";
 
 export function InputsBox({ inputs }: { inputs: IContractInputs[] }) {
-  if (!inputs.length) return <div></div>;
+  // if (!inputs.length) return <div></div>;
   const getDataTypeClass = (type: string) => {
     if (type.includes("uint")) return styles["uint"];
     if (type.includes("bytes")) return styles["bytes"];
     return styles[type];
   };
+  let tableGroupsClass = "border-t grid grid-cols-2";
+  if (inputs.length) tableGroupsClass += " border-b";
   const willScroll = inputs.length > 4;
   return (
     <div className={`${styles["container"]} `}>
       <div className="p-5 flex gap-x-4 items-center">
         <span className="grey font-medium">Input Parameters</span>
-        <Tooltip title="These are the input parameters that this function should receive">
+        <Tooltip
+          title={`There are ${
+            inputs.length || "no"
+          } input values for this function`}
+        >
           <TooltipIcon />
         </Tooltip>
       </div>
       <div
         style={willScroll ? { paddingRight: "6px" } : {}}
-        className="border-t border-b grid grid-cols-2"
+        className={tableGroupsClass}
       >
         <span className="grey py-2 text-center text-sm border-r">
           Data Type

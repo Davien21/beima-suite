@@ -10,7 +10,7 @@ import {
 } from "components";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { IContract, IStore } from "interfaces";
+import { IContract, IEvent, IFunction, IStore } from "interfaces";
 import styles from "./item-page.module.css";
 import { EditIcon, SettingsIcon } from "assets/images";
 import { capitalize, getRandomKey } from "utils";
@@ -21,8 +21,12 @@ export default function ItenPage() {
   const contracts = useSelector((state: IStore) => state.contracts);
   const { contractId, itemId } = router.query;
   const contract = contracts.find((c: IContract) => c.id === contractId);
+  const events = contract?.data
+    .filter((c: IFunction | IEvent) => c.type === "event")
+    .map((e: IFunction | IEvent) => e.name);
   const item = contract?.data.find((i: any) => i.name === itemId);
   const isValidRoute = contracts.some((c: IContract) => c.id === contractId);
+
   useEffect(() => {
     if (!contractId) return;
     if (!isValidRoute) router.replace("/");
@@ -57,9 +61,9 @@ export default function ItenPage() {
                     <span>Settings</span>
                   </button>
                 </div>
-                {/* <Select> */}
-                <Button secondary>Link Events</Button>
-                {/* </Select> */}
+                <Select list={events ? events : []} isSearchable>
+                  <Button secondary>Link Events</Button>
+                </Select>
               </div>
             </div>
             <div className="flex items-center">
