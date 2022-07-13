@@ -38,6 +38,7 @@ export function Select({
         {children}
       </div>
       <motion.div
+        ref={selectRef}
         className={`${styles["content"]} ${
           isSearchable ? "p-2" : "pt-0 pb-3 px-2"
         }`}
@@ -53,7 +54,7 @@ export function Select({
           />
         )}
 
-        <ul ref={selectRef}>
+        <ul>
           {activeList.map((item: string) => {
             return (
               <li key={item}>
