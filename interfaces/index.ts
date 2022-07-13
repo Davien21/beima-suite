@@ -70,3 +70,5 @@ export interface IStore {
   contracts: IContract[];
   upload: IUpload;
 }
+
+export type IMetaTags = "view" | "payable" | "nonpayable" 

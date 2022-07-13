@@ -10,13 +10,34 @@ import {
 } from "components";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { IContract, IEvent, IFunction, IStore } from "interfaces";
+import { IContract, IEvent, IFunction, IMetaTags, IStore } from "interfaces";
 import styles from "./item-page.module.css";
 import { EditIcon, SettingsIcon } from "assets/images";
 import { capitalize, getRandomKey } from "utils";
 
-export default function ItenPage() {
+export default function ItemPage() {
   const router = useRouter();
+  const getMeta = (tag: IMetaTags) => {
+    const meta = {
+      view: {
+        initial: "V",
+        desc: "This means the function cannot change the state of the smart contract",
+      },
+      public: {
+        initial: "Pb",
+        desc: "This means the function is accessible to all parties",
+      },
+      payable: {
+        initial: "Pa",
+        desc: "This means the function requires ether, usually as a payment",
+      },
+      nonpayable: {
+        initial: "NPa",
+        desc: "This means the function does not require ether",
+      },
+    };
+    return meta[tag] as { initial: string; desc: string };
+  };
 
   const contracts = useSelector((state: IStore) => state.contracts);
   const { contractId, itemId } = router.query;
@@ -46,7 +67,7 @@ export default function ItenPage() {
           />
           <div className="mb-2 flex items-center justify-between">
             <Tooltip title={item.name}>
-              <h2 className={`${styles["functionName"]} text-3xl`}>
+              <h2 className={`${styles["functionName"]} text-3xl inline`}>
                 {item.name}
               </h2>
             </Tooltip>
@@ -66,17 +87,24 @@ export default function ItenPage() {
               </Select>
             </div>
           </div>
-          <div className="flex items-center">
-            <div className={`${hasMeta ? "border-r pr-5 py-2" : ""} inline"`}>
+          <div className="flex gap-x-4 items-center">
+            <div className={`${hasMeta ? "border-r pr-4 py-2" : ""} inline"`}>
               <span className={item.type}>{capitalize(item.type)}</span>
             </div>
-            {hasMeta
-              ? item.meta.map((meta: string) => (
-                  <span key={getRandomKey()} className="meta">
-                    {meta}
-                  </span>
-                ))
-              : ""}
+            <div className="gap-x-2">
+              {hasMeta
+                ? item.meta.map((tag: string) => (
+                    <Tooltip
+                      key={getRandomKey()}
+                      title={getMeta(tag as IMetaTags).desc}
+                    >
+                      <span key={getRandomKey()} className="meta">
+                        {getMeta(tag as IMetaTags).initial}
+                      </span>
+                    </Tooltip>
+                  ))
+                : ""}
+            </div>
           </div>
         </section>
         <section className="px-16 3xl:px-28 py-10">

@@ -1,11 +1,12 @@
 import React from "react";
 import { toast } from "react-toastify";
-import { AltFilesIcon, CircleCloseIcon } from "assets/images";
-import useDragAndDrop from "../../hooks/useDragAndDrop";
-import styles from "./drag-and-drop-input.module.css";
 import { FormikProps } from "formik";
-import { formatFileSize } from "../../utils";
 import { motion } from "framer-motion";
+
+import { AltFilesIcon, CircleCloseIcon } from "assets/images";
+import { useDragAndDrop } from "hooks";
+import styles from "./drag-and-drop-input.module.css";
+import { formatFileSize } from "utils";
 
 type FileTypes = "json" | "sol";
 interface IProps {

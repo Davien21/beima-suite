@@ -108,7 +108,7 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
                   <span>Workspace</span>
                 </div>
                 <Button
-                  onClick={() => setIsUploadModalOpen(true)}
+                  onClick={() => dispatch(setIsUploadModalOpen(true))}
                   secondary
                   className="import"
                 >

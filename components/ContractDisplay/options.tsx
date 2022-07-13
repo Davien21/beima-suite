@@ -1,48 +1,34 @@
-import { EditIcon, OptionDotsIcon, PublishIcon, UpIcon } from "assets/images";
+import { EditIcon, OptionDotsIcon, PublishIcon } from "assets/images";
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { usePopper } from "react-popper";
-import { useClickOutside } from "hooks";
+import { useClickOutside, usePopper } from "hooks";
 import { arrowVariants, menuVariants } from "animations";
 import Pstyles from "./contract-display.module.css";
 
 export function ContractOptions() {
-  const [referenceElement, setReferenceElement] = useState<any>(null);
-  const [popperElement, setPopperElement] = useState<any>(null);
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: "right-start",
-    modifiers: [
-      {
-        name: "offset",
-        options: {
-          offset: [0, 5],
-        },
-      },
-    ],
-  });
-  const optionsRef = useRef<any>(null);
+  const optionsMenuRef = useRef<any>(null);
+  const objectRef = useRef<any>(null);
   const dropDownArrowRef = useRef<any>(null);
+
+  usePopper(objectRef, optionsMenuRef, "right-start");
+
   const [isOpen, setisOpen] = useState<boolean>(false);
 
-  const toggleOpen = () => setisOpen(!isOpen);
+  const closeMenu = () => setisOpen(false);
 
-  useClickOutside(optionsRef, toggleOpen, dropDownArrowRef);
-
-  const onItemFocus = (e: FocusEvent) => {
-    console.log(e.target);
-  };
+  useClickOutside(optionsMenuRef, closeMenu, dropDownArrowRef);
 
   const initialAnimation = { rotate: 180, transition: { duration: 0 } };
 
   return (
-    <div className="flex" ref={setReferenceElement}>
+    <div className="flex" ref={objectRef}>
       <motion.span
         className={`p-3 cursor-pointer ${Pstyles["toggler"]}`}
         initial={initialAnimation}
         animate={isOpen ? "open" : "closed"}
         variants={arrowVariants}
         onClick={(e) => {
-          toggleOpen();
+          closeMenu();
           e.stopPropagation();
         }}
         ref={dropDownArrowRef}
@@ -50,20 +36,15 @@ export function ContractOptions() {
         <OptionDotsIcon />
       </motion.span>
       {isOpen && (
-        <div className="" ref={optionsRef}>
-          <div
-            ref={setPopperElement}
-            style={styles.popper}
-            {...attributes.popper}
-            className={`${Pstyles["options"]}`}
-          >
+        <div className="" ref={optionsMenuRef}>
+          <div className={`${Pstyles["options"]}`}>
             <motion.div
               initial="exit"
               animate={isOpen ? "enter" : "exit"}
               variants={menuVariants}
             >
               <ul className="options" onClick={(e) => e.stopPropagation()}>
-                <li className="p-4" onClick={toggleOpen}>
+                <li className="p-4" onClick={closeMenu}>
                   <span className="flex items-center gap-x-2">
                     <span>
                       <PublishIcon />
@@ -71,7 +52,7 @@ export function ContractOptions() {
                     <span>Publish Documentation</span>
                   </span>
                 </li>
-                <li className="p-4" onClick={toggleOpen}>
+                <li className="p-4" onClick={closeMenu}>
                   <span className="flex items-center gap-x-2">
                     <span>
                       <EditIcon />
@@ -79,7 +60,7 @@ export function ContractOptions() {
                     <span>Edit Details</span>
                   </span>
                 </li>
-                <li className="p-4" onClick={toggleOpen}>
+                <li className="p-4" onClick={closeMenu}>
                   <span className="flex items-center gap-x-2">
                     <span>
                       <PublishIcon />

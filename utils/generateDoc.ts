@@ -101,7 +101,7 @@ const generateFunctionSchema = (item: any, isNative: boolean) => {
     comment: "",
     isHidden: false,
     isNative,
-    meta: item.meta,
+    meta: [item.stateMutability],
   };
   return data as IFunction;
 };

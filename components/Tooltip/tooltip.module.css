@@ -5,15 +5,33 @@
   font-size: 14px;
   max-width: 200px;
   text-align: center;
-  background: hsla(0, 0%, 0%, 0.6);
+  background: hwb(0 0% 100% / 0.6);
   backdrop-filter: blur(4px);
 }
 
 .arrow {
   width: 0;
   height: 0;
+  margin: auto;
+  position: absolute;
+  z-index: calc(var(--tooltip-z-index) + 1);
+}
+
+.top .arrow {
+  bottom: -4px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--app-tooltip-bg);
+}
+
+.bottom .arrow {
+  top: -4px;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-bottom: 5px solid var(--app-tooltip-bg);
-  margin: auto;
+}
+
+.top .arrow,
+.bottom .arrow {
+  left: calc(50% - 5px);
 }
