@@ -22,3 +22,4 @@ export * from "./BigFileIcon";
 export * from "./Breadcrumbs";
 export * from "./InputsBox";
 export * from "./OutputsBox";
+export * from "./LinkedEventsBox";

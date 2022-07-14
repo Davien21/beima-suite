@@ -1,0 +1,43 @@
+.container {
+  background-color: var(--app-bg-color-alt);
+  border-radius: 10px;
+  border: 1px solid #e2e5fe;
+}
+
+.container svg.tooltip {
+  transform: scale(0.8);
+  /* stroke: var(--app-grey-medium); */
+}
+
+.container svg.tooltip path {
+  fill: var(--app-grey-medium);
+}
+
+.event-list {
+  max-height: 145px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.event-list span:last-child {
+  white-space: nowrap;
+  width: 94px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-list * {
+  text-align: center;
+}
+
+svg.go-to-btn {
+  transform: rotate(180deg) scale(0.7);
+}
+
+svg.go-to-btn path {
+  fill: var(--app-bg-alt);
+}
+
+.event-list ::-webkit-scrollbar-button {
+  height: 10px;
+}

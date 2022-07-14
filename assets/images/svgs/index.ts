@@ -13,6 +13,7 @@ import FilesIcon from "./files.svg";
 import WorkspaceIcon from "./workspace.svg";
 import TooltipIcon from "./tooltip.svg";
 import EyeIcon from "./eye.svg";
+import ClosePanelIcon from "./Close-panel.svg";
 import RightIcon from "./right.svg";
 import CheckboxIcon from "./checkbox.svg";
 import CircleCheckboxIcon from "./circle-checkbox.svg";
@@ -34,6 +35,7 @@ export {
   EditIcon,
   CloseIcon,
   EyeIcon,
+  ClosePanelIcon,
   RightIcon,
   FilterIcon,
   EmptySearchIcon,

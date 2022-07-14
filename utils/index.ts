@@ -3,6 +3,7 @@ import { formatDate } from "./formatDate";
 import { getRandomKey } from "./randomKey";
 import { formatFileSize } from "./formatFileSize";
 import { capitalize } from "./helpers";
+import { getMeta } from "./getMetaData";
 import {
   getContractItemNames,
   generateDocSchema,
@@ -22,4 +23,5 @@ export {
   getDocsArray,
   getContractName,
   capitalize,
+  getMeta,
 };

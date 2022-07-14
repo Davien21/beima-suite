@@ -7,37 +7,17 @@ import {
   OutputsBox,
   Select,
   Tooltip,
+  LinkedEventsBox,
 } from "components";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { IContract, IEvent, IFunction, IMetaTags, IStore } from "interfaces";
 import styles from "./item-page.module.css";
 import { EditIcon, SettingsIcon } from "assets/images";
-import { capitalize, getRandomKey } from "utils";
+import { capitalize, getMeta, getRandomKey } from "utils";
 
 export default function ItemPage() {
   const router = useRouter();
-  const getMeta = (tag: IMetaTags) => {
-    const meta = {
-      view: {
-        initial: "V",
-        desc: "This means the function cannot change the state of the smart contract",
-      },
-      public: {
-        initial: "Pb",
-        desc: "This means the function is accessible to all parties",
-      },
-      payable: {
-        initial: "Pa",
-        desc: "This means the function requires ether, usually as a payment",
-      },
-      nonpayable: {
-        initial: "NPa",
-        desc: "This means the function does not require ether",
-      },
-    };
-    return meta[tag] as { initial: string; desc: string };
-  };
 
   const contracts = useSelector((state: IStore) => state.contracts);
   const { contractId, itemId } = router.query;
@@ -112,13 +92,12 @@ export default function ItemPage() {
             <div className="col-span-3">
               <InputsBox inputs={item.inputs} />
             </div>
-            {item.outputs ? (
-              <div className="col-span-3">
-                <OutputsBox outputs={item.outputs} />
-              </div>
-            ) : (
-              ""
-            )}
+            <div className="col-span-3">
+              <OutputsBox outputs={item.outputs} />
+            </div>
+            <div className="col-span-3">
+              <LinkedEventsBox events={events || []} />
+            </div>
           </div>
         </section>
       </div>
