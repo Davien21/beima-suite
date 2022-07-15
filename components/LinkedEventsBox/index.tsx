@@ -27,17 +27,19 @@ export function LinkedEventsBox({ events }: { events: string[] }) {
       <div
         className={`${styles["event-list"]} flex flex-wrap gap-x-6 p-5 border-t`}
       >
-        {events.map((event: any) => {
-          return (
-            <div
-              key={getRandomKey()}
-              className="inline-flex items-center gap-x-1"
-            >
-              <span className="underline text-sm">{event}</span>
-              <ClosePanelIcon className={styles["go-to-btn"]} />
-            </div>
-          );
-        })}
+        {events.length > 0
+          ? events.map((event: any) => {
+              return (
+                <div
+                  key={getRandomKey()}
+                  className="inline-flex items-center gap-x-1"
+                >
+                  <span className="underline text-sm">{event}</span>
+                  <ClosePanelIcon className={styles["go-to-btn"]} />
+                </div>
+              );
+            })
+          : "No Events have been linked yet"}
       </div>
     </div>
   );
