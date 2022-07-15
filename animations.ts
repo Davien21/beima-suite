@@ -21,6 +21,24 @@ export const menuVariants = {
   },
 };
 
+export const dropDownVariants = {
+  enter: {
+    opacity: 1,
+    top: 50,
+    display: "block",
+  },
+  exit: {
+    top: 0,
+    opacity: 0,
+    transition: {
+      duration: 0.3,
+    },
+    transitionEnd: {
+      display: "none",
+    },
+  },
+};
+
 export const ModalParentVariants = {
   enter: {
     opacity: 1,

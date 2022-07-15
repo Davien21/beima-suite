@@ -12,7 +12,7 @@ export function OutputsBox({ outputs }: { outputs: IContractOutputs[] }) {
     if (type.includes("bytes")) return styles["bytes"];
     return styles[type];
   };
-  
+
   let tableGroupsClass = "border-t grid grid-cols-2";
   if (outputs.length) tableGroupsClass += " border-b";
   const willScroll = outputs.length > 4;
@@ -48,7 +48,9 @@ export function OutputsBox({ outputs }: { outputs: IContractOutputs[] }) {
           return (
             <div key={getRandomKey()} className="grid grid-cols-2">
               <span className={typeClass}>{output.type}</span>
-              <span className="p-2 text-sm">{output.name || "-"}</span>
+              <Tooltip title={output.name}>
+                <span className="p-2 text-sm">{output.name || "-"}</span>
+              </Tooltip>
             </div>
           );
         })}

@@ -48,7 +48,9 @@ export function InputsBox({ inputs }: { inputs: IContractInputs[] }) {
           return (
             <div key={getRandomKey()} className="grid grid-cols-2">
               <span className={typeClass}>{input.type}</span>
-              <span className="p-2 text-sm">{input.name}</span>
+              <Tooltip title={input.name}>
+                <span className="p-2 text-sm">{input.name}</span>
+              </Tooltip>
             </div>
           );
         })}

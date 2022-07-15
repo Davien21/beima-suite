@@ -1,0 +1,65 @@
+.container {
+  width: auto;
+  position: relative;
+}
+
+.toggler-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.content {
+  margin-top: 10px;
+  width: 300px !important;
+  background-color: #fff;
+  /* border-radius: 7px; */
+  border-radius: 10px;
+  position: absolute;
+  right: -12px;
+  z-index: 1000;
+  width: 100%;
+  border: 1px solid #f2f2f2;
+  box-shadow: rgb(98 100 183 / 10%) 0px 3px 8px;
+}
+
+.content ul {
+  margin-top: 10px;
+  /* padding-right: 8px; */
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.content ul li {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
+  font-size: 14px !important;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.content ul li:hover,
+.content ul li:focus {
+  background: #f2f2f2;
+  background: #ebf1ffb3;
+  outline: none;
+}
+
+.content ul li svg path {
+  stroke: #c1c1c1 !important;
+  fill: none !important;
+}
+
+.content ul li.active svg path {
+  stroke: var(--app-blue) !important;
+}
+
+.content ul li svg path:last-child {
+  display: none;
+}
+
+.content ul li.active svg path:last-child {
+  display: block;
+}

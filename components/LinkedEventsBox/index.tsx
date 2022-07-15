@@ -29,21 +29,12 @@ export function LinkedEventsBox({ events }: { events: string[] }) {
       >
         {events.map((event: any) => {
           return (
-            <div key={getRandomKey()} className="flex items-center gap-x-1">
-              <span className="underline">{event}</span>
-              <span>
-                <ClosePanelIcon className={styles["go-to-btn"]} />
-              </span>
-            </div>
-          );
-        })}
-        {events.map((event: any) => {
-          return (
-            <div key={getRandomKey()} className="flex items-center gap-x-1">
-              <span className="underline">{event}</span>
-              <span>
-                <ClosePanelIcon className={styles["go-to-btn"]} />
-              </span>
+            <div
+              key={getRandomKey()}
+              className="inline-flex items-center gap-x-1"
+            >
+              <span className="underline text-sm">{event}</span>
+              <ClosePanelIcon className={styles["go-to-btn"]} />
             </div>
           );
         })}

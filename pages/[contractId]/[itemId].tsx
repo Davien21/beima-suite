@@ -1,31 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Breadcrumbs,
   Button,
   DashboardLayout,
   InputsBox,
   OutputsBox,
-  Select,
   Tooltip,
   LinkedEventsBox,
+  MultipleSelect,
 } from "components";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { IContract, IEvent, IFunction, IMetaTags, IStore } from "interfaces";
+import { IContract, IMetaTags, IStore } from "interfaces";
 import styles from "./item-page.module.css";
 import { EditIcon, SettingsIcon } from "assets/images";
-import { capitalize, getMeta, getRandomKey } from "utils";
+import {
+  capitalize,
+  getMeta,
+  getRandomKey,
+  getLinkedEvents,
+  getEventsWithActiveState,
+} from "utils";
+import { setLinkFunctionToEvent } from "store/slices";
 
 export default function ItemPage() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const contracts = useSelector((state: IStore) => state.contracts);
-  const { contractId, itemId } = router.query;
+  const { contractId, itemId: functionName } = router.query;
   const contract = contracts.find((c: IContract) => c.id === contractId);
-  const events = contract?.data
-    .filter((c: IFunction | IEvent) => c.type === "event")
-    .map((e: IFunction | IEvent) => e.name);
-  const item = contract?.data.find((i: any) => i.name === itemId);
+
+  const linkedEvents = getLinkedEvents(contract, functionName as string);
+  const eventsWithState = getEventsWithActiveState(
+    contract,
+    functionName as string
+  );
+
+  useEffect(() => {
+    // if (selectableEvents.length > 0) {
+    console.log({ eventsWithState, linkedEvents });
+    // }
+    // console.log(eventsWithState);
+  });
+
+  const item = contract?.data.find((i: any) => i.name === functionName);
   const isValidRoute = contracts.some((c: IContract) => c.id === contractId);
 
   useEffect(() => {
@@ -37,13 +56,26 @@ export default function ItemPage() {
 
   const hasMeta = item.meta;
 
+  const contractIndex = contracts.findIndex(
+    (c: IContract) => c.id === contractId
+  );
+  const linkEvent = (eventName: string) => {
+    dispatch(
+      setLinkFunctionToEvent({
+        contractIndex,
+        functionName: functionName as string,
+        eventName,
+      })
+    );
+    // setunlinkedEvents(eventsWithState.filter((e: string) => e !== eventName));
+  };
   return (
     <DashboardLayout>
       <div className="h-full">
         <section className="px-8 3xl:px-16 py-10 border-b">
           <Breadcrumbs
             className="mb-2"
-            crumbs={[contract.name, itemId as string]}
+            crumbs={[contract.name, functionName as string]}
           />
           <div className="mb-2 flex items-center justify-between">
             <Tooltip title={item.name}>
@@ -62,9 +94,13 @@ export default function ItemPage() {
                   <span>Settings</span>
                 </button>
               </div>
-              <Select list={events ? events : []} isSearchable>
+              <MultipleSelect
+                onSelect={linkEvent}
+                list={eventsWithState}
+                isSearchable
+              >
                 <Button secondary>Link Events</Button>
-              </Select>
+              </MultipleSelect>
             </div>
           </div>
           <div className="flex gap-x-4 items-center">
@@ -88,15 +124,15 @@ export default function ItemPage() {
           </div>
         </section>
         <section className="px-16 3xl:px-28 py-10">
-          <div className="inline-grid grid-cols-9 gap-x-10">
+          <div className="inline-grid grid-cols-10 gap-x-10">
             <div className="col-span-3">
               <InputsBox inputs={item.inputs} />
             </div>
             <div className="col-span-3">
-              <OutputsBox outputs={item.outputs} />
+              <OutputsBox outputs={item.outputs as []} />
             </div>
-            <div className="col-span-3">
-              <LinkedEventsBox events={events || []} />
+            <div className="col-span-4">
+              <LinkedEventsBox events={linkedEvents} />
             </div>
           </div>
         </section>

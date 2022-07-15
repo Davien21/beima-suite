@@ -102,6 +102,7 @@ const generateFunctionSchema = (item: any, isNative: boolean) => {
     isHidden: false,
     isNative,
     meta: [item.stateMutability],
+    linkedEvents: [],
   };
   return data as IFunction;
 };

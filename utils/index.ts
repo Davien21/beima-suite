@@ -2,7 +2,11 @@ import { deslugify } from "./deslugify";
 import { formatDate } from "./formatDate";
 import { getRandomKey } from "./randomKey";
 import { formatFileSize } from "./formatFileSize";
-import { capitalize } from "./helpers";
+import {
+  capitalize,
+  getLinkedEvents,
+  getEventsWithActiveState,
+} from "./helpers";
 import { getMeta } from "./getMetaData";
 import {
   getContractItemNames,
@@ -23,5 +27,7 @@ export {
   getDocsArray,
   getContractName,
   capitalize,
+  getLinkedEvents,
+  getEventsWithActiveState,
   getMeta,
 };

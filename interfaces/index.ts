@@ -17,7 +17,7 @@ export interface IFunction {
   isHidden: boolean;
   isNative: boolean;
   meta: string[];
-  linkedEvents?: string[];
+  linkedEvents: string[];
 }
 
 export interface IEvent {
@@ -30,12 +30,24 @@ export interface IEvent {
   meta: string[];
 }
 
+export interface IItem {
+  name: string;
+  type: "function" | "event";
+  inputs: IContractInputs[];
+  outputs?: IContractOutputs[];
+  comment: string;
+  isHidden: boolean;
+  isNative: boolean;
+  meta: string[];
+  linkedEvents?: string[];
+}
+
 export interface IContract {
   id: string;
   creator_id?: string;
   name: string;
   alias: string;
-  data: IFunction[];
+  data: IItem[];
   isOpen?: boolean;
   showInherited: {
     function: boolean;
@@ -71,4 +83,9 @@ export interface IStore {
   upload: IUpload;
 }
 
-export type IMetaTags = "view" | "payable" | "nonpayable" 
+export interface IWithActiveState {
+  name: string;
+  isActive: boolean;
+}
+
+export type IMetaTags = "view" | "payable" | "nonpayable";

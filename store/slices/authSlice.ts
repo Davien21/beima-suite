@@ -4,8 +4,8 @@ import { IContract, IFunction } from "interfaces";
 
 const initialState: IContract[] = [];
 
-export const contractsSlice = createSlice({
-  name: "contracts",
+export const authSlice = createSlice({
+  name: "auth",
   initialState,
   reducers: {
     toggleShowInherited: (
@@ -105,6 +105,6 @@ export const {
   toggleInheritedSwitch,
   toggleActiveControl,
   setLinkFunctionToEvent,
-} = contractsSlice.actions;
+} = authSlice.actions;
 
-export default contractsSlice.reducer;
+export default authSlice.reducer;

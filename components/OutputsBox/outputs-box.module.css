@@ -47,23 +47,8 @@
   overflow-y: auto;
 }
 
-.container *::-webkit-scrollbar {
-  width: 3px;
-  height: 6px;
-}
-
-.container *::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 25px;
-}
-
-.container *::-webkit-scrollbar-thumb {
-  background-color: #a5aeff;
-  border-radius: 25px;
-}
-
 .container *::-webkit-scrollbar-button {
-  height: 30px;
+  height: 8px;
 }
 
 .output-list span:last-child {

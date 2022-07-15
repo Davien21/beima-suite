@@ -25,16 +25,19 @@ export function Tooltip({ trigger, title, children, placement }: IProps) {
   return (
     <div>
       <div
+        className="inline-flex"
         onClick={trigger === "click" ? toggleOpen : () => {}}
         ref={objectRef}
       >
         {children}
       </div>
-      {shouldShow && (
+      {shouldShow && title ? (
         <div className={`${styles[placement]} `} ref={tooltipRef}>
           <div className={`${styles["arrow"]} `}></div>
           <div className={`${styles["tooltip"]} px-4 py-2`}>{title}</div>
         </div>
+      ) : (
+        ""
       )}
     </div>
   );

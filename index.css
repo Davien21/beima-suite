@@ -29,9 +29,8 @@
   --app-blue: #3b4ef2;
   --app-orange: #f2bf3b;
   --app-text-color: #000;
-  /*  */
   --app-tooltip-bg: #404040;
-
+  /* Width Settings  */
   /* Font settings */
   --app-primary-font: "Roboto", helvetica;
   --app-secondary-font: "Coolvetica", sans-serif;
@@ -210,22 +209,6 @@ button:focus {
 
 .big-logo svg {
   transform: scale(1.8);
-}
-
-.tab {
-  border-bottom: 1px solid var(--app-grey-light);
-}
-
-.tab.active {
-  border-bottom: 1px solid #3b4ef2;
-}
-
-.tab.active {
-  color: #3b4ef2;
-}
-
-.tab > div {
-  border-bottom: 3px solid #3b4ef2;
 }
 
 .grey {

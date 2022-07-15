@@ -4,6 +4,10 @@
   border: 1px solid #e2e5fe;
 }
 
+.container *::-webkit-scrollbar-button {
+  height: 8px;
+}
+
 .container svg {
   transform: scale(0.8);
   /* stroke: var(--app-grey-medium); */

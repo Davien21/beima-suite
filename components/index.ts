@@ -23,3 +23,4 @@ export * from "./Breadcrumbs";
 export * from "./InputsBox";
 export * from "./OutputsBox";
 export * from "./LinkedEventsBox";
+export * from "./MultipleSelect";

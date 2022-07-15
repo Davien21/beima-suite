@@ -2,6 +2,16 @@
   background-color: var(--app-bg-color-alt);
   border-radius: 10px;
   border: 1px solid #e2e5fe;
+  width: 300px;
+}
+
+@media screen and (min-width: 1440px) {
+  .container {
+    background-color: var(--app-bg-color-alt);
+    border-radius: 10px;
+    border: 1px solid #e2e5fe;
+    width: 350px;
+  }
 }
 
 .container svg.tooltip {
@@ -38,6 +48,7 @@ svg.go-to-btn path {
   fill: var(--app-bg-alt);
 }
 
-.event-list ::-webkit-scrollbar-button {
+.container *::-webkit-scrollbar-button,
+.container::-webkit-scrollbar-button {
   height: 10px;
 }
