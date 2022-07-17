@@ -6,6 +6,7 @@ import {
   SearchBox,
   ContractDisplay,
   UploadModal,
+  ContractDescModal,
   BottomPanel,
   Header,
 } from "components";
@@ -52,6 +53,7 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
       <Header />
       <main className="hidden lg:block">
         <UploadModal />
+        <ContractDescModal />
         <section className={`${styles["container"]} flex w-full`}>
           <div className={`flex flex-col ${styles["left"]}`}>
             <button

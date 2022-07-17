@@ -17,6 +17,7 @@ export * from "./MultipleInput";
 export * from "./AuthHeader";
 export * from "./UploadModal";
 export * from "./FunctionDescModal";
+export * from "./ContractDescModal";
 export * from "./FunctionDescBox";
 export * from "./WelcomeScreen";
 export * from "./BottomPanel";

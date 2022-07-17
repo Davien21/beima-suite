@@ -42,11 +42,12 @@ export const getArrayAfterRemovingItem = (array: any[], item: any) => {
   return array.filter((i: any) => i !== item);
 };
 
-export const getCommentFromContract = (
+export const getdescriptionFromContract = (
   contract: IContract | undefined,
   functionName: string
 ) => {
   return (
-    contract?.data.find((c: IItem) => c.name === functionName)?.comment || ""
+    contract?.data.find((c: IItem) => c.name === functionName)?.description ||
+    ""
   );
 };

@@ -60,6 +60,7 @@ const getContractSchema = (name: string, data: IFunction[] | IEvent[]) => {
       function: false,
       event: false,
     },
+    description: "",
   } as IContract;
 };
 
@@ -96,7 +97,7 @@ const generateFunctionSchema = (item: any, isNative: boolean) => {
     type: item.type,
     inputs: generateInputSchema(item.inputs),
     outputs: generateOutputSchema(item.outputs),
-    comment: "",
+    description: "",
     isHidden: false,
     isNative,
     meta: [item.stateMutability],
@@ -110,7 +111,7 @@ const generateEventSchema = (item: any, isNative: boolean) => {
     name: item.name,
     type: item.type,
     inputs: generateInputSchema(item.inputs),
-    comment: "",
+    description: "",
     isHidden: false,
     isNative,
     meta: item.meta,

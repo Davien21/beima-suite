@@ -8,16 +8,16 @@ import { ITypes } from "interfaces";
 import { accordionVariants } from "animations";
 
 export function FunctionDescBox({
-  comment,
+  description,
   type,
 }: {
-  comment: string;
+  description: string;
   type: ITypes;
 }) {
   const [isOpen, setisOpen] = useState<boolean>(true);
 
-  let commentClass = `${styles["comment"]} `;
-  if (isOpen) commentClass += `cursor-auto`;
+  let descriptionClass = `${styles["description"]} `;
+  if (isOpen) descriptionClass += `cursor-auto`;
 
   let containerClass = `${styles["container"]}`;
   if (isOpen) containerClass += ` ${styles["active"]}`;
@@ -43,11 +43,11 @@ export function FunctionDescBox({
         animate={isOpen ? "open" : "closed"}
         exit="closed"
         variants={accordionVariants}
-        className={`${commentClass}`}
+        className={`${descriptionClass}`}
       >
-        {comment ? (
+        {description ? (
           <div className={`${styles["mark-down-container"]}`}>
-            <Markdown>{comment}</Markdown>
+            <Markdown>{description}</Markdown>
           </div>
         ) : (
           <span className="grey">

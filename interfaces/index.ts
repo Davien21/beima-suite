@@ -13,7 +13,7 @@ export interface IFunction {
   type: "function";
   inputs: IContractInputs[];
   outputs: IContractOutputs[];
-  comment: string;
+  description: string;
   isHidden: boolean;
   isNative: boolean;
   meta: string[];
@@ -24,7 +24,7 @@ export interface IEvent {
   name: string;
   type: "event";
   inputs: IContractInputs[];
-  comment: string;
+  description: string;
   isHidden: boolean;
   isNative: boolean;
   meta: string[];
@@ -35,7 +35,7 @@ export interface IItem {
   type: ITypes;
   inputs: IContractInputs[];
   outputs?: IContractOutputs[];
-  comment: string;
+  description: string;
   isHidden: boolean;
   isNative: boolean;
   meta: string[];
@@ -52,6 +52,7 @@ export interface IContract {
     function: boolean;
     event: boolean;
   };
+  description: string;
 }
 
 export interface IHiddenContractItem {

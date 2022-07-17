@@ -12,13 +12,13 @@ import {
   resetUploadState,
   setDocumentation,
 } from "store/slices/uploadSlice";
-import { useKeypress } from "hooks";
+import { useKeypress, useModal } from "hooks";
 import { setIsUploadModalOpen } from "store/slices/modalSlice";
 import { IStore } from "interfaces";
 
 export function UploadModal() {
   const { isUploadModalOpen } = useSelector((state: IStore) => state.modal);
-  
+
   useKeypress("Escape", () => {
     dispatch(setIsUploadModalOpen(false));
   });
@@ -29,22 +29,12 @@ export function UploadModal() {
   const canGoNext = contractData;
   const canGoContinue = abiFile;
   const modalRef = useRef<HTMLDivElement>(null);
-  const [modalHeight, setmodalHeight] = useState<number>(0);
 
   const closeModal = () => {
     dispatch(setIsUploadModalOpen(false));
   };
 
-  useEffect(() => {
-    if (modalRef.current) setmodalHeight(modalRef.current.clientHeight);
-
-    document.body.style.overflow = "auto";
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [isUploadModalOpen]);
-
+  useModal(isUploadModalOpen, modalRef);
   return (
     <motion.div
       initial={{ opacity: 0, display: "none" }}

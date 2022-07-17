@@ -130,7 +130,7 @@ export default function ItemPage() {
           </div>
         </section>
         <section className="px-16 3xl:px-28 py-6">
-          <FunctionDescBox type={item.type} comment={item.comment} />
+          <FunctionDescBox type={item.type} description={item.description} />
           <section className="mt-6">
             <div className="inline-grid grid-cols-10 gap-x-10">
               <div className="col-span-3">

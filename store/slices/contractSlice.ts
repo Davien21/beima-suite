@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { IContract, IFunction } from "interfaces";
-import { number, string } from "yup";
 
 const initialState: IContract[] = [];
 
@@ -86,19 +85,26 @@ export const contractsSlice = createSlice({
       (state[contractIndex].data[fIndex] as IFunction).linkedEvents =
         linkedEvents;
     },
-    setFunctionComment: (
+    setFunctionDescription: (
       state,
       action: PayloadAction<{
         index: number;
         functionName: string;
-        comment: string;
+        description: string;
       }>
     ) => {
-      const { index, functionName, comment } = action.payload;
+      const { index, functionName, description } = action.payload;
 
       const functions = state[index].data;
       const fIndex = functions.findIndex((x) => x.name === functionName);
-      state[index].data[fIndex].comment = comment;
+      state[index].data[fIndex].description = description;
+    },
+    setContractDescription: (
+      state,
+      action: PayloadAction<{ index: number; description: string }>
+    ) => {
+      const { index, description } = action.payload;
+      state[index].description = description;
     },
   },
 });
@@ -109,10 +115,11 @@ export const {
   toggleHiddenItem,
   addContract,
   deleteContract,
+  setContractDescription,
   toggleShowInherited,
   toggleInheritedSwitch,
   setLinkFunctionToEvent,
-  setFunctionComment,
+  setFunctionDescription,
 } = contractsSlice.actions;
 
 export default contractsSlice.reducer;

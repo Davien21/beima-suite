@@ -12,6 +12,7 @@ import Pstyles from "./contract-display.module.css";
 import { useDispatch } from "react-redux";
 import { deleteContract } from "store/slices";
 import { useRouter } from "next/router";
+import { setIsContractDescModalOpen } from "store/slices/modalSlice";
 
 export function ContractOptions({ index }: { index: number }) {
   const dispatch = useDispatch();
@@ -64,7 +65,13 @@ export function ContractOptions({ index }: { index: number }) {
                     <span>Publish Documentation</span>
                   </span>
                 </li>
-                <li className="p-4" onClick={closeMenu}>
+                <li
+                  className="p-4"
+                  onClick={() => {
+                    dispatch(setIsContractDescModalOpen(true));
+                    closeMenu();
+                  }}
+                >
                   <span className="flex items-center gap-x-2">
                     <span>
                       <EditIcon />
