@@ -136,7 +136,7 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
               )}
             </div>
             <div
-              className={`col-span-9 ${styles["right"]} w-full flex flex-col`}
+              className={`col-span-9 ${styles["right"]} w-full flex flex-col justify-between`}
             >
               {children}
               <BottomPanel />

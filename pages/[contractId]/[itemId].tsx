@@ -26,6 +26,7 @@ import {
 import { setLinkFunctionToEvent } from "store/slices";
 import { setIsFunctionDescModalOpen } from "store/slices/modalSlice";
 import Head from "next/head";
+import { toast } from "react-toastify";
 
 export default function ItemPage() {
   const router = useRouter();
@@ -68,7 +69,7 @@ export default function ItemPage() {
   return (
     <DashboardLayout>
       <FunctionDescModal />
-      <div className="h-full">
+      <div className="">
         <section className="px-8 3xl:px-16 py-10 border-b">
           <Breadcrumbs
             className="mb-2"
@@ -91,7 +92,10 @@ export default function ItemPage() {
                   <EditIcon style={{ transform: "scale(1.15)" }} />
                   <span>Description</span>
                 </button>
-                <button className="flex gap-x-1 items-center">
+                <button
+                  onClick={() => toast.info("Settings feature coming soon!")}
+                  className="flex gap-x-1 items-center"
+                >
                   <SettingsIcon />
                   <span>Settings</span>
                 </button>
@@ -127,19 +131,19 @@ export default function ItemPage() {
         </section>
         <section className="px-16 3xl:px-28 py-6">
           <FunctionDescBox type={item.type} comment={item.comment} />
-        </section>
-        <section className="px-16 3xl:px-28 ">
-          <div className="inline-grid grid-cols-10 gap-x-10">
-            <div className="col-span-3">
-              <InputsBox inputs={item.inputs} />
+          <section className="mt-6">
+            <div className="inline-grid grid-cols-10 gap-x-10">
+              <div className="col-span-3">
+                <InputsBox inputs={item.inputs} />
+              </div>
+              <div className="col-span-3">
+                <OutputsBox outputs={(item.outputs as []) || []} />
+              </div>
+              <div className="col-span-4">
+                <LinkedEventsBox events={linkedEvents} />
+              </div>
             </div>
-            <div className="col-span-3">
-              <OutputsBox outputs={(item.outputs as []) || []} />
-            </div>
-            <div className="col-span-4">
-              <LinkedEventsBox events={linkedEvents} />
-            </div>
-          </div>
+          </section>
         </section>
       </div>
     </DashboardLayout>

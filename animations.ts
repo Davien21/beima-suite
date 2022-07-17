@@ -49,3 +49,16 @@ export const ModalParentVariants = {
   },
   exit: { opacity: 0, transitionEnd: { display: "none" } },
 };
+
+export const accordionVariants = {
+  open: {
+    opacity: 1,
+    height: "auto",
+    transitionEnd: { display: "block" },
+  },
+  closed: {
+    opacity: 0,
+    height: 0,
+    transitionEnd: { display: "none" },
+  },
+};

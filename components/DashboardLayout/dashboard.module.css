@@ -63,6 +63,7 @@
 
 .right {
   height: calc(100vh - var(--app-header-height)) !important;
+  overflow: auto;
 }
 
 .right > div {

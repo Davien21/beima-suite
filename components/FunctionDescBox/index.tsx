@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import Markdown from "markdown-to-jsx";
+
 import { UpIcon } from "assets/images";
 import styles from "./function-desc-box.module.css";
 import { motion } from "framer-motion";
 import { ITypes } from "interfaces";
+import { accordionVariants } from "animations";
 
 export function FunctionDescBox({
   comment,
@@ -11,11 +14,17 @@ export function FunctionDescBox({
   comment: string;
   type: ITypes;
 }) {
-  let commentClass = `${styles["comment"]}`;
   const [isOpen, setisOpen] = useState<boolean>(true);
+
+  let commentClass = `${styles["comment"]} `;
+  if (isOpen) commentClass += `cursor-auto`;
+
+  let containerClass = `${styles["container"]}`;
+  if (isOpen) containerClass += ` ${styles["active"]}`;
+
   const toggleOpen = () => setisOpen(!isOpen);
   return (
-    <div onClick={toggleOpen} className={`${styles["container"]} px-5 py-4`}>
+    <div onClick={toggleOpen} className={`${containerClass} px-5 py-4`}>
       <div className="flex items-center justify-between">
         <h4 className="font-bold">Description</h4>
         <motion.div
@@ -28,25 +37,25 @@ export function FunctionDescBox({
           </span>
         </motion.div>
       </div>
-      <motion.p
+      <motion.div
+        onClick={(e) => e.stopPropagation()}
         initial="closed"
         animate={isOpen ? "open" : "closed"}
         exit="closed"
-        variants={{
-          open: { opacity: 1, height: "auto" },
-          closed: { opacity: 0, height: 0 },
-        }}
-        className={`${commentClass} pt-1`}
+        variants={accordionVariants}
+        className={`${commentClass}`}
       >
         {comment ? (
-          <span>{comment}</span>
+          <div className={`${styles["mark-down-container"]}`}>
+            <Markdown>{comment}</Markdown>
+          </div>
         ) : (
           <span className="grey">
             You have not added a description for this {type} yet. Click the
             Description button to add one.
           </span>
         )}
-      </motion.p>
+      </motion.div>
     </div>
   );
 }

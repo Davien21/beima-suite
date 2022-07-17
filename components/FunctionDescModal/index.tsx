@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import Markdown from "markdown-to-jsx";
+
 import { CloseIcon } from "assets/images";
 
 import styles from "./function-desc-modal.module.css";
@@ -6,11 +8,7 @@ import { Button, TextArea, Switch } from "components";
 import { motion } from "framer-motion";
 import { ModalParentVariants } from "animations";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  activateABITab,
-  resetUploadState,
-  setDocumentation,
-} from "store/slices/uploadSlice";
+
 import { useKeypress } from "hooks";
 import { setIsFunctionDescModalOpen } from "store/slices/modalSlice";
 import { IContract, IStore } from "interfaces";
@@ -111,11 +109,18 @@ export function FunctionDescModal() {
             </motion.span>
           </div>
           <div className="py-12 px-6">
-            <TextArea
-              placeholder="Write the description for this function"
-              formik={formik}
-              name="comment"
-            />
+            {!isShowingMarkdown ? (
+              <TextArea
+                placeholder="Write the description for this function"
+                formik={formik}
+                name="comment"
+              />
+            ) : (
+              <div className={`${styles["mark-down-container"]}`}>
+                <Markdown>{formik.values["comment"]}</Markdown>
+              </div>
+            )}
+
             <div
               className="flex gap-x-1 text-sm mb-8"
               style={{ color: "#828282", fontSize: "15px" }}

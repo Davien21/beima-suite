@@ -6,7 +6,7 @@
 }
 
 .container p {
-  max-height: 100px;
+  /* max-height: 100px; */
   overflow-y: auto;
 }
 
@@ -29,13 +29,16 @@
   fill: #404040;
 }
 
-.container .up-icon:hover {
+.container .up-icon:hover,
+.container.active .up-icon {
   border: 1px dashed var(--app-blue);
 }
 
-.container .up-icon:hover svg path {
+.container .up-icon:hover svg path,
+.container.active .up-icon svg path {
   fill: var(--app-blue);
 }
 
-.container .comment {
+.container .mark-down-container *::-webkit-scrollbar {
+  display: none;
 }

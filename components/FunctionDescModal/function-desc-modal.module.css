@@ -88,3 +88,43 @@
 .container button.submit svg path {
   fill: var(--app-white);
 }
+
+.container h1 {
+  font-size: 2rem;
+}
+
+.container h2 {
+  font-size: 1.5rem;
+}
+
+.container h3 {
+  font-size: 1.3rem;
+}
+
+.container h4 {
+  font-size: 1rem;
+}
+
+.container h5 {
+  font-size: 0.8rem;
+}
+
+.container h6 {
+  font-size: 0.7rem;
+}
+
+.container .mark-down-container {
+  padding: 15px 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+  max-height: 254px;
+  margin-bottom: 7px;
+  overflow-y: auto;
+}
+
+@media screen and (min-width: 400px) {
+  .container .mark-down-container {
+    padding: 30px 40px;
+  }
+}
