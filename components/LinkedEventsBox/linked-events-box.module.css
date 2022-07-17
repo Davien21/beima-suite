@@ -2,16 +2,7 @@
   background-color: var(--app-bg-color-alt);
   border-radius: 10px;
   border: 1px solid #e2e5fe;
-  width: 300px;
-}
-
-@media screen and (min-width: 1440px) {
-  .container {
-    background-color: var(--app-bg-color-alt);
-    border-radius: 10px;
-    border: 1px solid #e2e5fe;
-    width: 350px;
-  }
+  width: 100%;
 }
 
 .container svg.tooltip {

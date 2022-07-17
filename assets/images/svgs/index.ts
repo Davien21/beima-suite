@@ -13,7 +13,7 @@ import FilesIcon from "./files.svg";
 import WorkspaceIcon from "./workspace.svg";
 import TooltipIcon from "./tooltip.svg";
 import EyeIcon from "./eye.svg";
-import ClosePanelIcon from "./Close-panel.svg";
+import ClosePanelIcon from "./close-panel.svg";
 import RightIcon from "./right.svg";
 import CheckboxIcon from "./checkbox.svg";
 import CircleCheckboxIcon from "./circle-checkbox.svg";
