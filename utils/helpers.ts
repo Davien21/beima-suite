@@ -41,3 +41,12 @@ export const getAllEvents = (contract: IContract | undefined) => {
 export const getArrayAfterRemovingItem = (array: any[], item: any) => {
   return array.filter((i: any) => i !== item);
 };
+
+export const getCommentFromContract = (
+  contract: IContract | undefined,
+  functionName: string
+) => {
+  return (
+    contract?.data.find((c: IItem) => c.name === functionName)?.comment || ""
+  );
+};

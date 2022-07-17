@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Breadcrumbs,
   Button,
@@ -8,12 +8,14 @@ import {
   Tooltip,
   LinkedEventsBox,
   MultipleSelect,
+  FunctionDescModal,
+  FunctionDescBox,
 } from "components";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
 import { IContract, IMetaTags, IStore } from "interfaces";
 import styles from "./item-page.module.css";
-import { EditIcon, SettingsIcon } from "assets/images";
+import { EditIcon, SettingsIcon, UpIcon } from "assets/images";
 import {
   capitalize,
   getMeta,
@@ -22,6 +24,8 @@ import {
   getEventsWithActiveState,
 } from "utils";
 import { setLinkFunctionToEvent } from "store/slices";
+import { setIsFunctionDescModalOpen } from "store/slices/modalSlice";
+import Head from "next/head";
 
 export default function ItemPage() {
   const router = useRouter();
@@ -36,13 +40,6 @@ export default function ItemPage() {
     contract,
     functionName as string
   );
-
-  useEffect(() => {
-    // if (selectableEvents.length > 0) {
-    console.log({ eventsWithState, linkedEvents });
-    // }
-    // console.log(eventsWithState);
-  });
 
   const item = contract?.data.find((i: any) => i.name === functionName);
   const isValidRoute = contracts.some((c: IContract) => c.id === contractId);
@@ -67,10 +64,10 @@ export default function ItemPage() {
         eventName,
       })
     );
-    // setunlinkedEvents(eventsWithState.filter((e: string) => e !== eventName));
   };
   return (
     <DashboardLayout>
+      <FunctionDescModal />
       <div className="h-full">
         <section className="px-8 3xl:px-16 py-10 border-b">
           <Breadcrumbs
@@ -85,7 +82,12 @@ export default function ItemPage() {
             </Tooltip>
             <div className={`${styles["options"]} flex gap-x-4`}>
               <div className="flex gap-x-4">
-                <button className="flex gap-x-1 items-center">
+                <button
+                  onClick={() => {
+                    dispatch(setIsFunctionDescModalOpen(true));
+                  }}
+                  className="flex gap-x-1 items-center"
+                >
                   <EditIcon style={{ transform: "scale(1.15)" }} />
                   <span>Description</span>
                 </button>
@@ -123,13 +125,16 @@ export default function ItemPage() {
             </div>
           </div>
         </section>
-        <section className="px-16 3xl:px-28 py-10">
+        <section className="px-16 3xl:px-28 py-6">
+          <FunctionDescBox comment={item.comment} />
+        </section>
+        <section className="px-16 3xl:px-28 ">
           <div className="inline-grid grid-cols-10 gap-x-10">
             <div className="col-span-3">
               <InputsBox inputs={item.inputs} />
             </div>
             <div className="col-span-3">
-              <OutputsBox outputs={item.outputs as []} />
+              <OutputsBox outputs={(item.outputs as []) || []} />
             </div>
             <div className="col-span-4">
               <LinkedEventsBox events={linkedEvents} />

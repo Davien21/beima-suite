@@ -1,11 +1,22 @@
-import { EditIcon, OptionDotsIcon, PublishIcon } from "assets/images";
+import {
+  EditIcon,
+  OptionDotsIcon,
+  PublishIcon,
+  TrashIcon,
+} from "assets/images";
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useClickOutside, usePopper } from "hooks";
 import { arrowVariants, menuVariants } from "animations";
 import Pstyles from "./contract-display.module.css";
+import { useDispatch } from "react-redux";
+import { deleteContract } from "store/slices";
+import { useRouter } from "next/router";
 
-export function ContractOptions() {
+export function ContractOptions({ index }: { index: number }) {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const optionsMenuRef = useRef<any>(null);
   const objectRef = useRef<any>(null);
   const dropDownArrowRef = useRef<any>(null);
@@ -28,7 +39,8 @@ export function ContractOptions() {
         animate={isOpen ? "open" : "closed"}
         variants={arrowVariants}
         onClick={(e) => {
-          closeMenu();
+          setisOpen(!isOpen);
+          // closeMenu();
           e.stopPropagation();
         }}
         ref={dropDownArrowRef}
@@ -66,6 +78,21 @@ export function ContractOptions() {
                       <PublishIcon />
                     </span>
                     <span>Preview Documentation</span>
+                  </span>
+                </li>
+                <li
+                  className="p-4"
+                  onClick={() => {
+                    router.replace(`/`);
+                    dispatch(deleteContract(index));
+                    closeMenu();
+                  }}
+                >
+                  <span className="flex items-center gap-x-2">
+                    <span>
+                      <TrashIcon />
+                    </span>
+                    <span>Delete Documentation</span>
                   </span>
                 </li>
               </ul>

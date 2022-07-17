@@ -97,25 +97,8 @@ button:focus {
   /* outline: 1px dashed var(--app-blue); */
 }
 
-.gradient-text {
-  background: -webkit-linear-gradient(45deg, #09009f, #ec4899 80%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 550;
-}
-
 .app-text-grey {
   color: var(--app-grey);
-}
-
-.function-icon {
-  /* padding: 1rem; */
-  /* margin-right: 0.5rem; */
-  color: #fff;
-  font-weight: 500;
-  background-color: #1661ff;
-  font-size: 18px;
 }
 
 .import {

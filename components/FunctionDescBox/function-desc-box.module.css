@@ -1,0 +1,41 @@
+.container {
+  background-color: var(--app-bg-color-alt);
+  border-radius: 10px;
+  border: 1px solid #e2e5fe;
+  cursor: pointer;
+}
+
+.container p {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.container ::-webkit-scrollbar-button {
+  height: 10px;
+}
+
+.container .up-icon {
+  border: 1px dashed #404040;
+  padding: 7px 5px;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.container .up-icon svg {
+  transform: scale(0.8);
+}
+
+.container .up-icon svg path {
+  fill: #404040;
+}
+
+.container .up-icon:hover {
+  border: 1px dashed var(--app-blue);
+}
+
+.container .up-icon:hover svg path {
+  fill: var(--app-blue);
+}
+
+.container .comment {
+}

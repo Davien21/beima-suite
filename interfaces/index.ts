@@ -32,7 +32,7 @@ export interface IEvent {
 
 export interface IItem {
   name: string;
-  type: "function" | "event";
+  type: ITypes;
   inputs: IContractInputs[];
   outputs?: IContractOutputs[];
   comment: string;
@@ -48,12 +48,10 @@ export interface IContract {
   name: string;
   alias: string;
   data: IItem[];
-  isOpen?: boolean;
   showInherited: {
     function: boolean;
     event: boolean;
   };
-  activeControl: "function" | "event";
 }
 
 export interface IHiddenContractItem {
@@ -64,6 +62,7 @@ export interface IHiddenContractItem {
 
 export interface IModals {
   isUploadModalOpen: boolean;
+  isFunctionDescModalOpen: boolean;
 }
 
 export interface IUpload {
@@ -89,3 +88,5 @@ export interface IWithActiveState {
 }
 
 export type IMetaTags = "view" | "payable" | "nonpayable";
+
+export type ITypes = "function" | "event";

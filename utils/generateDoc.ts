@@ -56,12 +56,12 @@ const getContractSchema = (name: string, data: IFunction[] | IEvent[]) => {
     name,
     alias: name,
     data,
-    isOpen: false,
+    // isOpen: false,
     showInherited: {
       function: false,
       event: false,
     },
-    activeControl: "function",
+    // activeControl: "function",
   } as IContract;
 };
 

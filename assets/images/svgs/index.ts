@@ -21,6 +21,7 @@ import CircleCloseIcon from "./circle-close.svg";
 import EditIcon from "./edit.svg";
 import CloseIcon from "./close.svg";
 import PublishIcon from "./publish.svg";
+import TrashIcon from "./trash.svg";
 import OpencontractIcon from "./open-contract.svg";
 import OptionDotsIcon from "./option-dots.svg";
 import WelcomeImg from "./welcome-img.svg";
@@ -40,6 +41,7 @@ export {
   FilterIcon,
   EmptySearchIcon,
   SearchIcon,
+  TrashIcon,
   NotificationIcon,
   SettingsIcon,
   AltFilesIcon,

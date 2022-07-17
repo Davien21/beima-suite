@@ -1,5 +1,5 @@
 import { getRandomKey } from "utils/randomKey";
-import { IEvent, IFunction } from "interfaces";
+import { IEvent, IFunction, ITypes } from "interfaces";
 import React, { useState } from "react";
 import { ListItem } from "./listItem";
 import { motion } from "framer-motion";
@@ -14,7 +14,7 @@ export function ContractList({
   showInherited: boolean;
   index: number;
   isOpen: boolean;
-  activeList: string;
+  activeList: ITypes;
 }) {
   const contract = useSelector((state: any) => state.contracts[index]);
 

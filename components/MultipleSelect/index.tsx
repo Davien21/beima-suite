@@ -21,7 +21,7 @@ export function MultipleSelect({
   toggleIcon?: React.ReactNode;
   isSearchable?: boolean;
   onSelect: (value: string) => void;
-  shouldLeaveonMouseOut: boolean;
+  shouldLeaveonMouseOut?: boolean;
 }) {
   useEffect(() => {
     setactiveList(list);
@@ -30,6 +30,20 @@ export function MultipleSelect({
   const [hasHovered, sethasHovered] = useState<boolean>(false);
   const [hasAnimated, sethasAnimated] = useState<boolean>(false);
   const [activeList, setactiveList] = useState<IWithActiveState[]>(list);
+
+  const itemRef = useRef<HTMLDivElement>(null);
+  const selectRef = useRef<any>(null);
+  const listRef = useRef<any>(null);
+
+  const isHovering = useHover(selectRef);
+  useClickOutside(selectRef, () => setisOpen(false), itemRef);
+  useEffect(() => {
+    if (shouldLeaveonMouseOut && hasAnimated && hasHovered && !isHovering) {
+      setisOpen(false);
+      sethasHovered(false);
+    }
+  }, [hasAnimated, hasHovered, isHovering, shouldLeaveonMouseOut]);
+
   const toggleOpen = () => setisOpen(!isOpen);
   const [query, setquery] = useState<string>("");
   const onSearch = (e: ChangeEvent) => {
@@ -42,20 +56,8 @@ export function MultipleSelect({
   };
   const handleSelect = (value: string) => {
     onSelect(value);
-    // setisOpen(false);
   };
-  const itemRef = useRef<HTMLDivElement>(null);
-  const selectRef = useRef<any>(null);
-  const listRef = useRef<any>(null);
-  // fix this, its rerendering all the time because it is still in dom.
-  useClickOutside(selectRef, () => setisOpen(false), itemRef);
-  const isHovering = useHover(selectRef);
-  useEffect(() => {
-    if (shouldLeaveonMouseOut && hasAnimated && hasHovered && !isHovering) {
-      setisOpen(false);
-      sethasHovered(false);
-    }
-  }, [hasAnimated, hasHovered, isHovering, shouldLeaveonMouseOut]);
+
   return (
     <div className={`${styles["container"]} "`}>
       <div ref={itemRef} onClick={toggleOpen}>
@@ -68,9 +70,7 @@ export function MultipleSelect({
         }`}
         initial="exit"
         animate={isOpen ? "enter" : "exit"}
-        onAnimationComplete={() => {
-          sethasAnimated(true);
-        }}
+        onAnimationComplete={() => sethasAnimated(true)}
         variants={dropDownVariants}
       >
         {isSearchable && (

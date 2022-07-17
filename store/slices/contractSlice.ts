@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { IContract, IFunction } from "interfaces";
+import { number, string } from "yup";
 
 const initialState: IContract[] = [];
 
@@ -38,9 +39,6 @@ export const contractsSlice = createSlice({
       const fIndex = functions.findIndex((x) => x.name === name);
       state[index].data[fIndex].isHidden = !state[index].data[fIndex].isHidden;
     },
-    toggleContractOpen: (state, action: PayloadAction<number>) => {
-      state[action.payload].isOpen = !state[action.payload].isOpen;
-    },
     toggleInheritedSwitch: (
       state,
       action: PayloadAction<{ type: "function" | "event"; index: number }>
@@ -48,15 +46,11 @@ export const contractsSlice = createSlice({
       const { type, index } = action.payload;
       state[index].showInherited[type] = !state[index].showInherited[type];
     },
-    toggleActiveControl: (
-      state,
-      action: PayloadAction<{ control: "function" | "event"; index: number }>
-    ) => {
-      const { control, index } = action.payload;
-      state[index].activeControl = control;
-    },
     addContract: (state, action: PayloadAction<IContract>) => {
       state.push(action.payload);
+    },
+    deleteContract: (state, action: PayloadAction<number>) => {
+      state.splice(action.payload, 1);
     },
     setLinkFunctionToEvent: (
       state,
@@ -92,6 +86,20 @@ export const contractsSlice = createSlice({
       (state[contractIndex].data[fIndex] as IFunction).linkedEvents =
         linkedEvents;
     },
+    setFunctionComment: (
+      state,
+      action: PayloadAction<{
+        index: number;
+        functionName: string;
+        comment: string;
+      }>
+    ) => {
+      const { index, functionName, comment } = action.payload;
+
+      const functions = state[index].data;
+      const fIndex = functions.findIndex((x) => x.name === functionName);
+      state[index].data[fIndex].comment = comment;
+    },
   },
 });
 
@@ -100,11 +108,11 @@ export const {
   changeName,
   toggleHiddenItem,
   addContract,
+  deleteContract,
   toggleShowInherited,
-  toggleContractOpen,
   toggleInheritedSwitch,
-  toggleActiveControl,
   setLinkFunctionToEvent,
+  setFunctionComment,
 } = contractsSlice.actions;
 
 export default contractsSlice.reducer;

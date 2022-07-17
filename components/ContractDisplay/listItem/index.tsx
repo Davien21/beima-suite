@@ -14,7 +14,7 @@ export function ListItem({
   index: number;
   isChecked: boolean;
   name: string;
-  type: string;
+  type: "function" | "event";
 }) {
   const router = useRouter();
   const { contractId, itemId } = router.query;
@@ -26,15 +26,12 @@ export function ListItem({
   };
   const contracts = useSelector((state: IStore) => state.contracts);
   const { id } = contracts[index];
-  const route = `/${id}/${name}`;
-  // console.log(router);
+  const route = `/${id}/${name}?type=${type}`;
 
-  let containerClass = `${styles.container} flex items-center px-4 py-2 mb-1`;
+  let containerClass = `${styles.container} flex items-center px-4 py-2 mb-2`;
   if (!isChecked) containerClass += ` ${styles["false"]}`;
-  if (name === itemId) {
-    console.log(name, itemId);
-    containerClass += ` ${styles["active"]}`;
-  }
+  if (name === itemId) containerClass += ` ${styles["active"]}`;
+
   return (
     <div className={containerClass} onClick={() => router.push(route)}>
       <button className="mr-3" onClick={onToggle}>

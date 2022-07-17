@@ -1,0 +1,61 @@
+.container {
+  position: relative;
+}
+
+.container textarea {
+  width: 100%;
+  padding: 15px 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #dfdfdf;
+  resize: none;
+  border-radius: 10px;
+  transition: none;
+}
+
+.container textarea::placeholder {
+  font-style: italic;
+}
+
+.container label {
+  background-color: transparent;
+  color: var(--app-pink-100);
+  font-size: 30px;
+  font-weight: 500;
+  font-family: Coolvetica;
+}
+
+.container .remaining-words {
+  background-color: transparent;
+  color: var(--app-pink-100);
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  right: 0;
+}
+
+.container label.active {
+  color: var(--app-blue-400);
+}
+
+@media screen and (min-width: 400px) {
+  .container textarea {
+    padding: 30px 40px;
+  }
+}
+
+.container textarea:focus {
+  border: 1px solid var(--app-blue);
+  outline: none;
+  transition: none;
+}
+
+.container.error textarea {
+  border-bottom: 1px solid var(--app-red);
+}
+
+.error-message {
+  position: absolute;
+  margin-top: 3px;
+  color: red;
+  font-size: 0.8rem;
+}
