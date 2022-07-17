@@ -2,8 +2,15 @@ import React, { useState } from "react";
 import { UpIcon } from "assets/images";
 import styles from "./function-desc-box.module.css";
 import { motion } from "framer-motion";
+import { ITypes } from "interfaces";
 
-export function FunctionDescBox({ comment }: { comment: string }) {
+export function FunctionDescBox({
+  comment,
+  type,
+}: {
+  comment: string;
+  type: ITypes;
+}) {
   let commentClass = `${styles["comment"]}`;
   const [isOpen, setisOpen] = useState<boolean>(true);
   const toggleOpen = () => setisOpen(!isOpen);
@@ -35,7 +42,7 @@ export function FunctionDescBox({ comment }: { comment: string }) {
           <span>{comment}</span>
         ) : (
           <span className="grey">
-            You have not added a description for this function yet. Click the
+            You have not added a description for this {type} yet. Click the
             Description button to add one.
           </span>
         )}

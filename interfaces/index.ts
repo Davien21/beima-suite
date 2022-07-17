@@ -63,6 +63,7 @@ export interface IHiddenContractItem {
 export interface IModals {
   isUploadModalOpen: boolean;
   isFunctionDescModalOpen: boolean;
+  isContractDescModalOpen: boolean;
 }
 
 export interface IUpload {

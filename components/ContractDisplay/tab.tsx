@@ -21,7 +21,7 @@ export function ContractTab({ index }: { index: number }) {
   const [isOpen, setisOpen] = useState<boolean>(isActive);
   const activeControl = (type as ITypes) || "function";
   const handleChangeControl = () => {
-    const base = `${contractId}/${itemId}?`;
+    const base = `${contractId}/${itemId}`;
     if (activeControl === "event") router.push(`/${base}?type=function`);
     if (activeControl === "function") router.push(`/${base}?type=event`);
   };

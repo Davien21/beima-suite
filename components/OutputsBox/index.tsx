@@ -30,7 +30,7 @@ export function OutputsBox({ outputs }: { outputs: IContractOutputs[] }) {
         </Tooltip>
       </div>
       <div
-        style={willScroll ? { paddingRight: "6px" } : {}}
+        style={willScroll ? { paddingRight: "7px" } : {}}
         className={tableGroupsClass}
       >
         <span className="grey py-2 text-center text-sm border-r">
