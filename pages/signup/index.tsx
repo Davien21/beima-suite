@@ -1,10 +1,15 @@
 import { Button, Input } from "components";
 import { CircleCheckboxIcon, LogoIcon, SignupImg } from "assets/images";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./signup.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
+import { useSignUpMutation } from "services/authService";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { IRTKQueryResponse } from "interfaces";
+import { useMutationCall } from "hooks";
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required("First name is required"),
@@ -19,7 +24,7 @@ type valuesType = {
   lastName: string;
   email: string;
   password: string;
-  hasAgreed: boolean;
+  hasAgreed?: boolean;
 };
 
 const initialValues: valuesType = {
@@ -31,14 +36,30 @@ const initialValues: valuesType = {
 };
 
 export default function SignUpPage() {
-  const handleSubmit = (values: valuesType) => {
-    console.log(values);
+  const router = useRouter();
+  const [signUp] = useSignUpMutation();
+  const { handler, isLoading } = useMutationCall();
+
+  const handleSubmit = async (values: valuesType) => {
+    if (isLoading) return;
+    let user = { ...values };
+    delete user.hasAgreed;
+
+    const { data } = (await handler(() => signUp(user))) as IRTKQueryResponse;
+
+    if (data.success) {
+      toast.success("Successful, redirecting to Verification page", {
+        onClose: () => router.push(`/signup/verify-otp?email=${user.email}`),
+        autoClose: 3000,
+      });
+    }
   };
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: handleSubmit,
   });
+
   const agreedSVGClass = formik.values.hasAgreed
     ? `${styles["agreed"]} ${styles["active"]}`
     : `${styles["agreed"]}`;
@@ -47,9 +68,9 @@ export default function SignUpPage() {
     <div className={`${styles["container"]}`}>
       <header className="bg-color">
         <nav className="px-14 py-5">
-          <div>
+          <div className="inline-flex">
             <Link href="/">
-              <a className={` cursor-pointer`}>
+              <a className={` cursor-pointer `}>
                 <LogoIcon />
               </a>
             </Link>
@@ -83,7 +104,7 @@ export default function SignUpPage() {
                   </span>
                   <Link href="login">
                     <span
-                      className={`${styles["link"]} font-semibold cursor-pointer`}
+                      className={`${styles["link"]} pl-1 font-semibold cursor-pointer`}
                     >
                       Log In Here
                     </span>
@@ -114,14 +135,16 @@ export default function SignUpPage() {
                   formik={formik}
                   label="Password"
                 />
-                <div
-                  className="flex items-start pt-3 gap-x-2 cursor-pointer"
-                  onClick={() =>
+                <button
+                  type="button"
+                  className="flex text-left items-start pt-3 gap-x-2 cursor-pointer"
+                  onClick={(e) => {
                     formik.setFieldValue(
                       "hasAgreed",
                       !formik.values["hasAgreed"]
-                    )
-                  }
+                    );
+                    e.stopPropagation();
+                  }}
                 >
                   <div className={agreedSVGClass}>
                     <CircleCheckboxIcon />
@@ -135,9 +158,11 @@ export default function SignUpPage() {
                       Consent.
                     </span>
                   </div>
-                </div>
+                </button>
                 <div className="">
                   <Button
+                    isLoading={isLoading}
+                    type="submit"
                     disabled={!formik.isValid || !formik.values["hasAgreed"]}
                     className="mt-4 full-width block"
                   >

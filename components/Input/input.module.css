@@ -36,12 +36,31 @@
 }
 
 .container.error input {
-  border: 1px solid var(--app-red);
+  border: 1px solid red;
 }
 
 .error-message {
   position: absolute;
   margin-top: 3px;
-  color: var(--app-red);
+  color: red;
   font-size: 0.8rem;
+}
+
+.password-svg {
+  position: absolute;
+  top: 16px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.password-svg path {
+  fill: var(--app-grey-medium);
+}
+
+.password-svg:focus {
+  outline: none;
+}
+
+.password-svg:focus path {
+  fill: var(--app-blue);
 }

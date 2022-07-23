@@ -6,6 +6,8 @@ import {
   capitalize,
   getLinkedEvents,
   getEventsWithActiveState,
+  getUserInitials,
+  getFullName,
 } from "./helpers";
 import { getMeta } from "./getMetaData";
 import {
@@ -28,6 +30,8 @@ export {
   getContractName,
   capitalize,
   getLinkedEvents,
+  getUserInitials,
+  getFullName,
   getEventsWithActiveState,
   getMeta,
 };

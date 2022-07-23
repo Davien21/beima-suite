@@ -28,3 +28,5 @@ export * from "./InputsBox";
 export * from "./OutputsBox";
 export * from "./LinkedEventsBox";
 export * from "./MultipleSelect";
+export * from "./OTPInput";
+export * from "./SpinnerIcon";

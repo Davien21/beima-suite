@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Markdown from "markdown-to-jsx";
 
 import { CloseIcon } from "assets/images";
@@ -28,7 +28,7 @@ export function ContractDescModal() {
   const { contractId } = router.query;
   const index = contracts.findIndex((x: IContract) => x.id === contractId);
 
-  const description = contracts[index].description;
+  const description = contracts[index]?.description;
   const initialValues: IForm = { description };
 
   const handleSubmit = (values: IForm) => {

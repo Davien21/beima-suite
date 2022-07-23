@@ -39,9 +39,9 @@ export default function LoginPage() {
 
   return (
     <div
-      className={`${styles["container"]} h-screen flex flex-col justify-center`}
+      className={`${styles["container"]} `}
     >
-      <header className="bg-color">
+      <header className="bg-color mt-32">
         <nav className="">
           <div className="flex justify-center px-14 pb-20 big-logo">
             <Link href="/">
@@ -66,12 +66,12 @@ export default function LoginPage() {
                     Already have an account?
                   </span>
                   <Link href="signup">
-                    <span
+                    <a
                       className={`${styles["link"]} font-semibold cursor-pointer`}
                     >
                       {" "}
                       Sign Up Here
-                    </span>
+                    </a>
                   </Link>
                 </div>
                 <Input
@@ -89,7 +89,7 @@ export default function LoginPage() {
                 />
                 <div className="flex justify-between items-center">
                   <div
-                    className="flex items-start pt-3 gap-x-2 cursor-pointer"
+                    className="flex items-start gap-x-2 cursor-pointer"
                     onClick={() =>
                       formik.setFieldValue(
                         "shouldRemember",
@@ -102,8 +102,8 @@ export default function LoginPage() {
                     </div>
                     <span className="text-sm">Remember me</span>
                   </div>
-                  <Link href="lost-password">
-                    <a>
+                  <Link href="forgot-password">
+                    <a className="default-link">
                       <span className="text-sm">Lost Password?</span>
                     </a>
                   </Link>

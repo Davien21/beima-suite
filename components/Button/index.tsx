@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./button.module.css";
 import { toast } from "react-toastify";
+import { SpinnerIcon } from "components/SpinnerIcon";
 
 function Button({
   disabled,
@@ -9,6 +10,7 @@ function Button({
   className,
   onClick,
   type,
+  isLoading,
   ...rest
 }: {
   disabled?: boolean;
@@ -18,6 +20,7 @@ function Button({
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   rest?: any;
+  isLoading?: boolean;
 }) {
   let containerClass = styles.container;
   let form = "primary";
@@ -30,8 +33,9 @@ function Button({
       onClick={onClick}
       className={containerClass}
       {...rest}
-      disabled={disabled}
+      disabled={disabled || isLoading}
     >
+      {isLoading === true && <SpinnerIcon />}
       {children}
     </button>
   );

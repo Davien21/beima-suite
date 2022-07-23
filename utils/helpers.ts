@@ -4,6 +4,7 @@ import {
   IWithActiveState,
   IFunction,
   IItem,
+  IAuth,
 } from "interfaces";
 
 export const capitalize = (str: string): string => {
@@ -50,4 +51,23 @@ export const getdescriptionFromContract = (
     contract?.data.find((c: IItem) => c.name === functionName)?.description ||
     ""
   );
+};
+
+export const getUserInitials = (user: IAuth["user"]) => {
+  const firstName = user.firstName || "";
+  const lastName = user.lastName || "";
+  const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`;
+  return initials.toUpperCase();
+};
+
+export const getFullName = (user: IAuth["user"]) => {
+  const firstName = user.firstName || "";
+  const lastName = user.lastName || "";
+  return `${capitalize(firstName)} ${capitalize(lastName)}`;
+};
+
+export const errorMessage = (error: any) => {
+  if (error.data?.message.includes("Can't send mail"))
+    return "Error - 550, Please check if your email is valid";
+  return error.data?.message || "Something went wrong";
 };

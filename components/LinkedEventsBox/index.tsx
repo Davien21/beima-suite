@@ -1,11 +1,15 @@
 import { getRandomKey } from "utils";
 import { ClosePanelIcon, TooltipIcon } from "assets/images";
 import { IContractInputs, IEvent } from "interfaces";
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./linked-events-box.module.css";
 import { Tooltip } from "components";
+import { useRouter } from "next/router";
 
 export function LinkedEventsBox({ events }: { events: string[] }) {
+  const router = useRouter();
+  const { contractId, itemId: functionName } = router.query;
+
   let tableGroupsClass = "border-t grid grid-cols-2";
   // if (events.length) tableGroupsClass += " border-b";
   const willScroll = events.length > 4;
@@ -31,8 +35,11 @@ export function LinkedEventsBox({ events }: { events: string[] }) {
           events.map((event: any) => {
             return (
               <div
+                onClick={() => {
+                  router.push(`/${contractId}/${event}?type=event`);
+                }}
                 key={getRandomKey()}
-                className="inline-flex items-center gap-x-1"
+                className="inline-flex items-center gap-x-1  default-link cursor-pointer"
               >
                 <span className="underline text-sm">{event}</span>
                 <ClosePanelIcon className={styles["go-to-btn"]} />

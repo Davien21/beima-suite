@@ -82,11 +82,40 @@ export interface IStore {
   modal: IModals;
   contracts: IContract[];
   upload: IUpload;
+  auth: IAuth;
+  helper: IHelperSlice;
 }
 
 export interface IWithActiveState {
   name: string;
   isActive: boolean;
+}
+
+export interface IAuth {
+  isLoggedIn: boolean;
+  user: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  beimaAuthToken: string;
+}
+
+export interface ISignUp {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+export interface IRTKQueryResponse {
+  error: { data: any; status: number };
+  data: { data: any; message: string; success: boolean };
+  [key: string]: any;
+}
+
+export interface IHelperSlice {
+  verifyOTPEmail: string;
 }
 
 export type IMetaTags = "view" | "payable" | "nonpayable";

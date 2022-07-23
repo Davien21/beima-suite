@@ -1,16 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { IContract, IFunction } from "interfaces";
+import { IAuth } from "interfaces";
 
-const initialState: IContract[] = [];
+const initialState: IAuth = {
+  isLoggedIn: true,
+  user: {
+    firstName: "Chidiebere",
+    lastName: "Ekennia",
+    email: "",
+  },
+  beimaAuthToken: "",
+};
 
-export const authSlice = createSlice({
-  name: "auth",
+export const userSlice = createSlice({
+  name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    setAuthToken: (state, action: PayloadAction<string>) => {
+      state.beimaAuthToken = action.payload;
+    },
+    setIsLoggedIn: (state, action: PayloadAction<boolean>) => {
+      state.isLoggedIn = action.payload;
+    },
+    setUser: (state, action: PayloadAction<IAuth["user"]>) => {
+      state.user = action.payload;
+    },
+  },
 });
 
 // Action creators are generated for each case reducer function
-export const {} = authSlice.actions;
+export const { setIsLoggedIn, setUser, setAuthToken } = userSlice.actions;
 
-export default authSlice.reducer;
+export default userSlice.reducer;

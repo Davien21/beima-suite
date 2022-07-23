@@ -1,13 +1,17 @@
-import { createPopper } from "@popperjs/core";
+import { createPopper, OptionsGeneric } from "@popperjs/core";
 import { RefObject, useEffect } from "react";
 import { PopperOptions } from "./options";
+
+type IOptions = Partial<
+  OptionsGeneric<{ name: string; options: { offset: number[] } }>
+>;
 
 export function usePopper(
   referenceElementRef: RefObject<HTMLElement>,
   popperRef: RefObject<HTMLElement>,
-  options: "top" | "bottom" | "right-start" = "bottom"
+  options: "top" | "bottom" | "right-start" | IOptions = "bottom"
 ) {
-  let placement = PopperOptions[options];
+  let placement = typeof options !== "string" ? options : PopperOptions[options];
 
   useEffect(() => {
     if (

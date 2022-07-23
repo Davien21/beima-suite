@@ -41,7 +41,7 @@ export function Select({
 
   return (
     <div className={`${styles["container"]} "`}>
-      <div ref={itemRef} onClick={toggleOpen}>
+      <div className="flex gap-x-4 items-center" ref={itemRef} onClick={toggleOpen}>
         {children}
       </div>
       <motion.div

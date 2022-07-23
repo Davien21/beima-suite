@@ -1,0 +1,28 @@
+.options {
+  background-color: #fff;
+  border-radius: 10px;
+  position: absolute;
+  z-index: var(--select-z-index);
+  box-shadow: rgb(153 153 153 / 30%) 0px 1px 8px;
+  padding: 8px 8px;
+}
+
+.options ul {
+  display: block;
+}
+
+.options ul li {
+  font-size: 14px !important;
+  border-radius: 5px;
+}
+
+.options ul li:not(.disabled) {
+  cursor: pointer;
+}
+
+.options ul li:not(.disabled):hover,
+.options ul li:not(.disabled):focus {
+  background: #f2f2f2;
+  /* background: #ebf1ffb3; */
+  outline: none;
+}

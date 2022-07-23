@@ -23,7 +23,7 @@ import {
   getLinkedEvents,
   getEventsWithActiveState,
 } from "utils";
-import { setLinkFunctionToEvent } from "store/slices";
+import { setLinkFunctionToEvent } from "store/slices/contractSlice";
 import { setIsFunctionDescModalOpen } from "store/slices/modalSlice";
 import Head from "next/head";
 import { toast } from "react-toastify";
@@ -33,7 +33,7 @@ export default function ItemPage() {
   const dispatch = useDispatch();
 
   const contracts = useSelector((state: IStore) => state.contracts);
-  const { contractId, itemId: functionName } = router.query;
+  const { contractId, itemId: functionName, type } = router.query;
   const contract = contracts.find((c: IContract) => c.id === contractId);
 
   const linkedEvents = getLinkedEvents(contract, functionName as string);
@@ -136,12 +136,17 @@ export default function ItemPage() {
               <div className="col-span-3">
                 <InputsBox inputs={item.inputs} />
               </div>
-              <div className="col-span-3">
-                <OutputsBox outputs={(item.outputs as []) || []} />
-              </div>
-              <div className="col-span-4">
-                <LinkedEventsBox events={linkedEvents} />
-              </div>
+              {type === "function" && (
+                <div className="col-span-3">
+                  <OutputsBox outputs={(item.outputs as []) || []} />
+                </div>
+              )}
+
+              {type === "function" && (
+                <div className="col-span-4">
+                  <LinkedEventsBox events={linkedEvents} />
+                </div>
+              )}
             </div>
           </section>
         </section>

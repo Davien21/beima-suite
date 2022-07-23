@@ -19,7 +19,7 @@ import {
 } from "assets/images";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-import { addContract } from "store/slices";
+import { addContract } from "store/slices/contractSlice";
 import { resetUploadState } from "store/slices/uploadSlice";
 import { setIsUploadModalOpen } from "store/slices/modalSlice";
 import { IStore } from "interfaces";

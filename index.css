@@ -197,3 +197,9 @@ button:focus {
 .grey {
   color: var(--app-grey-medium);
 }
+
+.default-link:hover {
+  color: var(--app-blue);
+  text-decoration: underline;
+  transition: 0.1s all ease-in-out;
+}
