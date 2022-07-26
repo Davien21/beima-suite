@@ -1,15 +1,17 @@
 import type { NextPage } from "next";
 import { BigFileIcon, DashboardLayout, WelcomeScreen } from "components";
 import { useSelector } from "react-redux";
+import { IStore } from "interfaces";
 
 const Home: NextPage = () => {
-  const contracts = useSelector((state: any) => state.contracts);
-
+  const testContract = useSelector((state: IStore) => state.testContract);
+  const isEmpty = testContract.name.length === 0;
   return (
     <>
       <DashboardLayout>
-        {!contracts.length ? <WelcomeScreen /> : ""}
-        {contracts.length ? (
+        {isEmpty ? (
+          <WelcomeScreen />
+        ) : (
           <div className="flex flex-col justify-center items-center h-full">
             <div className="pt- 64">
               <BigFileIcon className={` mb-3`} />
@@ -18,8 +20,6 @@ const Home: NextPage = () => {
               Select a function to start documenting
             </p>
           </div>
-        ) : (
-          ""
         )}
       </DashboardLayout>
     </>

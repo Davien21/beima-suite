@@ -56,10 +56,6 @@ const getContractSchema = (name: string, data: IFunction[] | IEvent[]) => {
     name,
     alias: name,
     data,
-    showInherited: {
-      function: false,
-      event: false,
-    },
     description: "",
   } as IContract;
 };
@@ -93,6 +89,7 @@ const generateOutputSchema = (item: any[]) => {
 
 const generateFunctionSchema = (item: any, isNative: boolean) => {
   const data = {
+    id: getRandomKey(),
     name: item.name,
     type: item.type,
     inputs: generateInputSchema(item.inputs),
@@ -108,6 +105,7 @@ const generateFunctionSchema = (item: any, isNative: boolean) => {
 
 const generateEventSchema = (item: any, isNative: boolean) => {
   const data = {
+    id: getRandomKey(),
     name: item.name,
     type: item.type,
     inputs: generateInputSchema(item.inputs),

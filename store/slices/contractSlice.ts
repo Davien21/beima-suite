@@ -8,23 +8,10 @@ export const contractsSlice = createSlice({
   name: "contracts",
   initialState,
   reducers: {
-    toggleShowInherited: (
-      state,
-      action: PayloadAction<{ type: string; index: number; name: string }>
-    ) => {
-      const { index, type } = action.payload;
-      const functions = state[index].data.map((item: any) => {
-        if (type === item.type && item.isNative === false)
-          item.isHidden = !item.isHidden;
-        return item;
-      });
-      state[index].data = functions;
-    },
     changeName: (
       state,
       action: PayloadAction<{ id: string; name: string }>
     ) => {
-      console.log(state, action);
       const { id, name } = action.payload;
       const index = state.findIndex((item) => item.id === id);
       state[index].alias = name;
@@ -38,13 +25,7 @@ export const contractsSlice = createSlice({
       const fIndex = functions.findIndex((x) => x.name === name);
       state[index].data[fIndex].isHidden = !state[index].data[fIndex].isHidden;
     },
-    toggleInheritedSwitch: (
-      state,
-      action: PayloadAction<{ type: "function" | "event"; index: number }>
-    ) => {
-      const { type, index } = action.payload;
-      state[index].showInherited[type] = !state[index].showInherited[type];
-    },
+
     addContract: (state, action: PayloadAction<IContract>) => {
       state.push(action.payload);
     },
@@ -116,8 +97,6 @@ export const {
   addContract,
   deleteContract,
   setContractDescription,
-  toggleShowInherited,
-  toggleInheritedSwitch,
   setLinkFunctionToEvent,
   setFunctionDescription,
 } = contractsSlice.actions;

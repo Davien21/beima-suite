@@ -4,6 +4,8 @@ import {
   modalReducer,
   uploadReducer,
   authReducer,
+  testContractReducer,
+  UIStateReducer,
 } from "./slices";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
@@ -12,16 +14,16 @@ import { authApi } from "services/authService";
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["upload", "modal", "user"],
-  // whiteList: ["contract"],
+  blacklist: ["upload", "modal", "auth"],
+  // whiteList: ["testContract"],
 };
 
 const rootReducer = combineReducers({
-  contracts: contractsReducer,
   upload: uploadReducer,
   modal: modalReducer,
   auth: authReducer,
-  [authApi.reducerPath]: authApi.reducer,
+  testContract: testContractReducer,
+  UIState: UIStateReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -31,7 +33,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(authApi.middleware),
+    }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

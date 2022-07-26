@@ -19,10 +19,6 @@ function Header() {
     user,
     beimaAuthToken: authToken,
   } = useSelector((state: IStore) => state.auth);
-  const { data, refetch } = useGetUserWithAuthTokenQuery(
-    { authToken },
-    { skip: !authToken }
-  );
 
   // (async () => {
   //   const base = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
@@ -33,7 +29,7 @@ function Header() {
   //   console.log(data);
   // })();
   // refetch();
-  console.log({ authToken, data });
+  console.log({ authToken });
   const fullName = getFullName(user);
   const initials = getUserInitials(user);
   const nameToolTip = fullName.length > 13 ? fullName : "";

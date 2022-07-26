@@ -15,13 +15,16 @@ import {
 import { useKeypress, useModal } from "hooks";
 import { setIsUploadModalOpen } from "store/slices/modalSlice";
 import { IStore } from "interfaces";
+import { setTestContract } from "store/slices/testContractSlice";
 
 export function UploadModal() {
   const { isUploadModalOpen } = useSelector((state: IStore) => state.modal);
+  const { documentation } = useSelector((state: IStore) => state.upload);
 
   useKeypress("Escape", () => {
     dispatch(setIsUploadModalOpen(false));
   });
+
   const { activeTab, contractData, abiFile } = useSelector(
     (state: any) => state.upload
   );
@@ -29,6 +32,13 @@ export function UploadModal() {
   const canGoNext = contractData;
   const canGoContinue = abiFile;
   const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (documentation) {
+      dispatch(setTestContract(documentation));
+      dispatch(resetUploadState());
+    }
+  }, [dispatch, documentation]);
 
   const closeModal = () => {
     dispatch(setIsUploadModalOpen(false));

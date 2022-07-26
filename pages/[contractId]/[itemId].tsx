@@ -32,9 +32,20 @@ export default function ItemPage() {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const contracts = useSelector((state: IStore) => state.contracts);
+  let contract;
+  const testContract = useSelector((state: IStore) => state.testContract);
+  const isLoggedIn = false;
+  if (!isLoggedIn) contract = testContract;
+
   const { contractId, itemId: functionName, type } = router.query;
-  const contract = contracts.find((c: IContract) => c.id === contractId);
+  useEffect(() => {
+    if (!contractId) return;
+    if (!isValidRoute) router.replace("/");
+  }, [contractId, isValidRoute, router]);
+
+  // const contract = contracts.find((c: IContract) => c.id === contractId);
+  const item = contract?.data.find((i: any) => i.name === functionName);
+  if (!contract || !item) return "";
 
   const linkedEvents = getLinkedEvents(contract, functionName as string);
   const eventsWithState = getEventsWithActiveState(
@@ -42,15 +53,7 @@ export default function ItemPage() {
     functionName as string
   );
 
-  const item = contract?.data.find((i: any) => i.name === functionName);
   const isValidRoute = contracts.some((c: IContract) => c.id === contractId);
-
-  useEffect(() => {
-    if (!contractId) return;
-    if (!isValidRoute) router.replace("/");
-  }, [contractId, isValidRoute, router]);
-
-  if (!contract || !item) return "";
 
   const hasMeta = item.meta;
 

@@ -25,6 +25,7 @@ export function WelcomeScreen() {
       </div>
       <div className="mb-20">
         <Button
+          className="mx-auto"
           secondary
           onClick={() => {
             dispatch(setIsUploadModalOpen(true));

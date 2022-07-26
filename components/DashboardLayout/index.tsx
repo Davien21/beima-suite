@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
 import {
   Button,
-  EmptyWorkspace,
   SearchBox,
   ContractDisplay,
+  TestContractDisplay,
   UploadModal,
   ContractDescModal,
   BottomPanel,
@@ -19,19 +19,19 @@ import {
 } from "assets/images";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-import { addContract } from "store/slices/contractSlice";
+// import { addContract } from "store/slices/testContractSlice";
 import { resetUploadState } from "store/slices/uploadSlice";
 import { setIsUploadModalOpen } from "store/slices/modalSlice";
 import { IStore } from "interfaces";
 
 function DashboardLayout({ children }: { children?: React.ReactNode }) {
-  const contracts = useSelector((state: IStore) => state.contracts);
+  const isLoggedIn = false;
   const { documentation } = useSelector((state: IStore) => state.upload);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (documentation) {
-      dispatch(addContract(documentation));
+      // dispatch(addContract(documentation));
       dispatch(resetUploadState());
     }
   }, [documentation, dispatch]);
@@ -53,7 +53,7 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
       <Header />
       <main className="hidden lg:block">
         <UploadModal />
-        <ContractDescModal />
+        {/* <ContractDescModal /> */}
         <section className={`${styles["container"]} flex w-full`}>
           <div className={`flex flex-col ${styles["left"]}`}>
             <button
@@ -128,20 +128,13 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
                   <FilterIcon />
                 </button>
               </div>
-              {!contracts.length ? <EmptyWorkspace /> : ""}
-              {contracts.length ? (
-                <div className="px-6 py-6">
-                  <ContractDisplay />
-                </div>
-              ) : (
-                ""
-              )}
+              {isLoggedIn ? <ContractDisplay /> : <TestContractDisplay />}
             </div>
             <div
               className={`col-span-9 ${styles["right"]} w-full flex flex-col justify-between`}
             >
               {children}
-              <BottomPanel />
+              {/* <BottomPanel /> */}
             </div>
           </div>
         </section>

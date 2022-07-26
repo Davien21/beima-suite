@@ -31,6 +31,7 @@ export interface IEvent {
 }
 
 export interface IItem {
+  id: string;
   name: string;
   type: ITypes;
   inputs: IContractInputs[];
@@ -48,10 +49,6 @@ export interface IContract {
   name: string;
   alias: string;
   data: IItem[];
-  showInherited: {
-    function: boolean;
-    event: boolean;
-  };
   description: string;
 }
 
@@ -80,10 +77,10 @@ export interface IUpload {
 
 export interface IStore {
   modal: IModals;
-  contracts: IContract[];
+  testContract: IContract;
   upload: IUpload;
   auth: IAuth;
-  helper: IHelperSlice;
+  UIState: IUIStateSlice;
 }
 
 export interface IWithActiveState {
@@ -116,6 +113,13 @@ export interface IRTKQueryResponse {
 
 export interface IHelperSlice {
   verifyOTPEmail: string;
+}
+
+export interface IUIStateSlice {
+  meta: string[];
+  showInherited: { function: boolean; event: boolean };
+  activeControl: ITypes;
+  openContract: string;
 }
 
 export type IMetaTags = "view" | "payable" | "nonpayable";
