@@ -1,25 +1,23 @@
 import { getRandomKey } from "utils/randomKey";
-import { IEvent, IFunction, ITypes } from "interfaces";
+import { IContract, IEvent, IFunction, IItem, ITypes } from "interfaces";
 import React, { useState } from "react";
 import { ListItem } from "./listItem";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+import { accordionVariants } from "animations";
 
 export function ContractList({
   showInherited,
   isOpen,
-  index,
+  contract,
   activeList,
 }: {
   showInherited: boolean;
-  index: number;
+  contract: IContract;
   isOpen: boolean;
   activeList: ITypes;
 }) {
-  const contract = useSelector((state: any) => state.contracts[index]);
-
-  const { data } = contract;
-  let items = data.filter((item: IEvent | IFunction) => {
+  let items = contract.data.filter((item: IItem) => {
     if (item.type === activeList) {
       if (showInherited && item.isNative) return item;
       if (!showInherited) return item;
@@ -28,21 +26,25 @@ export function ContractList({
 
   return (
     <>
-      {isOpen && (
-        <div className="border-l pl-2 ml-6 3xl:ml-8 mt-4">
-          {items.map((item: IFunction | IEvent) => {
-            return (
-              <ListItem
-                index={index}
-                type={activeList}
-                key={getRandomKey()}
-                isChecked={!item.isHidden}
-                name={item.name}
-              />
-            );
-          })}
-        </div>
-      )}
+      <motion.div
+        variants={{ open: { display: "block" }, closed: { display: "none" } }}
+        initial="closed"
+        animate={isOpen ? "open" : "closed"}
+        exit="closed"
+        className="border-l pl-2 ml-6 3xl:ml-8 mt-4"
+      >
+        {items.map((item: IItem) => {
+          return (
+            <ListItem
+              contract={contract}
+              type={activeList}
+              key={getRandomKey()}
+              isChecked={!item.isHidden}
+              itemId={item.id}
+            />
+          );
+        })}
+      </motion.div>
     </>
   );
 }

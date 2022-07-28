@@ -4,7 +4,7 @@ import { IModals } from "interfaces";
 
 const initialState: IModals = {
   isUploadModalOpen: false,
-  isFunctionDescModalOpen: false,
+  isItemDescModalOpen: false,
   isContractDescModalOpen: false,
 };
 
@@ -15,8 +15,8 @@ export const modalSlice = createSlice({
     setIsUploadModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isUploadModalOpen = action.payload;
     },
-    setIsFunctionDescModalOpen: (state, action: PayloadAction<boolean>) => {
-      state.isFunctionDescModalOpen = action.payload;
+    setIsItemDescModalOpen: (state, action: PayloadAction<boolean>) => {
+      state.isItemDescModalOpen = action.payload;
     },
     setIsContractDescModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isContractDescModalOpen = action.payload;
@@ -27,7 +27,7 @@ export const modalSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   setIsUploadModalOpen,
-  setIsFunctionDescModalOpen,
+  setIsItemDescModalOpen,
   setIsContractDescModalOpen,
 } = modalSlice.actions;
 

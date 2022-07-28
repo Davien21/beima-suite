@@ -1,50 +1,41 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Markdown from "markdown-to-jsx";
 
 import { CloseIcon } from "assets/images";
 
-import styles from "./function-desc-modal.module.css";
+import styles from "./item-desc-modal.module.css";
 import { Button, TextArea, Switch } from "components";
 import { motion } from "framer-motion";
 import { ModalParentVariants } from "animations";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useKeypress, useModal } from "hooks";
-import { setIsFunctionDescModalOpen } from "store/slices/modalSlice";
-import { IContract, IStore } from "interfaces";
-import { useFormik } from "formik";
+import { setIsItemDescModalOpen } from "store/slices/modalSlice";
+import { IContract, IItem, IStore } from "interfaces";
+import { FormikHelpers, useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
-import { setFunctionDescription } from "store/slices";
-import { getdescriptionFromContract } from "utils/helpers";
+import { setItemDescription } from "store/slices/testContractSlice";
+import { capitalize, getdescriptionFromContract } from "utils/helpers";
 
 const validationSchema = Yup.object({ description: Yup.string() });
 interface IForm {
   description: string;
 }
 
-export function FunctionDescModal() {
-  const router = useRouter();
-  const contracts = useSelector((state: IStore) => state.contracts);
-  const { contractId, itemId } = router.query;
-  const functionName = itemId as string;
-  const index = contracts.findIndex((x: IContract) => x.id === contractId);
-
-  const description = getdescriptionFromContract(
-    contracts[index],
-    functionName
-  );
+export function ItemDescModal({ item }: { item: IItem }) {
+  const { id, description } = item;
   const initialValues: IForm = { description };
+  const dispatch = useDispatch();
+  const { activeControl } = useSelector((state: IStore) => state.filters);
+
+  const closeModal = () => {
+    dispatch(setIsItemDescModalOpen(false));
+  };
 
   const handleSubmit = (values: IForm) => {
     const { description } = values;
-    dispatch(
-      setFunctionDescription({
-        index,
-        functionName,
-        description,
-      })
-    );
+    dispatch(setItemDescription({ id, description }));
     closeModal();
   };
 
@@ -53,27 +44,25 @@ export function FunctionDescModal() {
     validationSchema,
     onSubmit: handleSubmit,
   });
-  const { isFunctionDescModalOpen } = useSelector(
-    (state: IStore) => state.modal
-  );
+
+  useEffect(() => {
+    formik.values["description"] = description;
+  }, [description, formik.values]);
+
+  const { isItemDescModalOpen } = useSelector((state: IStore) => state.modal);
 
   useKeypress("Escape", () => {
-    dispatch(setIsFunctionDescModalOpen(false));
+    closeModal();
   });
 
-  const dispatch = useDispatch();
   const [isShowingMarkdown, setisShowingMarkdown] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const closeModal = () => {
-    dispatch(setIsFunctionDescModalOpen(false));
-  };
-
-  useModal(isFunctionDescModalOpen, modalRef);
+  useModal(isItemDescModalOpen, modalRef);
   return (
     <motion.div
       initial={{ opacity: 0, display: "none" }}
-      animate={isFunctionDescModalOpen ? "enter" : "exit"}
+      animate={isItemDescModalOpen ? "enter" : "exit"}
       variants={ModalParentVariants}
       exit={{ opacity: 0, transition: { when: "afterChildren" } }}
       className={`${styles["container"]}`}
@@ -81,7 +70,7 @@ export function FunctionDescModal() {
     >
       <motion.div
         initial={{ y: "-100%" }}
-        animate={isFunctionDescModalOpen ? { y: `100px` } : { y: "-100%" }}
+        animate={isItemDescModalOpen ? { y: `100px` } : { y: "-100%" }}
         exit={{ y: "-100%" }}
         ref={modalRef}
         className={`${styles["modal-body"]}`}
@@ -92,7 +81,9 @@ export function FunctionDescModal() {
           className="px-8 pt-8 lg:px-8 lg:pt-8"
         >
           <div className="flex items-center justify-between">
-            <span className="text-lg font-semibold">Function Description</span>
+            <span className="text-lg font-semibold">
+              {capitalize(activeControl)} Description
+            </span>
             <motion.span
               className="cursor-pointer"
               whileHover={{ scale: 1.5 }}
@@ -104,7 +95,7 @@ export function FunctionDescModal() {
           <div className="py-12 px-6">
             {!isShowingMarkdown ? (
               <TextArea
-                placeholder="Write the description for this function"
+                placeholder={`Write the description for this ${activeControl}`}
                 formik={formik}
                 name="description"
               />

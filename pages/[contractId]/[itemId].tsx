@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Breadcrumbs,
   Button,
@@ -8,14 +8,14 @@ import {
   Tooltip,
   LinkedEventsBox,
   MultipleSelect,
-  FunctionDescModal,
-  FunctionDescBox,
+  ItemDescModal,
+  ItemDescBox,
 } from "components";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { IContract, IMetaTags, IStore } from "interfaces";
+import { IContract, IMetaTags, IQuery, IStore } from "interfaces";
 import styles from "./item-page.module.css";
-import { EditIcon, SettingsIcon, UpIcon } from "assets/images";
+import { EditIcon, SettingsIcon } from "assets/images";
 import {
   capitalize,
   getMeta,
@@ -23,64 +23,59 @@ import {
   getLinkedEvents,
   getEventsWithActiveState,
 } from "utils";
-import { setLinkFunctionToEvent } from "store/slices/contractSlice";
-import { setIsFunctionDescModalOpen } from "store/slices/modalSlice";
-import Head from "next/head";
+import { setIsItemDescModalOpen } from "store/slices/modalSlice";
 import { toast } from "react-toastify";
+import { getItemById } from "utils/helpers";
+import { toggleOpenContract } from "store/slices/UIStateSlice";
+import { toggleLinkTestEvent } from "store/slices/testContractSlice";
+import { useEffectOnce } from "usehooks-ts";
 
 export default function ItemPage() {
   const router = useRouter();
+  const { contractId, itemId } = router.query as IQuery;
+  const isLoggedIn = false;
   const dispatch = useDispatch();
 
-  let contract;
+  let item, contract: IContract | undefined;
   const testContract = useSelector((state: IStore) => state.testContract);
-  const isLoggedIn = false;
-  if (!isLoggedIn) contract = testContract;
+  const { openContracts } = useSelector((state: IStore) => state.UIState);
 
-  const { contractId, itemId: functionName, type } = router.query;
+  if (!isLoggedIn) {
+    contract = testContract;
+    item = getItemById(testContract, itemId);
+  }
+
+  const isValidRoute = !!item;
+
   useEffect(() => {
     if (!contractId) return;
     if (!isValidRoute) router.replace("/");
-  }, [contractId, isValidRoute, router]);
+  }, [contractId, dispatch, isValidRoute, openContracts, router]);
 
-  // const contract = contracts.find((c: IContract) => c.id === contractId);
-  const item = contract?.data.find((i: any) => i.name === functionName);
+  const { activeControl } = useSelector((state: IStore) => state.filters);
+
   if (!contract || !item) return "";
 
-  const linkedEvents = getLinkedEvents(contract, functionName as string);
-  const eventsWithState = getEventsWithActiveState(
-    contract,
-    functionName as string
-  );
-
-  const isValidRoute = contracts.some((c: IContract) => c.id === contractId);
+  const linkedEvents = getLinkedEvents(contract, itemId);
+  const eventsWithState = getEventsWithActiveState(contract, itemId);
 
   const hasMeta = item.meta;
 
-  const contractIndex = contracts.findIndex(
-    (c: IContract) => c.id === contractId
-  );
-  const linkEvent = (eventName: string) => {
-    dispatch(
-      setLinkFunctionToEvent({
-        contractIndex,
-        functionName: functionName as string,
-        eventName,
-      })
-    );
+  const linkEvent = (event: string) => {
+    if (!isLoggedIn) {
+      dispatch(toggleLinkTestEvent({ functionId: itemId, event }));
+    }
   };
+
   return (
     <DashboardLayout>
-      <FunctionDescModal />
+      <ItemDescModal item={item} />
       <div className="">
         <section className="px-8 3xl:px-16 py-10 border-b">
-          <Breadcrumbs
-            className="mb-2"
-            crumbs={[contract.name, functionName as string]}
-          />
+          <Breadcrumbs className="mb-2" crumbs={[contract.name, item.name]} />
           <div className="mb-2 flex items-center justify-between">
             <Tooltip title={item.name}>
-              <h2 className={`${styles["functionName"]} text-3xl inline`}>
+              <h2 className={`${styles["itemId"]} text-3xl inline`}>
                 {item.name}
               </h2>
             </Tooltip>
@@ -88,7 +83,7 @@ export default function ItemPage() {
               <div className="flex gap-x-4">
                 <button
                   onClick={() => {
-                    dispatch(setIsFunctionDescModalOpen(true));
+                    dispatch(setIsItemDescModalOpen(true));
                   }}
                   className="flex gap-x-1 items-center"
                 >
@@ -103,13 +98,15 @@ export default function ItemPage() {
                   <span>Settings</span>
                 </button>
               </div>
-              <MultipleSelect
-                onSelect={linkEvent}
-                list={eventsWithState}
-                isSearchable
-              >
-                <Button secondary>Link Events</Button>
-              </MultipleSelect>
+              {activeControl === "function" && (
+                <MultipleSelect
+                  onSelect={linkEvent}
+                  list={eventsWithState}
+                  isSearchable
+                >
+                  <Button secondary>Link Events</Button>
+                </MultipleSelect>
+              )}
             </div>
           </div>
           <div className="flex gap-x-4 items-center">
@@ -133,19 +130,19 @@ export default function ItemPage() {
           </div>
         </section>
         <section className="px-16 3xl:px-28 py-6">
-          <FunctionDescBox type={item.type} description={item.description} />
+          <ItemDescBox type={item.type} description={item.description} />
           <section className="mt-6">
             <div className="inline-grid grid-cols-10 gap-x-10">
               <div className="col-span-3">
                 <InputsBox inputs={item.inputs} />
               </div>
-              {type === "function" && (
+              {activeControl === "function" && (
                 <div className="col-span-3">
                   <OutputsBox outputs={(item.outputs as []) || []} />
                 </div>
               )}
 
-              {type === "function" && (
+              {activeControl === "function" && (
                 <div className="col-span-4">
                   <LinkedEventsBox events={linkedEvents} />
                 </div>

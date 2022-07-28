@@ -60,7 +60,7 @@ export interface IHiddenContractItem {
 
 export interface IModals {
   isUploadModalOpen: boolean;
-  isFunctionDescModalOpen: boolean;
+  isItemDescModalOpen: boolean;
   isContractDescModalOpen: boolean;
 }
 
@@ -80,6 +80,7 @@ export interface IStore {
   testContract: IContract;
   upload: IUpload;
   auth: IAuth;
+  filters: IFiltersSlice;
   UIState: IUIStateSlice;
 }
 
@@ -115,11 +116,21 @@ export interface IHelperSlice {
   verifyOTPEmail: string;
 }
 
-export interface IUIStateSlice {
+export interface IFiltersSlice {
   meta: string[];
   showInherited: { function: boolean; event: boolean };
   activeControl: ITypes;
-  openContract: string;
+}
+
+export interface IUIStateSlice {
+  openContracts: string[];
+  openedOptionId: string;
+}
+
+export interface IQuery {
+  contractId: string;
+  itemId: string;
+  [key: string]: string;
 }
 
 export type IMetaTags = "view" | "payable" | "nonpayable";

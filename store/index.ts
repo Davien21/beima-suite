@@ -6,16 +6,16 @@ import {
   authReducer,
   testContractReducer,
   UIStateReducer,
+  filterReducer,
 } from "./slices";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
-import { authApi } from "services/authService";
 
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["upload", "modal", "auth"],
-  // whiteList: ["testContract"],
+  // blacklist: ["upload", "modal", "auth", "contracts"],
+  whitelist: ["testContract", "filters"],
 };
 
 const rootReducer = combineReducers({
@@ -24,6 +24,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   testContract: testContractReducer,
   UIState: UIStateReducer,
+  filters: filterReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

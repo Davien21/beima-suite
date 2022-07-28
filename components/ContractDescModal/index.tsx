@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Markdown from "markdown-to-jsx";
 
 import { CloseIcon } from "assets/images";
@@ -15,7 +15,7 @@ import { IContract, IStore } from "interfaces";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
-import { setContractDescription } from "store/slices";
+import { setTestContractDesc } from "store/slices/testContractSlice";
 
 const validationSchema = Yup.object({ description: Yup.string() });
 interface IForm {
@@ -23,22 +23,21 @@ interface IForm {
 }
 
 export function ContractDescModal() {
-  const router = useRouter();
-  const contracts = useSelector((state: IStore) => state.contracts);
-  const { contractId } = router.query;
-  const index = contracts.findIndex((x: IContract) => x.id === contractId);
+  const isLoggedIn = false;
+  const testContract = useSelector((state: IStore) => state.testContract);
+  let contract = testContract;
+  if (isLoggedIn) {
+    // contract = testContract;
+  }
 
-  const description = contracts[index]?.description;
+  const description = contract.description;
   const initialValues: IForm = { description };
 
   const handleSubmit = (values: IForm) => {
     const { description } = values;
-    dispatch(
-      setContractDescription({
-        index,
-        description,
-      })
-    );
+    if (!isLoggedIn) {
+      dispatch(setTestContractDesc(description));
+    }
     closeModal();
   };
 

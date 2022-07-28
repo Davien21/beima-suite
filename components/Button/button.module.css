@@ -19,10 +19,13 @@
   color: var(--app-blue);
 }
 
-.container.secondary:hover,
-.container.secondary:focus {
+.container.secondary:hover {
   color: #fff;
   background-color: var(--app-blue);
+}
+
+.container:focus {
+  outline: 3px solid #a4cafe;
 }
 
 .container:not(.secondary):hover,

@@ -1,13 +1,9 @@
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useClickOutside, usePopper } from "hooks";
-import { arrowVariants, menuVariants } from "animations";
+import { menuVariants } from "animations";
 import styles from "./header-options.module.css";
 import { useDispatch } from "react-redux";
-import { deleteContract } from "store/slices";
-import { useRouter } from "next/router";
-import { setIsContractDescModalOpen } from "store/slices/modalSlice";
-import { useOnClickOutside } from "usehooks-ts";
 import { setIsLoggedIn } from "store/slices/authSlice";
 
 export function HeaderOptions({ children }: { children: React.ReactNode }) {

@@ -12,7 +12,7 @@ export const capitalize = (str: string): string => {
 };
 
 export const getEventsWithActiveState = (
-  contract: IContract | undefined,
+  contract: IContract,
   functionName: string
 ) => {
   const linkedEvents = getLinkedEvents(contract, functionName);
@@ -25,13 +25,9 @@ export const getEventsWithActiveState = (
   return (unlinkedEvents as IWithActiveState[]) || [];
 };
 
-export const getLinkedEvents = (
-  contract: IContract | undefined,
-  functionName: string
-) => {
+export const getLinkedEvents = (contract: IContract, functionId: string) => {
   return (
-    contract?.data.find((c: IItem) => c.name === functionName)?.linkedEvents ||
-    []
+    contract.data.find((c: IItem) => c.id === functionId)?.linkedEvents || []
   );
 };
 
@@ -39,7 +35,7 @@ export const getAllEvents = (contract: IContract | undefined) => {
   return contract?.data.filter((e: IItem) => e.type === "event") || [];
 };
 
-export const getArrayAfterRemovingItem = (array: any[], item: any) => {
+export const ArrayMinusItem = (array: any[], item: any) => {
   return array.filter((i: any) => i !== item);
 };
 
@@ -70,4 +66,28 @@ export const errorMessage = (error: any) => {
   if (error.data?.message.includes("Can't send mail"))
     return "Error - 550, Please check if your email is valid";
   return error.data?.message || "Something went wrong";
+};
+
+export const getItemById = (contract: IContract, id: string) => {
+  let index = contract.data.findIndex((x) => x.id === id);
+  return contract.data[index];
+};
+
+export const getFunctionById = (contract: IContract, id: string) => {
+  let index = contract.data.findIndex(
+    (x) => x.id === id && x.type === "function"
+  );
+  return contract.data[index];
+};
+
+export const getFunctionIndex = (contract: IContract, id: string) => {
+  let index = contract.data.findIndex(
+    (x) => x.id === id && x.type === "function"
+  );
+  return index;
+};
+
+export const getEventById = (contract: IContract, id: string) => {
+  let index = contract.data.findIndex((x) => x.id === id && x.type === "event");
+  return contract.data[index];
 };

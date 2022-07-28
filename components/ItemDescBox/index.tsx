@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Markdown from "markdown-to-jsx";
 
 import { UpIcon } from "assets/images";
-import styles from "./function-desc-box.module.css";
+import styles from "./item-desc-box.module.css";
 import { motion } from "framer-motion";
 import { ITypes } from "interfaces";
 import { accordionVariants } from "animations";
 
-export function FunctionDescBox({
+export function ItemDescBox({
   description,
   type,
 }: {
