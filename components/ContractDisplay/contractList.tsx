@@ -1,10 +1,8 @@
 import { getRandomKey } from "utils/randomKey";
-import { IContract, IEvent, IFunction, IItem, ITypes } from "interfaces";
-import React, { useState } from "react";
+import { IContract, IItem, IQuery, ITypes } from "interfaces";
+import React, { useEffect } from "react";
 import { ListItem } from "./listItem";
-import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
-import { accordionVariants } from "animations";
+import { useRouter } from "next/router";
 
 export function ContractList({
   showInherited,
@@ -17,34 +15,36 @@ export function ContractList({
   isOpen: boolean;
   activeList: ITypes;
 }) {
-  let items = contract.data.filter((item: IItem) => {
+  const router = useRouter();
+  const { contractId, itemId } = router.query as IQuery;
+  const isActive = contract._id === contractId;
+  let items = contract?.data?.filter((item: IItem) => {
     if (item.type === activeList) {
       if (showInherited && item.isNative) return item;
       if (!showInherited) return item;
     }
   });
-
+  useEffect(() => {
+    console.log(isOpen);
+  }, [isOpen]);
+  const hasOpened = isOpen || isActive;
   return (
     <>
-      <motion.div
-        variants={{ open: { display: "block" }, closed: { display: "none" } }}
-        initial="closed"
-        animate={isOpen ? "open" : "closed"}
-        exit="closed"
-        className="border-l pl-2 ml-6 3xl:ml-8 mt-4"
-      >
-        {items.map((item: IItem) => {
-          return (
-            <ListItem
-              contract={contract}
-              type={activeList}
-              key={getRandomKey()}
-              isChecked={!item.isHidden}
-              itemId={item.id}
-            />
-          );
-        })}
-      </motion.div>
+      {hasOpened && (
+        <div className="border-l pl-2 ml-6 3xl:ml-8 mt-4">
+          {items.map((item: IItem) => {
+            return (
+              <ListItem
+                contract={contract}
+                type={activeList}
+                key={getRandomKey()}
+                item={item}
+                isChecked={!item.isHidden}
+              />
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }

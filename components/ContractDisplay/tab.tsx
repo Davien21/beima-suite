@@ -1,5 +1,5 @@
 import { OpencontractIcon } from "assets/images";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Switch } from "components";
 import { ContractOptions } from "./options";
 import Pstyles from "./contract-display.module.css";
@@ -10,8 +10,7 @@ import { capitalize } from "utils";
 import { useRouter } from "next/router";
 import { IContract, IQuery, IStore, ITypes } from "interfaces";
 import { setActiveControl, toggleInherited } from "store/slices/filterSlice";
-import { setOpenContract, toggleOpenContract } from "store/slices/UIStateSlice";
-import { useEffectOnce } from "usehooks-ts";
+import { toggleOpenContract } from "store/slices/UIStateSlice";
 
 export function ContractTab({ contract }: { contract: IContract }) {
   const router = useRouter();
@@ -23,20 +22,17 @@ export function ContractTab({ contract }: { contract: IContract }) {
   const { openContracts } = useSelector((state: IStore) => state.UIState);
 
   const { contractId, itemId } = router.query as IQuery;
-  const isActive = contract.id === contractId;
-  const isOpen = openContracts.includes(contract.id);
+  const isActive = contract._id === contractId;
+  const isOpen = openContracts.includes(contract._id);
 
   const handleChangeControl = (control: ITypes) => {
     dispatch(setActiveControl(control));
   };
 
   const handleToggleOpenState = () => {
-    dispatch(toggleOpenContract(contract.id));
+    console.log("toggleOpenState");
+    dispatch(toggleOpenContract(contract._id));
   };
-
-  useEffectOnce(() => {
-    if (isActive) dispatch(setOpenContract({ contractId, isOpen: true }));
-  });
 
   let tabClass = `${Pstyles["tab"]}`;
   if (isActive) tabClass += ` ${Pstyles["active"]}`;

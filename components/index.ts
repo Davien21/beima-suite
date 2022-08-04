@@ -1,3 +1,5 @@
+import { PageLoader } from "./PageLoader";
+
 export * from "./HollowButton";
 export * from "./Button";
 export * from "./Prompt";
@@ -13,6 +15,7 @@ export * from "./Switch";
 export * from "./SegmentedControl";
 export * from "./Select";
 export * from "./ContractDisplay";
+export * from "./ActionModal";
 export * from "./ConfirmationModal";
 export * from "./Tooltip";
 export * from "./MultipleInput";
@@ -31,3 +34,4 @@ export * from "./LinkedEventsBox";
 export * from "./MultipleSelect";
 export * from "./OTPInput";
 export * from "./SpinnerIcon";
+export * from "./PageLoader";

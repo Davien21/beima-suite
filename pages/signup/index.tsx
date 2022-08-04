@@ -5,11 +5,11 @@ import styles from "./signup.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
-import { useSignUpMutation } from "services/authService";
+import { signupAPI, useSignUpMutation } from "services/authService";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import { IRTKQueryResponse } from "interfaces";
-import { useMutationCall } from "hooks";
+import { IResponse, IRTKQueryResponse } from "interfaces";
+import { apiResponse, errorMessage } from "utils/helpers";
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required("First name is required"),
@@ -36,18 +36,19 @@ const initialValues: valuesType = {
 };
 
 export default function SignUpPage() {
+  const [isLoading, setisLoading] = useState<boolean>(false);
   const router = useRouter();
-  const [signUp] = useSignUpMutation();
-  const { handler, isLoading } = useMutationCall();
 
   const handleSubmit = async (values: valuesType) => {
-    if (isLoading) return;
+    setisLoading(true);
     let user = { ...values };
     delete user.hasAgreed;
 
-    const { data } = (await handler(() => signUp(user))) as IRTKQueryResponse;
+    const { error, response } = await signupAPI(user);
+    if (error) toast.error(errorMessage(error));
 
-    if (data.success) {
+    setisLoading(false);
+    if (response) {
       toast.success("Successful, redirecting to Verification page", {
         onClose: () => router.push(`/signup/verify-otp?email=${user.email}`),
         autoClose: 3000,

@@ -5,7 +5,9 @@ import {
   IFunction,
   IItem,
   IAuth,
+  IResponse,
 } from "interfaces";
+import _ from "lodash";
 
 export const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -27,7 +29,7 @@ export const getEventsWithActiveState = (
 
 export const getLinkedEvents = (contract: IContract, functionId: string) => {
   return (
-    contract.data.find((c: IItem) => c.id === functionId)?.linkedEvents || []
+    contract.data.find((c: IItem) => c._id === functionId)?.linkedEvents || []
   );
 };
 
@@ -63,31 +65,51 @@ export const getFullName = (user: IAuth["user"]) => {
 };
 
 export const errorMessage = (error: any) => {
-  if (error.data?.message.includes("Can't send mail"))
+  if (error.response.data?.message.includes("Can't send mail"))
     return "Error - 550, Please check if your email is valid";
-  return error.data?.message || "Something went wrong";
+  if (error.response.data?.message.includes("Jwt expired"))
+    return "Login expired, please login again";
+  return error.response.data?.message || "Something went wrong";
 };
 
-export const getItemById = (contract: IContract, id: string) => {
-  let index = contract.data.findIndex((x) => x.id === id);
+export const getItemById = (contract: IContract, _id: string) => {
+  let index = contract.data.findIndex((x) => x._id === _id);
   return contract.data[index];
 };
 
-export const getFunctionById = (contract: IContract, id: string) => {
+export const getFunctionById = (contract: IContract, _id: string) => {
   let index = contract.data.findIndex(
-    (x) => x.id === id && x.type === "function"
+    (x) => x._id === _id && x.type === "function"
   );
   return contract.data[index];
 };
 
-export const getFunctionIndex = (contract: IContract, id: string) => {
+export const getFunctionIndex = (contract: IContract, _id: string) => {
   let index = contract.data.findIndex(
-    (x) => x.id === id && x.type === "function"
+    (x) => x._id === _id && x.type === "function"
   );
   return index;
 };
 
-export const getEventById = (contract: IContract, id: string) => {
-  let index = contract.data.findIndex((x) => x.id === id && x.type === "event");
+export const getEventById = (contract: IContract, _id: string) => {
+  let index = contract.data.findIndex(
+    (x) => x._id === _id && x.type === "event"
+  );
   return contract.data[index];
+};
+
+export const apiResponse = (result: IResponse) => {
+  const { error, response } = result;
+  console.log(error, response);
+  if (error) return { error: error.response.data, response: null };
+  if (response) return { error, data: response.data };
+};
+
+export const getAuthToken = () => {
+  return localStorage.getItem("beima-auth-token") || "";
+};
+
+export const deepClone = (object: any) => {
+  return JSON.parse(JSON.stringify(object));
+  return _.cloneDeep(object);
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import {
   Breadcrumbs,
   Button,
@@ -29,28 +29,43 @@ import { getItemById } from "utils/helpers";
 import { toggleOpenContract } from "store/slices/UIStateSlice";
 import { toggleLinkTestEvent } from "store/slices/testContractSlice";
 import { useEffectOnce } from "usehooks-ts";
+import { useGetDocs } from "hooks/apis/useGetDocs";
+import { useGetItem } from "hooks/apis";
 
 export default function ItemPage() {
+  const { user } = useSelector((state: IStore) => state.auth);
   const router = useRouter();
   const { contractId, itemId } = router.query as IQuery;
-  const isLoggedIn = false;
+  const isLoggedIn = !!user.firstName;
   const dispatch = useDispatch();
 
   let item, contract: IContract | undefined;
   const testContract = useSelector((state: IStore) => state.testContract);
-  const { openContracts } = useSelector((state: IStore) => state.UIState);
+  let { data: contracts } = useGetDocs();
+  const { data } = useGetItem({ contractId, itemId });
 
   if (!isLoggedIn) {
     contract = testContract;
     item = getItemById(testContract, itemId);
+  } else {
+    if (contracts) {
+      contract = contracts.find((c: IContract) => c._id === contractId);
+      if (contract) item = getItemById(contract, itemId);
+    }
   }
+
+  useEffect(() => {
+    if (data?.data) {
+      console.log(data.data);
+    }
+  }, [data]);
 
   const isValidRoute = !!item;
 
   useEffect(() => {
     if (!contractId) return;
     if (!isValidRoute) router.replace("/");
-  }, [contractId, dispatch, isValidRoute, openContracts, router]);
+  }, [contractId, dispatch, isValidRoute, router]);
 
   const { activeControl } = useSelector((state: IStore) => state.filters);
 
@@ -66,9 +81,8 @@ export default function ItemPage() {
       dispatch(toggleLinkTestEvent({ functionId: itemId, event }));
     }
   };
-
   return (
-    <DashboardLayout>
+    <>
       <ItemDescModal item={item} />
       <div className="">
         <section className="px-8 3xl:px-16 py-10 border-b">
@@ -151,6 +165,10 @@ export default function ItemPage() {
           </section>
         </section>
       </div>
-    </DashboardLayout>
+    </>
   );
 }
+
+ItemPage.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

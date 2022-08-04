@@ -9,9 +9,15 @@ type IOptions = Partial<
 export function usePopper(
   referenceElementRef: RefObject<HTMLElement>,
   popperRef: RefObject<HTMLElement>,
-  options: "top" | "bottom" | "right-start" | IOptions = "bottom"
+  options:
+    | "top"
+    | "bottom"
+    | "right-start"
+    | "header-options"
+    | IOptions = "bottom"
 ) {
-  let placement = typeof options !== "string" ? options : PopperOptions[options];
+  let placement =
+    typeof options !== "string" ? options : PopperOptions[options];
 
   useEffect(() => {
     if (

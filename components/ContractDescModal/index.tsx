@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { ModalParentVariants } from "animations";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useKeypress, useModal } from "hooks";
+import { useModal } from "hooks";
 import { setIsContractDescModalOpen } from "store/slices/modalSlice";
 import { IContract, IStore } from "interfaces";
 import { useFormik } from "formik";
@@ -33,6 +33,10 @@ export function ContractDescModal() {
   const description = contract.description;
   const initialValues: IForm = { description };
 
+  const closeModal = () => {
+    dispatch(setIsContractDescModalOpen(false));
+  };
+
   const handleSubmit = (values: IForm) => {
     const { description } = values;
     if (!isLoggedIn) {
@@ -50,19 +54,12 @@ export function ContractDescModal() {
     (state: IStore) => state.modal
   );
 
-  useKeypress("Escape", () => {
-    dispatch(setIsContractDescModalOpen(false));
-  });
-
   const dispatch = useDispatch();
   const [isShowingMarkdown, setisShowingMarkdown] = useState<boolean>(false);
 
-  const closeModal = () => {
-    dispatch(setIsContractDescModalOpen(false));
-  };
   const modalRef = useRef<HTMLDivElement>(null);
 
-  useModal(isContractDescModalOpen, modalRef);
+  useModal(isContractDescModalOpen, modalRef, closeModal);
   return (
     <motion.div
       initial={{ opacity: 0, display: "none" }}

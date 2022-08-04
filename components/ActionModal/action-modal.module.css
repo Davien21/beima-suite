@@ -18,7 +18,6 @@
 }
 
 .container .modal-body {
-  /* min-height: 100vh; */
   margin: auto;
   background-color: var(--app-bg-color);
   border-radius: var(--app-border-radius-sm);
@@ -32,27 +31,4 @@
   .container .modal-body {
     max-width: 400px;
   }
-}
-
-.container button.primary {
-  background-color: #e02424;
-  border-radius: var(--app-border-radius-sm);
-  transition: none !important;
-  color: #fff;
-}
-
-.container button.secondary {
-  border: 1px solid #6b7280;
-  border-radius: var(--app-border-radius-sm);
-  transition: none !important;
-}
-
-.container button.primary:hover,
-.container button.primary:focus {
-  outline: 3px solid #ffb4b4;
-}
-
-.container button.secondary:hover,
-.container button.secondary:focus {
-  outline: 3px solid #dfdfdf;
 }

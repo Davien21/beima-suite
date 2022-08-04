@@ -25,6 +25,7 @@ const rootReducer = combineReducers({
   testContract: testContractReducer,
   UIState: UIStateReducer,
   filters: filterReducer,
+  contracts: contractsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

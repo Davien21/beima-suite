@@ -1,4 +1,5 @@
-.container > div {
+.container {
+  height: 67px;
   /* border-bottom: 1px solid #ededed; */
 }
 

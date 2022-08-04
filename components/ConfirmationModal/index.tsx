@@ -8,7 +8,7 @@ import { Button } from "components";
 import { motion } from "framer-motion";
 import { ModalParentVariants } from "animations";
 
-import { useKeypress, useModal } from "hooks";
+import { useModal } from "hooks";
 
 interface IConfirmArgs {
   message: string;
@@ -24,8 +24,8 @@ export function ConfirmationModal() {
   );
   const closeModal = () => {
     setisOpen(false);
+    setonConfirmed(() => () => {});
   };
-  useKeypress("Escape", closeModal);
 
   useEffect(() => {
     Emitter.on("OPEN_CONFIRM", (params: IConfirmArgs) => {
@@ -42,7 +42,7 @@ export function ConfirmationModal() {
     };
   }, []);
 
-  useModal(isOpen, modalRef);
+  useModal(isOpen, modalRef, closeModal);
   return (
     <motion.div
       initial={{ opacity: 0, display: "none" }}
@@ -64,10 +64,10 @@ export function ConfirmationModal() {
           <div className="flex justify-end">
             <motion.span
               className="cursor-pointer"
-              whileHover={{ scale: 1.5 }}
+              whileHover={{ scale: 1.2 }}
               onClick={closeModal}
             >
-              <CloseIcon />
+              <CloseIcon className="scale-85" />
             </motion.span>
           </div>
           <div className="flex justify-center">

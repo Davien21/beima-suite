@@ -6,7 +6,7 @@ const getRandomKey = (length: number = 7) => {
 
 const addIds = (data: any[]) => {
   return data.map((item) => {
-    item.id = getRandomKey();
+    item._id = getRandomKey();
     return item;
   });
 };

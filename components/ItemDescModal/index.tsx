@@ -9,14 +9,20 @@ import { motion } from "framer-motion";
 import { ModalParentVariants } from "animations";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useKeypress, useModal } from "hooks";
+import { useModal } from "hooks";
 import { setIsItemDescModalOpen } from "store/slices/modalSlice";
-import { IContract, IItem, IStore } from "interfaces";
-import { FormikHelpers, useFormik } from "formik";
+import { IContract, IItem, IQuery, IStore } from "interfaces";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
 import { setItemDescription } from "store/slices/testContractSlice";
-import { capitalize, getdescriptionFromContract } from "utils/helpers";
+import { capitalize, deepClone, errorMessage } from "utils/helpers";
+import useSWR from "swr";
+import { useRouter } from "next/router";
+import { updateContract } from "services/docsService";
+import { useLocalStorage } from "usehooks-ts";
+import { toast } from "react-toastify";
+import { useGetDocs } from "hooks/apis/useGetDocs";
+import { useGetItem } from "hooks/apis";
 
 const validationSchema = Yup.object({ description: Yup.string() });
 interface IForm {
@@ -24,19 +30,55 @@ interface IForm {
 }
 
 export function ItemDescModal({ item }: { item: IItem }) {
-  const { id, description } = item;
-  const initialValues: IForm = { description };
+  let router = useRouter();
+  let { contractId, itemId } = router.query as IQuery;
   const dispatch = useDispatch();
-  const { activeControl } = useSelector((state: IStore) => state.filters);
 
+  const { user } = useSelector((state: IStore) => state.auth);
+  let { data: contracts } = useGetDocs();
+  const contract = contracts.find((c) => c._id === contractId);
+
+  const isLoggedIn = !!user.firstName;
+  const { _id, description } = item;
+  const initialValues: IForm = { description };
+  const { activeControl } = useSelector((state: IStore) => state.filters);
   const closeModal = () => {
     dispatch(setIsItemDescModalOpen(false));
   };
+  const [authToken, setJwt] = useLocalStorage("beima-auth-token", "");
 
-  const handleSubmit = (values: IForm) => {
+  const { data, mutate } = useGetItem({ contractId, itemId });
+
+  const [isLoading, setisLoading] = useState(false);
+  const handleSubmit = async (values: IForm) => {
     const { description } = values;
-    dispatch(setItemDescription({ id, description }));
-    closeModal();
+    if (!isLoggedIn) {
+      dispatch(setItemDescription({ _id, description }));
+    } else {
+      if (contract) {
+        let url = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+        url = `${url}/docs`;
+
+        let newItem = { ...item };
+        mutate(
+          (async () => {
+            if (newItem) {
+              await fetch(`${url}/${contract._id}/${newItem._id}`, {
+                body: newItem,
+                method: "PUT",
+                headers: { authorization: authToken },
+              });
+            }
+          })(),
+          { rollbackOnError: false }
+        );
+
+        // const { error, response } = await updateContract(newContract, jwt);
+        // setisLoading(false);
+        // if (response) closeModal();
+        // if (error) toast.error(errorMessage(error));
+      }
+    }
   };
 
   const formik = useFormik({
@@ -46,19 +88,16 @@ export function ItemDescModal({ item }: { item: IItem }) {
   });
 
   useEffect(() => {
-    formik.values["description"] = description;
+    // formik.values["description"] = description;
   }, [description, formik.values]);
 
   const { isItemDescModalOpen } = useSelector((state: IStore) => state.modal);
 
-  useKeypress("Escape", () => {
-    closeModal();
-  });
-
   const [isShowingMarkdown, setisShowingMarkdown] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  useModal(isItemDescModalOpen, modalRef);
+  useModal(isItemDescModalOpen, modalRef, closeModal);
+
   return (
     <motion.div
       initial={{ opacity: 0, display: "none" }}
@@ -114,7 +153,9 @@ export function ItemDescModal({ item }: { item: IItem }) {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex gap-x-2">
-                <Button type="submit">Save</Button>
+                <Button isLoading={false} type="submit">
+                  Save
+                </Button>
                 <Button
                   secondary
                   disabled={!formik.dirty || !formik.isValid}

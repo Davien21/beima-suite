@@ -4,31 +4,25 @@ import { useClickOutside, usePopper } from "hooks";
 import { menuVariants } from "animations";
 import styles from "./header-options.module.css";
 import { useDispatch } from "react-redux";
-import { setIsLoggedIn } from "store/slices/authSlice";
+import { triggerLogout } from "store/slices/authSlice";
+import { useLocalStorage } from "usehooks-ts";
 
 export function HeaderOptions({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
+
   const optionsMenuRef = useRef<any>(null);
   const objectRef = useRef<any>(null);
 
-  usePopper(objectRef, optionsMenuRef, {
-    placement: "left",
-    modifiers: [
-      {
-        name: "offset",
-        options: {
-          offset: [25, 30],
-        },
-      },
-    ],
-  });
+  usePopper(objectRef, optionsMenuRef, "header-options");
 
   const [isOpen, setisOpen] = useState<boolean>(false);
 
   const closeMenu = () => setisOpen(false);
   const toggleMenu = () => setisOpen(!isOpen);
+  const [jwt, setJwt] = useLocalStorage("beima-auth-token", "");
   const logout = () => {
-    dispatch(setIsLoggedIn(false));
+    dispatch(triggerLogout());
+    setJwt("");
     closeMenu();
   };
 

@@ -6,48 +6,41 @@ import Link from "next/link";
 import { LogoIcon } from "assets/images";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { useVerifyOTPQuery } from "services/authService";
+import { useVerifyOTPQuery, verifyEmailAPI } from "services/authService";
 import { errorMessage } from "utils/helpers";
 import { setAuthToken } from "store/slices/authSlice";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { IStore } from "interfaces";
+import { useLocalStorage } from "usehooks-ts";
 
 export default function VerifySignup() {
-  const { beimaAuthToken: authToken } = useSelector(
-    (state: IStore) => state.auth
-  );
-
   const router = useRouter();
-  const dispatch = useDispatch();
   const { email } = router.query as { email: string };
-  const [otp, setotp] = useState<string>("");
   // you need to guard this route.
   const [isVerified, setIsVerified] = useState(false);
-  const { isLoading, error, data, refetch } = useVerifyOTPQuery(
-    { email, token: otp },
-    { skip: !email || !otp }
-  );
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-      setIsVerified(true);
-      dispatch(setAuthToken(data.data.authToken));
-      toast.success("Email was successfully verified, redirecting...", {
-        onClose: () => router.push("/"),
-      });
-    }
-    if (error) toast.error(errorMessage(error));
-  }, [data, dispatch, error, router]);
-
+  const [jwt, setJwt] = useLocalStorage("beima-auth-token", "");
   const handleVerifyOTP = useCallback(
-    (token: string) => {
-      setotp(token);
-      refetch();
+    async (token: string) => {
+      setIsLoading(true);
+      const { error, response } = await verifyEmailAPI({ email, token });
+      if (error) toast.error(errorMessage(error));
+      setIsLoading(false);
+      if (response) {
+        setIsVerified(true);
+        setJwt(response.data.authToken);
+        toast.success("Email was successfully verified");
+      }
+      if (error) toast.error(errorMessage(error));
     },
-    [refetch]
+    [email, setJwt]
   );
+
+  const handleContinue = () => {
+    if (isVerified) router.push("/");
+  };
 
   return (
     <div className={`${styles["container"]}`}>
@@ -80,7 +73,11 @@ export default function VerifySignup() {
                   steps={6}
                 />
                 <div className="mt-4">
-                  <Button isLoading={isLoading} className="full-width">
+                  <Button
+                    onClick={handleContinue}
+                    isLoading={isLoading}
+                    className="full-width"
+                  >
                     Continue
                   </Button>
                 </div>

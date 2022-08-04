@@ -1,15 +1,16 @@
 import { getRandomKey } from "utils";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ContractTab } from "./tab";
 import { useSelector, useDispatch } from "react-redux";
 import { IContract, IStore } from "interfaces";
 import { EmptyWorkspace } from "components/EmptyWorkspace";
 
 export function ContractDisplay() {
-  const [isLoggedIn] = useState<boolean>(false);
+  const { user } = useSelector((state: IStore) => state.auth);
+  const contracts = useSelector((state: IStore) => state.contracts);
+  const isLoggedIn = !!user.firstName;
   const testContract = useSelector((state: IStore) => state.testContract);
   const canShowTestContract = !isLoggedIn && !!testContract.name;
-  const contracts: IContract[] = [];
   const canShowMainContracts = isLoggedIn && contracts.length > 0;
 
   return (

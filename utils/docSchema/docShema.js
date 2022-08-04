@@ -1,5 +1,5 @@
 const docSchema = {
-  id: "",
+  _id: "",
   creator_id: "",
   name: "",
   native_data: [

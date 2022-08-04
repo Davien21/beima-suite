@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./dashboard.module.css";
 import {
   Button,
@@ -7,6 +7,7 @@ import {
   UploadModal,
   ContractDescModal,
   ConfirmationModal,
+  ActionModal,
   BottomPanel,
   Header,
 } from "components";
@@ -19,22 +20,20 @@ import {
 } from "assets/images";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-// import { addContract } from "store/slices/testContractSlice";
-import { resetUploadState } from "store/slices/uploadSlice";
+
 import { setIsUploadModalOpen } from "store/slices/modalSlice";
-import { IStore } from "interfaces";
+import { IContract, IStore } from "interfaces";
+import { useEffectOnce, useLocalStorage } from "usehooks-ts";
+import { getUserAPI } from "services/authService";
+import { setUser } from "store/slices/authSlice";
+import { uploadDocsAPI } from "services/docsService";
+import { deleteTestContract } from "store/slices/testContractSlice";
+import { useGetDocs } from "hooks/apis/useGetDocs";
+import { setContracts } from "store/slices/contractSlice";
+import useSWR from "swr";
 
 function DashboardLayout({ children }: { children?: React.ReactNode }) {
-  const isLoggedIn = false;
-  const { documentation } = useSelector((state: IStore) => state.upload);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (documentation) {
-      // dispatch(addContract(documentation));
-      dispatch(resetUploadState());
-    }
-  }, [documentation, dispatch]);
 
   const [isShowingFilter, setisShowingFilter] = useState<boolean>(false);
   const toggleFilter = () => {
@@ -47,6 +46,37 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
     if (name === activeTab) return `${defaults} ${styles["active"]}`;
     return defaults;
   };
+  // console.log("DashboardLayout");
+  const { user } = useSelector((state: IStore) => state.auth);
+  const testContract = useSelector((state: IStore) => state.testContract);
+  const isLoggedIn = !!user.firstName;
+  let [authToken] = useLocalStorage("beima-auth-token", "");
+
+  const getUser = useCallback(async () => {
+    const { error, response } = await getUserAPI(authToken);
+    if (response) dispatch(setUser(response.data));
+  }, [authToken, dispatch]);
+
+  useEffectOnce(() => {
+    if (authToken && !isLoggedIn) getUser();
+  });
+
+  const handleSync = useCallback(async () => {
+    const { error, response } = await uploadDocsAPI([testContract], authToken);
+    if (response) dispatch(deleteTestContract());
+    // console.log(error, response);
+  }, [authToken, dispatch, testContract]);
+
+  const { data } = useGetDocs();
+  // useEffect(() => {
+  //   if (isLoggedIn && !!testContract.name) {
+  //     handleSync();
+  //   }
+  // }, [handleSync, isLoggedIn, testContract.name]);
+
+  useEffect(() => {
+    if (data?.length) dispatch(setContracts(data));
+  }, [data, dispatch]);
 
   return (
     <>
@@ -55,6 +85,7 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
         <UploadModal />
         <ConfirmationModal />
         <ContractDescModal />
+        <ActionModal />
         <section className={`${styles["container"]} flex w-full`}>
           <div className={`flex flex-col ${styles["left"]}`}>
             <button
@@ -129,14 +160,13 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
                   <FilterIcon />
                 </button>
               </div>
-              {/* {isLoggedIn ? <ContractDisplay /> : <TestContractDisplay />} */}
               <ContractDisplay />
             </div>
             <div
               className={`col-span-9 ${styles["right"]} w-full flex flex-col justify-between`}
             >
               {children}
-              {/* <BottomPanel /> */}
+              <BottomPanel />
             </div>
           </div>
         </section>

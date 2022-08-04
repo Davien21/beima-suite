@@ -49,10 +49,10 @@
 
 .container button.primary:hover,
 .container button.primary:focus {
-  outline: 3px solid #ffb4b4;
+  outline: 4px solid #ffb4b4;
 }
 
 .container button.secondary:hover,
 .container button.secondary:focus {
-  outline: 3px solid #dfdfdf;
+  outline: 4px solid #dfdfdf;
 }

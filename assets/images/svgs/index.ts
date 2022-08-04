@@ -20,8 +20,12 @@ import CheckboxIcon from "./checkbox.svg";
 import CircleCheckboxIcon from "./circle-checkbox.svg";
 import CircleCloseIcon from "./circle-close.svg";
 import EditIcon from "./edit.svg";
+import LoaderIcon from "./loader.svg";
 import CloseIcon from "./close.svg";
 import DangerIcon from "./danger.svg";
+import SuccessIcon from "./success.svg";
+import WarningIcon from "./warning.svg";
+import InfoIcon from "./info.svg";
 import PublishIcon from "./publish.svg";
 import TrashIcon from "./trash.svg";
 import OpencontractIcon from "./open-contract.svg";
@@ -36,6 +40,7 @@ export {
   BigUploadIcon,
   PublishIcon,
   EditIcon,
+  LoaderIcon,
   CloseIcon,
   EyeIcon,
   DangerIcon,
@@ -58,6 +63,9 @@ export {
   CircleCheckboxIcon,
   CircleCloseIcon,
   OptionDotsIcon,
+  SuccessIcon,
+  WarningIcon,
+  InfoIcon,
   WelcomeImg,
   SignupImg,
 };

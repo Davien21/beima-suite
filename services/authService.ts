@@ -1,47 +1,32 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IResponse } from "interfaces";
+import httpService from "./httpService";
 
-import { IRTKQueryResponse, ISignUp } from "../interfaces";
+const route = `/auth`;
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+export async function signupAPI(body: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}) {
+  return httpService.post(`${route}/sign-up`, body) as unknown as IResponse;
+}
 
-export const authApi = createApi({
-  reducerPath: "authApi",
-  // refetchOnFocus: true,
-  // refetchOnReconnect: true,
-  baseQuery: fetchBaseQuery({ baseUrl }),
-  tagTypes: ["Auth"],
-  endpoints: (builder) => ({
-    getUserWithAuthToken: builder.query<
-      IRTKQueryResponse["data"],
-      { authToken: string }
-    >({
-      query: (body) => ({
-        url: `/auth/me`,
-        headers: { authorization: `Bearer ${body.authToken}` },
-      }),
-    }),
-    signUp: builder.mutation<IRTKQueryResponse["data"], ISignUp>({
-      query: (body) => ({
-        url: `/auth/sign-up`,
-        method: "POST",
-        body,
-      }),
-    }),
-    verifyOTP: builder.query<
-      IRTKQueryResponse["data"],
-      { email: string; token: string }
-    >({
-      query: (body) => ({
-        url: `/auth/verify-email`,
-        method: "POST",
-        body,
-      }),
-    }),
-  }),
-});
+export async function verifyEmailAPI(body: { email: string; token: string }) {
+  return httpService.post(
+    `${route}/verify-email`,
+    body
+  ) as unknown as IResponse;
+}
 
-export const {
-  useSignUpMutation,
-  useVerifyOTPQuery,
-  useGetUserWithAuthTokenQuery,
-} = authApi;
+export async function loginAPI(body: { email: string; password: string }) {
+  return httpService.post(`${route}/sign-in`, body) as unknown as IResponse;
+}
+
+export async function getUserAPI(token: string) {
+  return httpService.post(
+    `${route}/me`,
+    {},
+    { headers: { authorization: token } }
+  ) as unknown as IResponse;
+}

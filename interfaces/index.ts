@@ -1,3 +1,6 @@
+import { NextPage } from "next";
+import { ReactElement } from "react";
+
 export interface IContractInputs {
   name: string;
   type: string;
@@ -31,7 +34,7 @@ export interface IEvent {
 }
 
 export interface IItem {
-  id: string;
+  _id: string;
   name: string;
   type: ITypes;
   inputs: IContractInputs[];
@@ -44,7 +47,7 @@ export interface IItem {
 }
 
 export interface IContract {
-  id: string;
+  _id: string;
   creator_id?: string;
   name: string;
   alias: string;
@@ -76,6 +79,7 @@ export interface IUpload {
 }
 
 export interface IStore {
+  contracts: IContract[];
   modal: IModals;
   testContract: IContract;
   upload: IUpload;
@@ -96,7 +100,6 @@ export interface IAuth {
     lastName: string;
     email: string;
   };
-  beimaAuthToken: string;
 }
 
 export interface ISignUp {
@@ -112,6 +115,11 @@ export interface IRTKQueryResponse {
   [key: string]: any;
 }
 
+export interface IResponse {
+  error: { response: { data: any; status: number; [key: string]: any } } | null;
+  response: { data: any; [key: string]: any } | null;
+}
+
 export interface IHelperSlice {
   verifyOTPEmail: string;
 }
@@ -123,6 +131,7 @@ export interface IFiltersSlice {
 }
 
 export interface IUIStateSlice {
+  isPageLoading: boolean;
   openContracts: string[];
   openedOptionId: string;
 }
@@ -136,3 +145,7 @@ export interface IQuery {
 export type IMetaTags = "view" | "payable" | "nonpayable";
 
 export type ITypes = "function" | "event";
+
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => React.ReactNode;
+};

@@ -51,7 +51,7 @@ export const generateDocSchema = (
 
 const getContractSchema = (name: string, data: IFunction[] | IEvent[]) => {
   return {
-    id: getRandomKey(),
+    _id: getRandomKey(),
     creator_id: "",
     name,
     alias: name,
@@ -89,7 +89,7 @@ const generateOutputSchema = (item: any[]) => {
 
 const generateFunctionSchema = (item: any, isNative: boolean) => {
   const data = {
-    id: getRandomKey(),
+    _id: getRandomKey(),
     name: item.name,
     type: item.type,
     inputs: generateInputSchema(item.inputs),
@@ -105,7 +105,7 @@ const generateFunctionSchema = (item: any, isNative: boolean) => {
 
 const generateEventSchema = (item: any, isNative: boolean) => {
   const data = {
-    id: getRandomKey(),
+    _id: getRandomKey(),
     name: item.name,
     type: item.type,
     inputs: generateInputSchema(item.inputs),

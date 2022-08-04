@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container .content {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+
+.content span {
+  color: #767676;
+  font-weight: 550;
+}
+
+.loader svg {
+  margin-bottom: 40px;
+}
+
+.loader svg path {
+  opacity: 0;
+  transition: 0.5s all ease-in-out;
+}
+
+.loader svg path.active {
+  opacity: 1;
+}

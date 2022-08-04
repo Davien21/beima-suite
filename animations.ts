@@ -62,3 +62,12 @@ export const accordionVariants = {
     transitionEnd: { display: "none" },
   },
 };
+
+export const PanelVariants = {
+  shrink: {
+    padding: "10px",
+  },
+  grow: {
+    padding: "70px",
+  },
+};

@@ -15,8 +15,12 @@ import { IContract } from "interfaces";
 import { deleteTestContract } from "store/slices/testContractSlice";
 import confirmation from "services/confirmationService";
 import { setOpenedOptionId } from "store/slices/UIStateSlice";
+import { useRouter } from "next/router";
+import action from "services/actionModalService";
+import { signUpAction, waitlistAction } from "./meta";
 
 export function ContractOptions({ contract }: { contract: IContract }) {
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const optionsMenuRef = useRef<any>(null);
@@ -43,10 +47,12 @@ export function ContractOptions({ contract }: { contract: IContract }) {
 
   const handlePublish = () => {
     if (!isLoggedIn) {
-      alert("You must be logged in to publish a contract");
-      return;
+      const onAction = () => router.push("/login");
+      action.warning(signUpAction(onAction));
+    } else {
+      const onAction = () => console.log("Joined Waitlist");
+      action.info(waitlistAction(onAction));
     }
-    dispatch(setIsContractDescModalOpen(true));
   };
 
   const handleEdit = () => {
@@ -54,8 +60,8 @@ export function ContractOptions({ contract }: { contract: IContract }) {
   };
 
   useEffect(() => {
-    if (isOpen) dispatch(setOpenedOptionId(contract.id));
-  }, [contract.id, dispatch, isOpen]);
+    if (isOpen) dispatch(setOpenedOptionId(contract._id));
+  }, [contract._id, dispatch, isOpen]);
 
   return (
     <div className="flex" ref={objectRef}>

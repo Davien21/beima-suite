@@ -5,6 +5,17 @@ type IOptions = Partial<
 >;
 
 export const PopperOptions = {
+  "header-options": {
+    placement: "left",
+    modifiers: [
+      {
+        name: "offset",
+        options: {
+          offset: [25, 30],
+        },
+      },
+    ],
+  } as IOptions,
   bottom: {
     placement: "bottom",
     modifiers: [

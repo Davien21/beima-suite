@@ -2,49 +2,50 @@ import { CheckboxIcon } from "assets/images";
 import styles from "./contract-list-item.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { SyntheticEvent } from "react";
-import { IContract, IItem, IStore } from "interfaces";
+import { IContract, IItem, IStore, ITypes } from "interfaces";
 import { useRouter } from "next/router";
 import { getItemById } from "utils/helpers";
 import { toggleTestItemHiddenState } from "store/slices/testContractSlice";
 export function ListItem({
+  type,
   contract,
   isChecked,
-  itemId,
-  type,
+  item,
 }: {
+  type: ITypes;
   contract: IContract;
   isChecked: boolean;
-  itemId: string;
-  type: "function" | "event";
+  item: IItem;
 }) {
   const router = useRouter();
   const { itemId: routeItemId } = router.query;
 
   const isLoggedIn = false;
 
-  const item = getItemById(contract, itemId);
-
   const dispatch = useDispatch();
   const onToggle = (e: SyntheticEvent) => {
-    if (!isLoggedIn) dispatch(toggleTestItemHiddenState(itemId));
+    if (!isLoggedIn) dispatch(toggleTestItemHiddenState(item._id));
     e.stopPropagation();
   };
 
-  const route = `/${contract.id}/${itemId}`;
+  const routeToItem = () => {
+    const route = `/${contract._id}/${item._id}`;
+    if (router.asPath !== route) router.push(route);
+  };
 
   let containerClass = `${styles.container} flex items-center px-4 py-2 mb-2`;
   if (!isChecked) containerClass += ` ${styles["false"]}`;
-  if (itemId === routeItemId) containerClass += ` ${styles["active"]}`;
-
+  if (item._id === routeItemId) containerClass += ` ${styles["active"]}`;
+  // console.log(item, routeItemId);
   return (
-    <div className={containerClass} onClick={() => router.push(route)}>
+    <div className={containerClass} onClick={() => routeToItem()}>
       <button className="mr-3" onClick={onToggle}>
         <CheckboxIcon className={`${styles["checkbox"]}`} />
       </button>
       <input
         type="checkbox"
-        name={item?.name}
-        id={item?.name}
+        name={item.name}
+        id={item.name}
         checked={isChecked}
         onChange={onToggle}
       />
@@ -53,7 +54,7 @@ export function ListItem({
           <span className={`${styles[type]}`}>
             {type.charAt(0).toUpperCase()}
           </span>
-          <span>{item?.name}</span>
+          <span>{item.name}</span>
         </div>
       </label>
     </div>

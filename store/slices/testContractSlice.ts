@@ -9,7 +9,7 @@ import {
 } from "utils/helpers";
 
 const initialState: IContract = {
-  id: "",
+  _id: "",
   name: "",
   alias: "",
   data: [],
@@ -25,7 +25,7 @@ export const contractsSlice = createSlice({
     },
     toggleTestItemHiddenState: (state, action: PayloadAction<string>) => {
       const itemId = action.payload;
-      const index = state.data.findIndex((x) => x.id === itemId);
+      const index = state.data.findIndex((x) => x._id === itemId);
       const item = state.data[index];
       item.isHidden = !item.isHidden;
     },
@@ -43,10 +43,10 @@ export const contractsSlice = createSlice({
     },
     setItemDescription: (
       state,
-      action: PayloadAction<{ id: string; description: string }>
+      action: PayloadAction<{ _id: string; description: string }>
     ) => {
-      const { id, description } = action.payload;
-      const item = getItemById(state, id);
+      const { _id, description } = action.payload;
+      const item = getItemById(state, _id);
       item.description = description;
     },
     setTestContractDesc: (state, action: PayloadAction<string>) => {

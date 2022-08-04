@@ -1,17 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { ITypes, IUIStateSlice } from "interfaces";
+import { IUIStateSlice } from "interfaces";
 import { ArrayMinusItem } from "utils/helpers";
 
 const initialState: IUIStateSlice = {
   openContracts: [],
   openedOptionId: "",
+  isPageLoading: false,
 };
 
 export const UIStateSlice = createSlice({
   name: "UIState",
   initialState,
   reducers: {
+    setIsPageLoading: (state, action: PayloadAction<boolean>) => {
+      state.isPageLoading = action.payload;
+    },
     toggleOpenContract: (state, action: PayloadAction<string>) => {
       const contractId = action.payload;
       const openContracts = state.openContracts;
@@ -35,7 +39,11 @@ export const UIStateSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { toggleOpenContract, setOpenContract, setOpenedOptionId } =
-  UIStateSlice.actions;
+export const {
+  toggleOpenContract,
+  setOpenContract,
+  setOpenedOptionId,
+  setIsPageLoading,
+} = UIStateSlice.actions;
 
 export default UIStateSlice.reducer;

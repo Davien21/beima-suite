@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./login.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Input, Button } from "components";
 import { CircleCheckboxIcon, LogoIcon } from "assets/images";
 import Link from "next/link";
+import { loginAPI, verifyEmailAPI } from "services/authService";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { errorMessage } from "utils/helpers";
+import { useLocalStorage } from "usehooks-ts";
 
 const validationSchema = Yup.object({
   email: Yup.string().email().required("Email Address is required"),
@@ -15,7 +20,7 @@ const validationSchema = Yup.object({
 type valuesType = {
   email: string;
   password: string;
-  shouldRemember: boolean;
+  shouldRemember?: boolean;
 };
 
 const initialValues: valuesType = {
@@ -24,23 +29,35 @@ const initialValues: valuesType = {
   shouldRemember: false,
 };
 export default function LoginPage() {
-  const handleSubmit = (values: valuesType) => {
-    console.log(values);
+  const [isLoading, setisLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const [jwt, setJwt] = useLocalStorage("beima-auth-token", "");
+  const handleSubmit = async (values: valuesType) => {
+    setisLoading(true);
+    let result = { ...values };
+    delete result.shouldRemember;
+
+    const { error, response } = await loginAPI(result);
+    setisLoading(false);
+    if (error) toast.error(errorMessage(error));
+
+    if (response) {
+      setJwt(response.data.authToken);
+      router.push("/");
+    }
   };
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: handleSubmit,
   });
-  console.log(formik);
+
   const agreedSVGClass = formik.values.shouldRemember
     ? `${styles["agreed"]} ${styles["active"]}`
     : `${styles["agreed"]}`;
 
   return (
-    <div
-      className={`${styles["container"]} `}
-    >
+    <div className={`${styles["container"]} `}>
       <header className="bg-color mt-32">
         <nav className="">
           <div className="flex justify-center px-14 pb-20 big-logo">
@@ -62,9 +79,7 @@ export default function LoginPage() {
               >
                 <h3 className="mb-3 text-2xl font-bold">Sign In</h3>
                 <div className="mb-6">
-                  <span style={{ color: "#A3A3A4" }}>
-                    Already have an account?
-                  </span>
+                  <span style={{ color: "#A3A3A4" }}>Not yet registered?</span>
                   <Link href="signup">
                     <a
                       className={`${styles["link"]} font-semibold cursor-pointer`}
@@ -97,9 +112,9 @@ export default function LoginPage() {
                       )
                     }
                   >
-                    <div className={agreedSVGClass}>
+                    <button type="button" className={agreedSVGClass}>
                       <CircleCheckboxIcon />
-                    </div>
+                    </button>
                     <span className="text-sm">Remember me</span>
                   </div>
                   <Link href="forgot-password">
@@ -111,10 +126,12 @@ export default function LoginPage() {
 
                 <div className="">
                   <Button
+                    type="submit"
+                    isLoading={isLoading}
                     disabled={!formik.dirty || !formik.isValid}
                     className="mt-4 full-width block"
                   >
-                    Sign Up
+                    Log in
                   </Button>
                 </div>
               </form>
