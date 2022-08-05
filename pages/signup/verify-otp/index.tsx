@@ -6,12 +6,9 @@ import Link from "next/link";
 import { LogoIcon } from "assets/images";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { useVerifyOTPQuery, verifyEmailAPI } from "services/authService";
+import { verifyEmailAPI } from "services/authService";
 import { errorMessage } from "utils/helpers";
-import { setAuthToken } from "store/slices/authSlice";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { IStore } from "interfaces";
 import { useLocalStorage } from "usehooks-ts";
 
 export default function VerifySignup() {

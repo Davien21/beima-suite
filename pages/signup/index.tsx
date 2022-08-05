@@ -5,7 +5,7 @@ import styles from "./signup.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
-import { signupAPI, useSignUpMutation } from "services/authService";
+import { signupAPI } from "services/authService";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { IResponse, IRTKQueryResponse } from "interfaces";
