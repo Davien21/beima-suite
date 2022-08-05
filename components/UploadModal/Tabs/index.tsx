@@ -58,9 +58,9 @@ export default function UploadTabs() {
               const fileBlob = new Blob([file]);
               (async () => {
                 const content = await fileBlob.text();
-                const docs = getContractItemNames(content);
+                const contracts = getContractItemNames(content);
                 const name = getContractName(content);
-                dispatch(setUploadedContractData(docs));
+                dispatch(setUploadedContractData(contracts));
                 dispatch(setUploadedContractName(name));
               })();
             }}

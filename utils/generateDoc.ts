@@ -2,8 +2,8 @@ import { IContract, IContractInputs, IEvent, IFunction } from "interfaces";
 import { getRandomKey } from "./randomKey";
 
 export const getContractItemNames = (content: string) => {
-  const docsArray = getContractsArray(content);
-  return getDocItemNames(docsArray);
+  const contractsArray = getContractsArray(content);
+  return getDocItemNames(contractsArray);
 };
 
 export const getContractsArray = (content: string) => {
@@ -21,8 +21,8 @@ export const getContractName = (content: string) => {
   return name || "";
 };
 
-export const getDocItemNames = (docsArray: string[]) => {
-  return docsArray.map((fx: string) => {
+export const getDocItemNames = (contractsArray: string[]) => {
+  return contractsArray.map((fx: string) => {
     const arr = fx.split(" ");
     let name;
     if (!arr.includes("function") && !arr.includes("event"))

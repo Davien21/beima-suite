@@ -36,6 +36,17 @@ export async function updateContractItem(
   }) as unknown as IResponse;
 }
 
+export async function toggleLinkEvent(
+  contractId: string,
+  itemId: string,
+  body: any,
+  token: string
+) {
+  return httpService.patch(`${route}/${contractId}/${itemId}/event`, body, {
+    headers: { authorization: token },
+  }) as unknown as IResponse;
+}
+
 export async function publishContract(contractId: string, token: string) {
   return httpService.patch(
     `${route}/publish/${contractId}`,

@@ -143,8 +143,8 @@ export function ContractDescModal() {
               <div className="flex gap-x-2">
                 <Button
                   disabled={
-                    !formik.dirty ||
-                    !formik.isValid ||
+                    // !formik.dirty ||
+                    // !formik.isValid ||
                     !formik.touched["description"]
                   }
                   type="submit"

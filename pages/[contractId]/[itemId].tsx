@@ -13,7 +13,7 @@ import {
 } from "components";
 import { useRouter } from "next/router";
 import { useSelector, useDispatch } from "react-redux";
-import { IContract, IMetaTags, IQuery, IStore } from "interfaces";
+import { IContract, IItem, IMetaTags, IQuery, IStore } from "interfaces";
 import styles from "./item-page.module.css";
 import { EditIcon, SettingsIcon } from "assets/images";
 import {
@@ -25,12 +25,14 @@ import {
 } from "utils";
 import { setIsItemDescModalOpen } from "store/slices/modalSlice";
 import { toast } from "react-toastify";
-import { getItemById } from "utils/helpers";
+import { ArrayMinusItem, deepClone, getItemById } from "utils/helpers";
 import { toggleOpenContract } from "store/slices/UIStateSlice";
 import { toggleLinkTestEvent } from "store/slices/testContractSlice";
-import { useEffectOnce } from "usehooks-ts";
+import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 import { useGetContracts } from "hooks/apis/useGetContracts";
 import { useGetItem } from "hooks/apis";
+import { toggleLinkEvent } from "services/contractsService";
+import { mutate as globalMutate } from "swr";
 
 export default function ItemPage() {
   const { user } = useSelector((state: IStore) => state.auth);
@@ -39,10 +41,10 @@ export default function ItemPage() {
   const isLoggedIn = !!user.firstName;
   const dispatch = useDispatch();
 
-  let item, contract: IContract | undefined;
+  let item: IItem | undefined, contract: IContract | undefined;
   const testContract = useSelector((state: IStore) => state.testContract);
   let { data: contracts } = useGetContracts();
-  let { data: itemData, isLoading } = useGetItem({ contractId, itemId });
+  let { data: itemData, mutate } = useGetItem({ contractId, itemId });
 
   if (!isLoggedIn) {
     contract = testContract;
@@ -54,6 +56,7 @@ export default function ItemPage() {
     }
   }
 
+  const [authToken, setJwt] = useLocalStorage("beima-auth-token", "");
   const isValidRoute = !!item;
 
   useEffect(() => {
@@ -67,12 +70,34 @@ export default function ItemPage() {
 
   const linkedEvents = getLinkedEvents(contract, itemId);
   const eventsWithState = getEventsWithActiveState(contract, itemId);
-
+  let url = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+  url = `${url}/contracts`;
   const hasMeta = item.meta;
 
   const linkEvent = (event: string) => {
     if (!isLoggedIn) {
       dispatch(toggleLinkTestEvent({ functionId: itemId, event }));
+    } else {
+      let newLinkedEvents;
+      if (!itemData?.linkedEvents) return;
+      if (itemData.linkedEvents.includes(event)) {
+        newLinkedEvents = ArrayMinusItem(itemData.linkedEvents, event);
+      } else newLinkedEvents = [...itemData.linkedEvents, event];
+      let newItem = deepClone(itemData);
+      newItem.linkedEvents = newLinkedEvents;
+
+      const options = { optimisticData: newItem, rollbackOnError: true };
+      mutate(async () => {
+        const { error } = await toggleLinkEvent(
+          contractId,
+          itemData._id,
+          { event },
+          authToken
+        );
+        if (error) return toast.error("Error updating this item");
+        globalMutate(url);
+        return newItem;
+      }, options);
     }
   };
   return (

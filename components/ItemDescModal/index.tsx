@@ -79,8 +79,8 @@ export function ItemDescModal({ item }: { item: IItem }) {
   });
 
   useEffect(() => {
-    // formik.values["description"] = description;
-  }, [description, formik.values]);
+    formik.initialValues["description"] = description;
+  }, [description, formik.initialValues]);
 
   const { isItemDescModalOpen } = useSelector((state: IStore) => state.modal);
 

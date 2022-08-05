@@ -8,8 +8,7 @@ import Link from "next/link";
 import { signupAPI } from "services/authService";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import { IResponse, IRTKQueryResponse } from "interfaces";
-import { apiResponse, errorMessage } from "utils/helpers";
+import { errorMessage } from "utils/helpers";
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required("First name is required"),
