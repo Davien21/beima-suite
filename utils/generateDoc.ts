@@ -2,11 +2,11 @@ import { IContract, IContractInputs, IEvent, IFunction } from "interfaces";
 import { getRandomKey } from "./randomKey";
 
 export const getContractItemNames = (content: string) => {
-  const docsArray = getDocsArray(content);
+  const docsArray = getContractsArray(content);
   return getDocItemNames(docsArray);
 };
 
-export const getDocsArray = (content: string) => {
+export const getContractsArray = (content: string) => {
   const regex =
     /(\b(?=\w)function \w+\(?.+\))|(\b(?=\w)event \w+\(?.+\))|(\w+ (public|external) \w+)/gim;
   const parsed = content.split(regex);

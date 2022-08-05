@@ -9,7 +9,7 @@ import { BulbIcon } from "./bulbIcon";
 
 export function BottomPanel() {
   const testContract = useSelector((state: IStore) => state.testContract);
-  const hasContracts = !!testContract.name;
+  const hasContracts = true;
   const [isOpen, setIsOpen] = useState<boolean>(true);
 
   let containerClass = `gap-3 ${styles["container"]}`;

@@ -29,7 +29,7 @@ import { getItemById } from "utils/helpers";
 import { toggleOpenContract } from "store/slices/UIStateSlice";
 import { toggleLinkTestEvent } from "store/slices/testContractSlice";
 import { useEffectOnce } from "usehooks-ts";
-import { useGetDocs } from "hooks/apis/useGetDocs";
+import { useGetContracts } from "hooks/apis/useGetContracts";
 import { useGetItem } from "hooks/apis";
 
 export default function ItemPage() {
@@ -41,30 +41,24 @@ export default function ItemPage() {
 
   let item, contract: IContract | undefined;
   const testContract = useSelector((state: IStore) => state.testContract);
-  let { data: contracts } = useGetDocs();
-  const { data } = useGetItem({ contractId, itemId });
+  let { data: contracts } = useGetContracts();
+  let { data: itemData, isLoading } = useGetItem({ contractId, itemId });
 
   if (!isLoggedIn) {
     contract = testContract;
     item = getItemById(testContract, itemId);
-  } else {
-    if (contracts) {
+  } else if (isLoggedIn) {
+    if (itemData) {
       contract = contracts.find((c: IContract) => c._id === contractId);
-      if (contract) item = getItemById(contract, itemId);
+      if (contract) item = itemData;
     }
   }
-
-  useEffect(() => {
-    if (data?.data) {
-      console.log(data.data);
-    }
-  }, [data]);
 
   const isValidRoute = !!item;
 
   useEffect(() => {
     if (!contractId) return;
-    if (!isValidRoute) router.replace("/");
+    // if (!isValidRoute) router.replace("/");
   }, [contractId, dispatch, isValidRoute, router]);
 
   const { activeControl } = useSelector((state: IStore) => state.filters);

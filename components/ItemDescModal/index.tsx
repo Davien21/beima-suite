@@ -16,13 +16,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { setItemDescription } from "store/slices/testContractSlice";
 import { capitalize, deepClone, errorMessage } from "utils/helpers";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { useRouter } from "next/router";
-import { updateContract } from "services/docsService";
+import { updateContract, updateContractItem } from "services/contractsService";
 import { useLocalStorage } from "usehooks-ts";
 import { toast } from "react-toastify";
-import { useGetDocs } from "hooks/apis/useGetDocs";
+import { useGetContracts } from "hooks/apis/useGetContracts";
 import { useGetItem } from "hooks/apis";
+import { setContracts } from "store/slices/contractSlice";
 
 const validationSchema = Yup.object({ description: Yup.string() });
 interface IForm {
@@ -35,8 +36,8 @@ export function ItemDescModal({ item }: { item: IItem }) {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state: IStore) => state.auth);
-  let { data: contracts } = useGetDocs();
-  const contract = contracts.find((c) => c._id === contractId);
+  let { data: itemData, mutate } = useGetItem({ contractId, itemId });
+  // const contract = contracts.find((c) => c._id === contractId);
 
   const isLoggedIn = !!user.firstName;
   const { _id, description } = item;
@@ -47,37 +48,27 @@ export function ItemDescModal({ item }: { item: IItem }) {
   };
   const [authToken, setJwt] = useLocalStorage("beima-auth-token", "");
 
-  const { data, mutate } = useGetItem({ contractId, itemId });
+  // const { data, mutate } = useGetItem({ contractId, itemId });
 
   const [isLoading, setisLoading] = useState(false);
   const handleSubmit = async (values: IForm) => {
     const { description } = values;
+    const update = { _id, description };
     if (!isLoggedIn) {
-      dispatch(setItemDescription({ _id, description }));
-    } else {
-      if (contract) {
-        let url = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-        url = `${url}/docs`;
-
-        let newItem = { ...item };
-        mutate(
-          (async () => {
-            if (newItem) {
-              await fetch(`${url}/${contract._id}/${newItem._id}`, {
-                body: newItem,
-                method: "PUT",
-                headers: { authorization: authToken },
-              });
-            }
-          })(),
-          { rollbackOnError: false }
+      // console.log(isLoggedIn)
+      dispatch(setItemDescription(update));
+    } else if (isLoggedIn) {
+      let newItem = { ...itemData, description };
+      const options = { optimisticData: newItem, rollbackOnError: true };
+      mutate(async () => {
+        const { error } = await updateContractItem(
+          contractId,
+          update,
+          authToken
         );
-
-        // const { error, response } = await updateContract(newContract, jwt);
-        // setisLoading(false);
-        // if (response) closeModal();
-        // if (error) toast.error(errorMessage(error));
-      }
+        if (error) return toast.error("Error updating this description");
+        return newItem;
+      }, options);
     }
   };
 

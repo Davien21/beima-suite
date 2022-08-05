@@ -5,7 +5,7 @@ import { errorMessage } from "../../utils/helpers";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { useLocalStorage } from "usehooks-ts";
-import { IResponse } from "interfaces";
+import { IItem, IResponse } from "interfaces";
 import { useDispatch } from "react-redux";
 import { setContracts } from "store/slices/contractSlice";
 import { setIsPageLoading } from "store/slices/UIStateSlice";
@@ -18,7 +18,7 @@ function useGetItem({
   itemId: string;
 }) {
   let url = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-  url = `${url}/docs/${contractId}/${itemId}`;
+  url = `${url}/contracts/${contractId}/${itemId}`;
   const dispatch = useDispatch();
   const initialState = {
     _id: "",
@@ -41,14 +41,14 @@ function useGetItem({
   const canFetch = !!contractId && !!itemId && !!authToken;
 
   const { data, error, mutate } = useSWR(`${url}`, canFetch ? fetcher : null);
-  const isLoading = !!authToken && !error && !data;
+  const isLoading = canFetch && !error && !data;
 
   useEffect(() => {
     dispatch(setIsPageLoading(isLoading));
   }, [isLoading, dispatch]);
 
   return {
-    data: data || initialState,
+    data: (data?.data || initialState) as IItem,
     isLoading,
     isEmpty: !data?.data,
     isError: error,

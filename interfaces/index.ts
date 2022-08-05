@@ -55,6 +55,15 @@ export interface IContract {
   description: string;
 }
 
+export interface ITestContract {
+  _id: string;
+  creator_id?: string;
+  name: string;
+  alias: string;
+  data: IItem[];
+  description: string;
+}
+
 export interface IHiddenContractItem {
   contractId: string;
   isHidden: boolean;

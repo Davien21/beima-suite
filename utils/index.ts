@@ -14,7 +14,7 @@ import {
   getContractItemNames,
   generateDocSchema,
   getDocItemNames,
-  getDocsArray,
+  getContractsArray,
   getContractName,
 } from "./generateDoc";
 
@@ -26,7 +26,7 @@ export {
   getContractItemNames,
   generateDocSchema,
   getDocItemNames,
-  getDocsArray,
+  getContractsArray,
   getContractName,
   capitalize,
   getLinkedEvents,

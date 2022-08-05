@@ -11,9 +11,9 @@ import { setContracts } from "store/slices/contractSlice";
 import { setIsPageLoading } from "store/slices/UIStateSlice";
 
 let url = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-url = `${url}/docs`;
+url = `${url}/contracts`;
 
-function useGetDocs() {
+function useGetContracts() {
   const dispatch = useDispatch();
   const initialState: IContract[] = [];
   const [authToken, setJwt] = useLocalStorage("beima-auth-token", "");
@@ -30,7 +30,7 @@ function useGetDocs() {
     dispatch(setIsPageLoading(isLoading));
   }, [isLoading, dispatch]);
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
   }, [data]);
   return {
     data: (data?.data || initialState) as IContract[],
@@ -41,4 +41,4 @@ function useGetDocs() {
   };
 }
 
-export { useGetDocs };
+export { useGetContracts };

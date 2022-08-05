@@ -20,9 +20,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 import { getUserAPI } from "services/authService";
 import { setUser } from "store/slices/authSlice";
-import { uploadDocsAPI } from "services/docsService";
+import { uploadContractsAPI } from "services/contractsService";
 import { deleteTestContract } from "store/slices/testContractSlice";
-import { useGetDocs } from "hooks/apis/useGetDocs";
+import { useGetContracts } from "hooks/apis/useGetContracts";
 import { setContracts } from "store/slices/contractSlice";
 
 type AppPropsWithLayout = AppProps & {

@@ -3,6 +3,7 @@ import { IContract, IItem, IQuery, ITypes } from "interfaces";
 import React, { useEffect } from "react";
 import { ListItem } from "./listItem";
 import { useRouter } from "next/router";
+import { useGetItem } from "hooks/apis";
 
 export function ContractList({
   showInherited,
@@ -25,9 +26,9 @@ export function ContractList({
     }
   });
   useEffect(() => {
-    console.log(isOpen);
+    // console.log(isOpen);
   }, [isOpen]);
-  const hasOpened = isOpen || isActive;
+  const hasOpened = isOpen;
   return (
     <>
       {hasOpened && (

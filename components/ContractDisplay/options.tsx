@@ -9,15 +9,18 @@ import { motion } from "framer-motion";
 import { useClickOutside, usePopper } from "hooks";
 import { arrowVariants, menuVariants } from "animations";
 import Pstyles from "./contract-display.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsContractDescModalOpen } from "store/slices/modalSlice";
-import { IContract } from "interfaces";
+import { IContract, IStore } from "interfaces";
 import { deleteTestContract } from "store/slices/testContractSlice";
 import confirmation from "services/confirmationService";
 import { setOpenedOptionId } from "store/slices/UIStateSlice";
 import { useRouter } from "next/router";
 import action from "services/actionModalService";
 import { signUpAction, waitlistAction } from "./meta";
+import { publishContract } from "services/contractsService";
+import { useLocalStorage } from "usehooks-ts";
+import { toast } from "react-toastify";
 
 export function ContractOptions({ contract }: { contract: IContract }) {
   const router = useRouter();
@@ -37,7 +40,9 @@ export function ContractOptions({ contract }: { contract: IContract }) {
 
   const initialAnimation = { rotate: 180, transition: { duration: 0 } };
 
-  const isLoggedIn = false;
+  const { user } = useSelector((state: IStore) => state.auth);
+  const isLoggedIn = !!user.firstName;
+  const [authToken, setJwt] = useLocalStorage("beima-auth-token", "");
 
   const handleDeleteContract = () => {
     const message = `Are you sure you want to delete ${contract.name}?`;
@@ -50,7 +55,18 @@ export function ContractOptions({ contract }: { contract: IContract }) {
       const onAction = () => router.push("/login");
       action.warning(signUpAction(onAction));
     } else {
-      const onAction = () => console.log("Joined Waitlist");
+      const onAction = async () => {
+        const { error, response } = await publishContract(
+          contract._id,
+          authToken
+        );
+        if (error)
+          return toast.error(
+            "That's weird, it didn't work!. dm us on Twitter!"
+          );
+        toast.success("Yayy!, you've been added to the waitlist");
+        // console.log("Joined Waitlist");
+      };
       action.info(waitlistAction(onAction));
     }
   };
@@ -61,6 +77,7 @@ export function ContractOptions({ contract }: { contract: IContract }) {
 
   useEffect(() => {
     if (isOpen) dispatch(setOpenedOptionId(contract._id));
+    // console.log(contract._id);
   }, [contract._id, dispatch, isOpen]);
 
   return (

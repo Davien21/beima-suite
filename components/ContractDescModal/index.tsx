@@ -16,6 +16,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
 import { setTestContractDesc } from "store/slices/testContractSlice";
+import { useGetContracts } from "hooks/apis/useGetContracts";
+import { updateContract } from "services/contractsService";
+import { deepClone } from "utils/helpers";
+import { useEffectOnce, useLocalStorage } from "usehooks-ts";
+import { toast } from "react-toastify";
 
 const validationSchema = Yup.object({ description: Yup.string() });
 interface IForm {
@@ -23,24 +28,36 @@ interface IForm {
 }
 
 export function ContractDescModal() {
-  const isLoggedIn = false;
+  const { openedOptionId: contractId } = useSelector(
+    (state: IStore) => state.UIState
+  );
+  const { user } = useSelector((state: IStore) => state.auth);
+  const isLoggedIn = !!user.firstName;
+
   const testContract = useSelector((state: IStore) => state.testContract);
-  let contract = testContract;
-  if (isLoggedIn) {
-    // contract = testContract;
-  }
+  const { data: contracts, mutate } = useGetContracts();
 
-  const description = contract.description;
+  const [authToken, setJwt] = useLocalStorage("beima-auth-token", "");
+  const [description, setdescription] = useState(testContract.description);
   const initialValues: IForm = { description };
-
-  const closeModal = () => {
-    dispatch(setIsContractDescModalOpen(false));
-  };
 
   const handleSubmit = (values: IForm) => {
     const { description } = values;
+    let update = { _id: contractId, description };
     if (!isLoggedIn) {
       dispatch(setTestContractDesc(description));
+    } else {
+      let contractIndex = contracts.findIndex((c) => c._id === contractId);
+      let contract = deepClone(contracts[contractIndex]);
+      let newContract = { ...contract, description };
+      let newContracts = deepClone(contracts);
+      newContracts[contractIndex] = newContract;
+      const options = { optimisticData: newContracts, rollbackOnError: true };
+      mutate(async () => {
+        const { error } = await updateContract(update, authToken);
+        if (error) return toast.error("Error updating this description");
+        return newContracts;
+      }, options);
     }
     closeModal();
   };
@@ -50,6 +67,17 @@ export function ContractDescModal() {
     validationSchema,
     onSubmit: handleSubmit,
   });
+
+  useEffect(() => {
+    if (!!!contracts.length) return;
+    const desc = contracts.find((c) => c._id === contractId)?.description || "";
+    formik.initialValues.description = desc;
+  }, [contracts, formik.initialValues, contractId]);
+
+  const closeModal = () => {
+    dispatch(setIsContractDescModalOpen(false));
+  };
+
   const { isContractDescModalOpen } = useSelector(
     (state: IStore) => state.modal
   );
@@ -113,7 +141,16 @@ export function ContractDescModal() {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex gap-x-2">
-                <Button type="submit">Save</Button>
+                <Button
+                  disabled={
+                    !formik.dirty ||
+                    !formik.isValid ||
+                    !formik.touched["description"]
+                  }
+                  type="submit"
+                >
+                  Save
+                </Button>
                 <Button
                   secondary
                   disabled={!formik.dirty || !formik.isValid}

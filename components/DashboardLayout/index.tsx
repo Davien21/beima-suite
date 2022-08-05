@@ -26,14 +26,15 @@ import { IContract, IStore } from "interfaces";
 import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 import { getUserAPI } from "services/authService";
 import { setUser } from "store/slices/authSlice";
-import { uploadDocsAPI } from "services/docsService";
+import { uploadContractsAPI } from "services/contractsService";
 import { deleteTestContract } from "store/slices/testContractSlice";
-import { useGetDocs } from "hooks/apis/useGetDocs";
+import { useGetContracts } from "hooks/apis/useGetContracts";
 import { setContracts } from "store/slices/contractSlice";
 import useSWR from "swr";
 
 function DashboardLayout({ children }: { children?: React.ReactNode }) {
   const dispatch = useDispatch();
+  const { openedOptionId } = useSelector((state: IStore) => state.UIState);
 
   const [isShowingFilter, setisShowingFilter] = useState<boolean>(false);
   const toggleFilter = () => {
@@ -62,21 +63,17 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
   });
 
   const handleSync = useCallback(async () => {
-    const { error, response } = await uploadDocsAPI([testContract], authToken);
+    const { error, response } = await uploadContractsAPI(
+      [testContract],
+      authToken
+    );
     if (response) dispatch(deleteTestContract());
-    // console.log(error, response);
   }, [authToken, dispatch, testContract]);
-
-  const { data } = useGetDocs();
-  // useEffect(() => {
-  //   if (isLoggedIn && !!testContract.name) {
-  //     handleSync();
-  //   }
-  // }, [handleSync, isLoggedIn, testContract.name]);
-
   useEffect(() => {
-    if (data?.length) dispatch(setContracts(data));
-  }, [data, dispatch]);
+    if (isLoggedIn && !!testContract.name) {
+      handleSync();
+    }
+  }, [handleSync, isLoggedIn, testContract.name]);
 
   return (
     <>
@@ -84,9 +81,10 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
       <main className="hidden lg:block">
         <UploadModal />
         <ConfirmationModal />
-        <ContractDescModal />
+        {!!openedOptionId && <ContractDescModal />}
+
         <ActionModal />
-        <section className={`${styles["container"]} flex w-full`}>
+        <section className={`${styles["container"]} flex w-full py`}>
           <div className={`flex flex-col ${styles["left"]}`}>
             <button
               className={`${tabClass("Workspace")} `}
