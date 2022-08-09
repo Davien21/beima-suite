@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setIsUploadModalOpen } from "store/slices/modalSlice";
-import { IContract, IStore } from "interfaces";
+import { IAuth, IContract, IStore } from "interfaces";
 import { useEffectOnce, useLocalStorage } from "usehooks-ts";
 import { getUserAPI } from "services/authService";
 import { setUser } from "store/slices/authSlice";
@@ -30,10 +30,20 @@ import { uploadContractsAPI } from "services/contractsService";
 import { deleteTestContract } from "store/slices/testContractSlice";
 import { useGetContracts } from "hooks/apis/useGetContracts";
 import { setContracts } from "store/slices/contractSlice";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 
-function DashboardLayout({ children }: { children?: React.ReactNode }) {
+function DashboardLayout({
+  children,
+  currentUser,
+}: {
+  currentUser?: IAuth["user"];
+  children?: React.ReactNode;
+}) {
   const dispatch = useDispatch();
+
+  useState(() => {
+    if (currentUser) dispatch(setUser(currentUser));
+  });
   const { openedOptionId } = useSelector((state: IStore) => state.UIState);
 
   const [isShowingFilter, setisShowingFilter] = useState<boolean>(false);
@@ -47,10 +57,10 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
     if (name === activeTab) return `${defaults} ${styles["active"]}`;
     return defaults;
   };
-  // console.log("DashboardLayout");
   const { user } = useSelector((state: IStore) => state.auth);
+
   const testContract = useSelector((state: IStore) => state.testContract);
-  const isLoggedIn = !!user.firstName;
+  const isLoggedIn = !!user?.firstName;
   let [authToken] = useLocalStorage("beima-auth-token", "");
 
   const getUser = useCallback(async () => {

@@ -8,6 +8,9 @@ const initialState: IAuth = {
     firstName: "",
     lastName: "",
     email: "",
+    isVerified: false,
+    isActive: false,
+    role: "user"
   },
 };
 

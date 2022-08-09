@@ -8,6 +8,7 @@ import {
   IResponse,
 } from "interfaces";
 import _ from "lodash";
+import { getCookie } from "cookies-next";
 
 export const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -105,11 +106,14 @@ export const apiResponse = (result: IResponse) => {
   if (response) return { error, data: response.data };
 };
 
-export const getAuthToken = () => {
-  return localStorage.getItem("beima-auth-token") || "";
-};
-
 export const deepClone = (object: any) => {
   return JSON.parse(JSON.stringify(object));
   return _.cloneDeep(object);
+};
+
+export const getAuthToken = (options?: any) => {
+  let authToken;
+  if (options) authToken = getCookie("beima-auth-token", options) || "";
+  authToken = getCookie("beima-auth-token") || "";
+  return authToken.toString();
 };

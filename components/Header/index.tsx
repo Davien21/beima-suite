@@ -1,5 +1,6 @@
 import { Select } from "components/Select";
 import { Tooltip } from "components/Tooltip";
+import { useUser } from "hooks/apis";
 import { IAuth, IContract, IStore } from "interfaces";
 import Head from "next/head";
 import Link from "next/link";
@@ -14,6 +15,8 @@ import styles from "./header.module.css";
 import { HeaderOptions } from "./HeaderOptions";
 
 function Header() {
+  const { user: userData } = useUser();
+  console.log("data", userData);
   const { user } = useSelector((state: IStore) => state.auth);
   const isLoggedIn = !!user.firstName;
   const fullName = getFullName(user);

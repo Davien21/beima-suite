@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { errorMessage } from "utils/helpers";
 import { useLocalStorage } from "usehooks-ts";
+import { setCookie } from "cookies-next";
 
 const validationSchema = Yup.object({
   email: Yup.string().email().required("Email Address is required"),
@@ -42,6 +43,7 @@ export default function LoginPage() {
     if (error) toast.error(errorMessage(error));
 
     if (response) {
+      setCookie("beima-auth-token", response.data.authToken);
       setJwt(response.data.authToken);
       router.push("/");
     }

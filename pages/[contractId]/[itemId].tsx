@@ -43,17 +43,17 @@ export default function ItemPage() {
 
   let item: IItem | undefined, contract: IContract | undefined;
   const testContract = useSelector((state: IStore) => state.testContract);
-  let { data: contracts } = useGetContracts();
-  let { data: itemData, mutate } = useGetItem({ contractId, itemId });
+  let { data: contracts, mutate } = useGetContracts();
+  // let { data: item, mutate } = useGetItem({ contractId, itemId });
 
   if (!isLoggedIn) {
     contract = testContract;
     item = getItemById(testContract, itemId);
   } else if (isLoggedIn) {
-    if (itemData) {
-      contract = contracts.find((c: IContract) => c._id === contractId);
-      if (contract) item = itemData;
-    }
+    // if (item) {
+    contract = contracts.find((c: IContract) => c._id === contractId);
+    if (contract) item = getItemById(contract, itemId);
+    // }
   }
 
   const [authToken, setJwt] = useLocalStorage("beima-auth-token", "");
@@ -79,18 +79,19 @@ export default function ItemPage() {
       dispatch(toggleLinkTestEvent({ functionId: itemId, event }));
     } else {
       let newLinkedEvents;
-      if (!itemData?.linkedEvents) return;
-      if (itemData.linkedEvents.includes(event)) {
-        newLinkedEvents = ArrayMinusItem(itemData.linkedEvents, event);
-      } else newLinkedEvents = [...itemData.linkedEvents, event];
-      let newItem = deepClone(itemData);
+      if (!item?.linkedEvents) return;
+      if (item.linkedEvents.includes(event)) {
+        newLinkedEvents = ArrayMinusItem(item.linkedEvents, event);
+      } else newLinkedEvents = [...item.linkedEvents, event];
+      let newItem = deepClone(item);
       newItem.linkedEvents = newLinkedEvents;
 
       const options = { optimisticData: newItem, rollbackOnError: true };
       mutate(async () => {
+        if (!item) return;
         const { error } = await toggleLinkEvent(
           contractId,
-          itemData._id,
+          item._id,
           { event },
           authToken
         );

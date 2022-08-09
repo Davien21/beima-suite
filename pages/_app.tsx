@@ -24,6 +24,7 @@ import { uploadContractsAPI } from "services/contractsService";
 import { deleteTestContract } from "store/slices/testContractSlice";
 import { useGetContracts } from "hooks/apis/useGetContracts";
 import { setContracts } from "store/slices/contractSlice";
+import { useRouteChangeHandler } from "hooks";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -60,11 +61,11 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 
 const Body = ({ Component, pageProps, router }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
-
+  const { routeChanging } = useRouteChangeHandler();
   const { isPageLoading } = useSelector((state: IStore) => state.UIState);
   return (
     <>
-      {isPageLoading ? <PageLoader /> : ""}
+      {isPageLoading || routeChanging ? <PageLoader /> : ""}
       {getLayout(<Component {...pageProps} />)}
     </>
   );

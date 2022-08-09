@@ -6,6 +6,7 @@ import styles from "./header-options.module.css";
 import { useDispatch } from "react-redux";
 import { triggerLogout } from "store/slices/authSlice";
 import { useLocalStorage } from "usehooks-ts";
+import { removeCookies } from "cookies-next";
 
 export function HeaderOptions({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export function HeaderOptions({ children }: { children: React.ReactNode }) {
   const logout = () => {
     dispatch(triggerLogout());
     setJwt("");
+    removeCookies("beima-auth-token");
     closeMenu();
   };
 

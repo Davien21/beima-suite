@@ -108,6 +108,9 @@ export interface IAuth {
     firstName: string;
     lastName: string;
     email: string;
+    isVerified: boolean,
+    isActive: boolean,
+    role: string
   };
 }
 

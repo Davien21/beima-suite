@@ -5,3 +5,4 @@ export * from "./useKeyPress";
 export * from "./usePopper";
 export * from "./useModal";
 export * from "./useMutationCall";
+export * from "./useRouteChangeHandler";
