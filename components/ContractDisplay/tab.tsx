@@ -23,7 +23,7 @@ export function ContractTab({ contract }: { contract: IContract }) {
   const isActive = contract._id === contractId;
 
   const handleToggleOpenState = () => {
-    console.log("toggleOpenState");
+    // console.log("toggleOpenState");
     dispatch(toggleOpenContract(contract._id));
   };
 

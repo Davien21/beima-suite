@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { useModal, usePropsForItem } from "hooks";
 import { setIsItemDescModalOpen } from "store/slices/modalSlice";
-import { IStore } from "interfaces";
+import { IItem, IStore } from "interfaces";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { capitalize } from "utils/helpers";
@@ -24,11 +24,9 @@ interface IForm {
 export function ItemDescModal() {
   const { item, setDescription } = usePropsForItem();
   const dispatch = useDispatch();
-
-  const { _id, description } = item;
+  const { _id, description } = item as IItem;
   const initialValues: IForm = { description };
   const { activeControl } = useSelector((state: IStore) => state.filters);
-  const [lastDesc, setlastDesc] = useState(description);
   const closeModal = () => {
     dispatch(setIsItemDescModalOpen(false));
   };
@@ -38,7 +36,6 @@ export function ItemDescModal() {
     const update = { _id, description };
     setDescription(update);
     closeModal();
-    setlastDesc(description);
   };
 
   const formik = useFormik({
@@ -47,11 +44,21 @@ export function ItemDescModal() {
     onSubmit: handleSubmit,
   });
 
-  useEffect(() => {
-    formik.initialValues["description"] = description;
-  }, [description, formik.initialValues]);
+  const canChange = () => {
+    if (formik.isValid && description !== formik.values["description"])
+      return true;
+  };
 
   const { isItemDescModalOpen } = useSelector((state: IStore) => state.modal);
+
+  useEffect(() => {
+    if (isItemDescModalOpen) {
+      formik.initialValues["description"] = description;
+    }
+    if (!isItemDescModalOpen) {
+      formik.values["description"] = description;
+    }
+  }, [description, formik.initialValues, formik.values, isItemDescModalOpen]);
 
   const [isShowingMarkdown, setisShowingMarkdown] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -113,12 +120,7 @@ export function ItemDescModal() {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex gap-x-2">
-                <Button
-                  disabled={
-                    formik.values["description"] === lastDesc || !formik.isValid
-                  }
-                  type="submit"
-                >
+                <Button disabled={!canChange()} type="submit">
                   Save
                 </Button>
                 <Button

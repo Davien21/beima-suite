@@ -24,7 +24,7 @@ export function ContractDescModal() {
   const { openedOptionId: openContractId } = useSelector(
     (state: IStore) => state.UIState
   );
-  const { contract, setDescription } = usePropsForContract();
+  const { contract, setDescription } = usePropsForContract(openContractId);
 
   const initialValues: IForm = { description: contract.description };
 
@@ -40,14 +40,37 @@ export function ContractDescModal() {
     validationSchema,
     onSubmit: handleSubmit,
   });
+
   const dispatch = useDispatch();
 
   const { isContractDescModalOpen } = useSelector(
     (state: IStore) => state.modal
   );
+
+  const canChange = () => {
+    if (formik.isValid && contract.description !== formik.values["description"])
+      return true;
+  };
+
   useEffect(() => {
     formik.initialValues.description = contract.description;
   }, [formik.initialValues, openContractId, contract.description]);
+
+  useEffect(() => {
+    if (isContractDescModalOpen) {
+      formik.initialValues["description"] = contract.description;
+    }
+    if (!isContractDescModalOpen) {
+      formik.values["description"] = contract.description;
+    }
+  }, [
+    contract,
+    contract.description,
+    formik.initialValues,
+    formik.values,
+    isContractDescModalOpen,
+    openContractId,
+  ]);
 
   const closeModal = () => {
     formik.values["description"] = contract.description;
@@ -114,13 +137,7 @@ export function ContractDescModal() {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex gap-x-2">
-                <Button
-                  disabled={
-                    formik.values["description"] === contract.description ||
-                    !formik.isValid
-                  }
-                  type="submit"
-                >
+                <Button disabled={!canChange()} type="submit">
                   Save
                 </Button>
                 <Button

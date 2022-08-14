@@ -77,7 +77,7 @@ export function ContractOptions({ contract }: { contract: IContract }) {
   };
 
   useEffect(() => {
-    if (!isOpen) dispatch(setOpenedOptionId(contract._id));
+    if (isOpen) dispatch(setOpenedOptionId(contract._id));
   }, [contract._id, dispatch, isOpen]);
 
   return (

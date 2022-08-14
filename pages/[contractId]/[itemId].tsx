@@ -37,7 +37,7 @@ export default function ItemPage() {
           <section className="px-8 3xl:px-16 py-10 border-b">
             <Breadcrumbs
               className="mb-2"
-              crumbs={[item.contract.name, item.name]}
+              crumbs={[item.contract?.name, item.name]}
             />
             <div className="mb-2 flex items-center justify-between">
               <Tooltip title={item.name}>
