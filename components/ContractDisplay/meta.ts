@@ -18,6 +18,15 @@ export const signUpAction = (onAction: Function) => {
   };
 };
 
+export const publishedDocsAction = (onAction: Function) => {
+  return {
+    btnText: "View Documentation",
+    content: "Welldone, you have successfully created your documentation.",
+    onAction,
+    title: "Documentation Published",
+  };
+};
+
 export const multiTestUploadAction = (onAction: Function) => {
   return {
     btnText: "Sign In",

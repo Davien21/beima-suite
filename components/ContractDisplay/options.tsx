@@ -16,11 +16,10 @@ import confirmation from "services/confirmationService";
 import { setOpenedOptionId } from "store/slices/UIStateSlice";
 import { useRouter } from "next/router";
 import action from "services/actionModalService";
-import { signUpAction, waitlistAction } from "./meta";
+import { publishedDocsAction, signUpAction, waitlistAction } from "./meta";
 import { publishContract } from "services/contractsService";
 import { toast } from "react-toastify";
 import { useUser } from "hooks/apis";
-import { getAuthToken } from "utils/helpers";
 
 export function ContractOptions({ contract }: { contract: IContract }) {
   const contractId = contract._id;
@@ -46,34 +45,42 @@ export function ContractOptions({ contract }: { contract: IContract }) {
   const { user } = useUser();
 
   const handleDeleteContract = () => {
+    closeMenu();
     const message = `Are you sure you want to delete ${contract.name}?`;
     const onConfirm = () => deleteThisContract();
     confirmation.danger(message, onConfirm);
   };
 
-  const handlePublish = () => {
-    if (!!!user) {
-      const onAction = () => router.push("/login");
-      action.warning(signUpAction(onAction));
-    } else {
-      const onAction = async () => {
-        const { error, response } = await publishContract(
-          contract._id,
-          getAuthToken()
-        );
-        if (error)
-          return toast.error(
-            "That's weird, it didn't work!. dm us on Twitter!"
-          );
-        toast.success("Yayy!, you've been added to the waitlist");
-        // console.log("Joined Waitlist");
-      };
-      action.info(waitlistAction(onAction));
+  const handlePublish = async () => {
+    closeMenu();
+    if (!user) action.warning(signUpAction(() => router.push("/login")));
+    else {
+      const toastId = toast.loading(`Publishing docs for ${contract.name}...`);
+      const { error, response } = await publishContract(contract._id);
+
+      if (response) {
+        const viewDocs = async () => {
+          let baseURL = process.env.NEXT_PUBLIC_PREVIEW_BASE_URL;
+          const preview_id = response.data.preview_id;
+          let url = `${baseURL}/${preview_id}`;
+          window.open(url, "_blank");
+        };
+        toast.dismiss(toastId);
+        action.success(publishedDocsAction(viewDocs));
+      }
+      if (!error) return;
+      toast.update(toastId, {
+        render: "Error publising this contract",
+        type: "error",
+        isLoading: false,
+        autoClose: 2000,
+      });
     }
   };
 
   const handleEdit = () => {
     dispatch(setIsContractDescModalOpen(true));
+    closeMenu();
   };
 
   useEffect(() => {

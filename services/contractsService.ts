@@ -57,7 +57,7 @@ export async function deleteContract(_id: string) {
   }) as unknown as IResponse;
 }
 
-export async function publishContract(contractId: string, token: string) {
+export async function publishContract(contractId: string) {
   return httpService.patch(
     `${route}/publish/${contractId}`,
     {},

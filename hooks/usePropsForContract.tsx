@@ -98,8 +98,8 @@ export function usePropsForContract(contractId?: string) {
   // make revert happen at same spot
   const liveAddContract = async (contract: IContract) => {
     const toastId = toast.loading(`Adding ${contract.name} contract...`);
-
     dispatch(resetUploadState());
+    
     const { error, response } = await uploadContractsAPI([contract]);
     if (response) {
       let newData = produce((data: any) => {
