@@ -1,5 +1,6 @@
 import { ToastContainer } from "react-toastify";
 import type { AppProps } from "next/app";
+import "antd/dist/antd.css";
 
 import "react-toastify/dist/ReactToastify.css";
 import "tailwindcss/tailwind.css";
@@ -7,23 +8,13 @@ import "tailwindcss/tailwind.css";
 import "../index.css";
 import Head from "next/head";
 import { AnimatePresence } from "framer-motion";
-import {
-  Provider as StoreProvider,
-  useDispatch,
-  useSelector,
-} from "react-redux";
+import { Provider as StoreProvider } from "react-redux";
 import { persistor, store } from "../store";
 import { PersistGate } from "redux-persist/integration/react";
 import { PageLoader } from "components";
-import { IStore, NextPageWithLayout } from "interfaces";
-import React, { useCallback, useEffect, useState } from "react";
-import { useEffectOnce, useLocalStorage } from "usehooks-ts";
-import { getUserAPI } from "services/authService";
-import { setUser } from "store/slices/authSlice";
-import { uploadContractsAPI } from "services/contractsService";
-import { deleteTestContract } from "store/slices/testContractSlice";
-import { useGetContracts } from "hooks/apis/useGetContracts";
-import { setContracts } from "store/slices/contractSlice";
+import { NextPageWithLayout } from "interfaces";
+import React, { useEffect } from "react";
+
 import { useRouteChangeHandler } from "hooks";
 
 type AppPropsWithLayout = AppProps & {
@@ -33,7 +24,7 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   return (
     <>
-      <ToastContainer position="top-center" autoClose={5000} />
+      <ToastContainer position="top-center" autoClose={3000} />
       <Head>
         <link rel="icon" href="./favicon.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -62,11 +53,14 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 const Body = ({ Component, pageProps, router }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
   const { routeChanging } = useRouteChangeHandler();
-  const { isPageLoading } = useSelector((state: IStore) => state.UIState);
+  // useEffect(() => {
+  //   console.log("route changing", routeChanging);
+  // }, [routeChanging]);
   return (
     <>
-      {isPageLoading || routeChanging ? <PageLoader /> : ""}
-      {getLayout(<Component {...pageProps} />)}
+      {/* {isPageLoading || routeChanging ? <PageLoader /> : ""} */}
+      {routeChanging ? <PageLoader /> : getLayout(<Component {...pageProps} />)}
+      {/* {getLayout(<Component {...pageProps} />)} */}
     </>
   );
 };

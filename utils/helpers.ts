@@ -1,31 +1,43 @@
 import {
   IContract,
-  IEvent,
   IWithActiveState,
-  IFunction,
   IItem,
   IAuth,
   IResponse,
 } from "interfaces";
-import _ from "lodash";
 import { getCookie } from "cookies-next";
 
 export const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export const getEventsWithActiveState = (
-  contract: IContract,
-  functionName: string
-) => {
+export const getTestEvents = (contract: IContract, functionName: string) => {
   const linkedEvents = getLinkedEvents(contract, functionName);
   const allEvents = getAllEvents(contract);
 
-  const unlinkedEvents = allEvents.map((e: IItem) => {
+  const eventsWithState = allEvents.map((e: IItem) => {
     const isActive = linkedEvents.includes(e.name);
     return { name: e.name, isActive };
   });
-  return (unlinkedEvents as IWithActiveState[]) || [];
+  return (eventsWithState as IWithActiveState[]) || [];
+};
+
+type IItemWithEvents = IItem & {
+  linkedEvents: string[];
+  eventsWithState: IWithActiveState[];
+  contract: IContract;
+};
+
+export const getEventsWithItem = (item: IItemWithEvents) => {
+  if (!item) return null;
+  const linkedEvents = item.linkedEvents;
+  const allEvents = getAllEvents(item.contract);
+
+  const eventsWithState = allEvents.map((e: IItem) => {
+    const isActive = linkedEvents.includes(e.name);
+    return { name: e.name, isActive };
+  });
+  return (eventsWithState as IWithActiveState[]) || [];
 };
 
 export const getLinkedEvents = (contract: IContract, functionId: string) => {
@@ -75,7 +87,10 @@ export const errorMessage = (error: any) => {
 
 export const getItemById = (contract: IContract, _id: string) => {
   let index = contract.data.findIndex((x) => x._id === _id);
-  return contract.data[index];
+  let item = contract.data[index] as IItem & { contract: IContract };
+  if (!item) return null;
+  item.contract = contract;
+  return item;
 };
 
 export const getFunctionById = (contract: IContract, _id: string) => {
@@ -101,14 +116,9 @@ export const getEventById = (contract: IContract, _id: string) => {
 
 export const apiResponse = (result: IResponse) => {
   const { error, response } = result;
-  console.log(error, response);
+  // console.log(error, response);
   if (error) return { error: error.response.data, response: null };
   if (response) return { error, data: response.data };
-};
-
-export const deepClone = (object: any) => {
-  return JSON.parse(JSON.stringify(object));
-  return _.cloneDeep(object);
 };
 
 export const getAuthToken = (options?: any) => {

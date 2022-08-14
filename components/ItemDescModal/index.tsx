@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Markdown from "markdown-to-jsx";
 
 import { CloseIcon } from "assets/images";
@@ -9,67 +9,36 @@ import { motion } from "framer-motion";
 import { ModalParentVariants } from "animations";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useModal } from "hooks";
+import { useModal, usePropsForItem } from "hooks";
 import { setIsItemDescModalOpen } from "store/slices/modalSlice";
-import { IContract, IItem, IQuery, IStore } from "interfaces";
+import { IStore } from "interfaces";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { setItemDescription } from "store/slices/testContractSlice";
-import { capitalize, deepClone, errorMessage } from "utils/helpers";
-import useSWR, { mutate } from "swr";
-import { useRouter } from "next/router";
-import { updateContract, updateContractItem } from "services/contractsService";
-import { useLocalStorage } from "usehooks-ts";
-import { toast } from "react-toastify";
-import { useGetContracts } from "hooks/apis/useGetContracts";
-import { useGetItem } from "hooks/apis";
-import { setContracts } from "store/slices/contractSlice";
+import { capitalize } from "utils/helpers";
 
 const validationSchema = Yup.object({ description: Yup.string() });
 interface IForm {
   description: string;
 }
 
-export function ItemDescModal({ item }: { item: IItem }) {
-  let router = useRouter();
-  let { contractId, itemId } = router.query as IQuery;
+export function ItemDescModal() {
+  const { item, setDescription } = usePropsForItem();
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state: IStore) => state.auth);
-  let { data: itemData, mutate } = useGetItem({ contractId, itemId });
-  // const contract = contracts.find((c) => c._id === contractId);
-
-  const isLoggedIn = !!user.firstName;
   const { _id, description } = item;
   const initialValues: IForm = { description };
   const { activeControl } = useSelector((state: IStore) => state.filters);
+  const [lastDesc, setlastDesc] = useState(description);
   const closeModal = () => {
     dispatch(setIsItemDescModalOpen(false));
   };
-  const [authToken, setJwt] = useLocalStorage("beima-auth-token", "");
 
-  // const { data, mutate } = useGetItem({ contractId, itemId });
-
-  const [isLoading, setisLoading] = useState(false);
   const handleSubmit = async (values: IForm) => {
     const { description } = values;
     const update = { _id, description };
-    if (!isLoggedIn) {
-      // console.log(isLoggedIn)
-      dispatch(setItemDescription(update));
-    } else if (isLoggedIn) {
-      let newItem = { ...itemData, description };
-      const options = { optimisticData: newItem, rollbackOnError: true };
-      mutate(async () => {
-        const { error } = await updateContractItem(
-          contractId,
-          update,
-          authToken
-        );
-        if (error) return toast.error("Error updating this description");
-        return newItem;
-      }, options);
-    }
+    setDescription(update);
+    closeModal();
+    setlastDesc(description);
   };
 
   const formik = useFormik({
@@ -144,7 +113,12 @@ export function ItemDescModal({ item }: { item: IItem }) {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex gap-x-2">
-                <Button isLoading={false} type="submit">
+                <Button
+                  disabled={
+                    formik.values["description"] === lastDesc || !formik.isValid
+                  }
+                  type="submit"
+                >
                   Save
                 </Button>
                 <Button

@@ -208,3 +208,11 @@ button:focus {
 .scale-85 {
   transform: scale(0.85);
 }
+
+.child-w-full > * {
+  width: 100%;
+}
+
+.ant-skeleton-title {
+ height: 30px !important;
+}

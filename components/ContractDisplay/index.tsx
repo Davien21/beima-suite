@@ -1,29 +1,62 @@
-import { getRandomKey } from "utils";
+import { capitalize, getRandomKey } from "utils";
 import React, { useEffect, useState } from "react";
 import { ContractTab } from "./tab";
 import { useSelector, useDispatch } from "react-redux";
-import { IContract, IStore } from "interfaces";
+import { IContract, IStore, ITypes } from "interfaces";
 import { EmptyWorkspace } from "components/EmptyWorkspace";
-import { useGetContracts } from "hooks/apis/useGetContracts";
+import { useUser } from "hooks/apis";
+import { Skeleton } from "antd";
+import { Switch } from "components/Switch";
+import { ControlSwitch } from "./controlSwitch";
+import { setActiveControl, toggleInherited } from "store/slices/filterSlice";
+import styles from "./contract-display.module.css";
 
-export function ContractDisplay() {
-  const { user } = useSelector((state: IStore) => state.auth);
-  const { data:contracts } = useGetContracts();
-  const isLoggedIn = !!user.firstName;
+export function ContractDisplay({ contracts }: { contracts: IContract[] }) {
+  const dispatch = useDispatch();
   const testContract = useSelector((state: IStore) => state.testContract);
-  const canShowTestContract = !isLoggedIn && !!testContract.name;
-  const canShowMainContracts = isLoggedIn && contracts.length > 0;
+  const { user } = useUser();
+
+  const { activeControl, showInherited } = useSelector(
+    (state: IStore) => state.filters
+  );
+
+  const handleChangeControl = (control: ITypes) => {
+    dispatch(setActiveControl(control));
+  };
+
+  const canShowTestContract = !user && !!testContract.name;
+  const canShowMainContracts = user && contracts?.length > 0;
 
   return (
-    <div className="px-3 py-3">
-      {canShowMainContracts === true &&
-        contracts.map((contract: IContract, index: number) => {
-          return (
-            <div key={getRandomKey()} className={`mb-3`}>
-              <ContractTab contract={contract} />
-            </div>
-          );
-        })}
+    <div className="px-3 pb-3">
+      {canShowMainContracts === true && (
+        <>
+          <div className={`py-3 ${styles["inherited-functions-filter"]}`}>
+            <Switch
+              label={`Inherited ${capitalize(activeControl)}s`}
+              isDisabled={false}
+              checked={!showInherited[activeControl]}
+              setChecked={() => {
+                dispatch(toggleInherited());
+              }}
+            />
+            <ControlSwitch
+              onChangeControl={handleChangeControl}
+              activeControl={activeControl}
+            />
+          </div>
+          <div>
+            {contracts.map((contract: IContract, index: number) => {
+              return (
+                <div key={getRandomKey()} className={`mb-3`}>
+                  <ContractTab contract={contract} />
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
       {canShowTestContract === true && <ContractTab contract={testContract} />}
       {canShowMainContracts === false && canShowTestContract === false && (
         <EmptyWorkspace />
@@ -31,3 +64,11 @@ export function ContractDisplay() {
     </div>
   );
 }
+
+const Loader = () => {
+  return (
+    <div className="p-3">
+      <Skeleton active style={{ borderRadius: "10px" }} />
+    </div>
+  );
+};

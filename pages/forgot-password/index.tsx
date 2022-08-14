@@ -24,7 +24,7 @@ const initialValues: valuesType = {
 export default function ForgotPasswordPage() {
   const router = useRouter();
   const handleSubmit = (values: valuesType) => {
-    console.log(values);
+    // console.log(values);
   };
   const formik = useFormik({
     initialValues,

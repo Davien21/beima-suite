@@ -5,4 +5,6 @@ export * from "./useKeyPress";
 export * from "./usePopper";
 export * from "./useModal";
 export * from "./useMutationCall";
+export * from "./usePropsForItem";
+export * from "./usePropsForContract";
 export * from "./useRouteChangeHandler";

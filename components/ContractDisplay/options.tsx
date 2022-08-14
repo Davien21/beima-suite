@@ -6,23 +6,26 @@ import {
 } from "assets/images";
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useClickOutside, usePopper } from "hooks";
+import { useClickOutside, usePopper, usePropsForContract } from "hooks";
 import { arrowVariants, menuVariants } from "animations";
 import Pstyles from "./contract-display.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setIsContractDescModalOpen } from "store/slices/modalSlice";
-import { IContract, IStore } from "interfaces";
-import { deleteTestContract } from "store/slices/testContractSlice";
+import { IContract } from "interfaces";
 import confirmation from "services/confirmationService";
 import { setOpenedOptionId } from "store/slices/UIStateSlice";
 import { useRouter } from "next/router";
 import action from "services/actionModalService";
 import { signUpAction, waitlistAction } from "./meta";
 import { publishContract } from "services/contractsService";
-import { useLocalStorage } from "usehooks-ts";
 import { toast } from "react-toastify";
+import { useUser } from "hooks/apis";
+import { getAuthToken } from "utils/helpers";
 
 export function ContractOptions({ contract }: { contract: IContract }) {
+  const contractId = contract._id;
+  const { deleteThisContract } = usePropsForContract(contractId);
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -40,25 +43,23 @@ export function ContractOptions({ contract }: { contract: IContract }) {
 
   const initialAnimation = { rotate: 180, transition: { duration: 0 } };
 
-  const { user } = useSelector((state: IStore) => state.auth);
-  const isLoggedIn = !!user.firstName;
-  const [authToken, setJwt] = useLocalStorage("beima-auth-token", "");
+  const { user } = useUser();
 
   const handleDeleteContract = () => {
     const message = `Are you sure you want to delete ${contract.name}?`;
-    const onConfirm = () => dispatch(deleteTestContract());
+    const onConfirm = () => deleteThisContract();
     confirmation.danger(message, onConfirm);
   };
 
   const handlePublish = () => {
-    if (!isLoggedIn) {
+    if (!!!user) {
       const onAction = () => router.push("/login");
       action.warning(signUpAction(onAction));
     } else {
       const onAction = async () => {
         const { error, response } = await publishContract(
           contract._id,
-          authToken
+          getAuthToken()
         );
         if (error)
           return toast.error(
@@ -76,8 +77,7 @@ export function ContractOptions({ contract }: { contract: IContract }) {
   };
 
   useEffect(() => {
-    if (isOpen) dispatch(setOpenedOptionId(contract._id));
-    // console.log(contract._id);
+    if (!isOpen) dispatch(setOpenedOptionId(contract._id));
   }, [contract._id, dispatch, isOpen]);
 
   return (

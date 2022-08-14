@@ -9,18 +9,11 @@ import { motion } from "framer-motion";
 import { ModalParentVariants } from "animations";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useModal } from "hooks";
+import { useModal, usePropsForContract } from "hooks";
 import { setIsContractDescModalOpen } from "store/slices/modalSlice";
-import { IContract, IStore } from "interfaces";
+import { IStore } from "interfaces";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useRouter } from "next/router";
-import { setTestContractDesc } from "store/slices/testContractSlice";
-import { useGetContracts } from "hooks/apis/useGetContracts";
-import { updateContract } from "services/contractsService";
-import { deepClone } from "utils/helpers";
-import { useEffectOnce, useLocalStorage } from "usehooks-ts";
-import { toast } from "react-toastify";
 
 const validationSchema = Yup.object({ description: Yup.string() });
 interface IForm {
@@ -28,38 +21,18 @@ interface IForm {
 }
 
 export function ContractDescModal() {
-  const { openedOptionId: contractId } = useSelector(
+  const { openedOptionId: openContractId } = useSelector(
     (state: IStore) => state.UIState
   );
-  const { user } = useSelector((state: IStore) => state.auth);
-  const isLoggedIn = !!user.firstName;
+  const { contract, setDescription } = usePropsForContract();
 
-  const testContract = useSelector((state: IStore) => state.testContract);
-  const { data: contracts, mutate } = useGetContracts();
-
-  const [authToken, setJwt] = useLocalStorage("beima-auth-token", "");
-  const [description, setdescription] = useState(testContract.description);
-  const initialValues: IForm = { description };
+  const initialValues: IForm = { description: contract.description };
 
   const handleSubmit = (values: IForm) => {
     const { description } = values;
-    let update = { _id: contractId, description };
-    if (!isLoggedIn) {
-      dispatch(setTestContractDesc(description));
-    } else {
-      let contractIndex = contracts.findIndex((c) => c._id === contractId);
-      let contract = deepClone(contracts[contractIndex]);
-      let newContract = { ...contract, description };
-      let newContracts = deepClone(contracts);
-      newContracts[contractIndex] = newContract;
-      const options = { optimisticData: newContracts, rollbackOnError: true };
-      mutate(async () => {
-        const { error } = await updateContract(update, authToken);
-        if (error) return toast.error("Error updating this description");
-        return newContracts;
-      }, options);
-    }
-    closeModal();
+    let update = { _id: openContractId, description };
+    setDescription(update);
+    dispatch(setIsContractDescModalOpen(false));
   };
 
   const formik = useFormik({
@@ -67,27 +40,27 @@ export function ContractDescModal() {
     validationSchema,
     onSubmit: handleSubmit,
   });
-
-  useEffect(() => {
-    if (!!!contracts.length) return;
-    const desc = contracts.find((c) => c._id === contractId)?.description || "";
-    formik.initialValues.description = desc;
-  }, [contracts, formik.initialValues, contractId]);
-
-  const closeModal = () => {
-    dispatch(setIsContractDescModalOpen(false));
-  };
+  const dispatch = useDispatch();
 
   const { isContractDescModalOpen } = useSelector(
     (state: IStore) => state.modal
   );
+  useEffect(() => {
+    formik.initialValues.description = contract.description;
+  }, [formik.initialValues, openContractId, contract.description]);
 
-  const dispatch = useDispatch();
+  const closeModal = () => {
+    formik.values["description"] = contract.description;
+    dispatch(setIsContractDescModalOpen(false));
+  };
+
   const [isShowingMarkdown, setisShowingMarkdown] = useState<boolean>(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
 
   useModal(isContractDescModalOpen, modalRef, closeModal);
+  if (!openContractId) return <div></div>;
+
   return (
     <motion.div
       initial={{ opacity: 0, display: "none" }}
@@ -143,9 +116,8 @@ export function ContractDescModal() {
               <div className="flex gap-x-2">
                 <Button
                   disabled={
-                    // !formik.dirty ||
-                    // !formik.isValid ||
-                    !formik.touched["description"]
+                    formik.values["description"] === contract.description ||
+                    !formik.isValid
                   }
                   type="submit"
                 >

@@ -19,6 +19,7 @@
   font-size: 14px;
   position: relative;
   z-index: calc(var(--select-z-index) + 1);
+  user-select: none;
 }
 
 .container .initials:hover {

@@ -1,18 +1,15 @@
-import {
-  BigFileIcon,
-  DashboardLayout,
-  Header,
-  WelcomeScreen,
-} from "components";
+import type { NextPage } from "next";
+import { BigFileIcon, DashboardLayout, WelcomeScreen } from "components";
 import { useSelector } from "react-redux";
 import { IStore, NextPageWithLayout } from "interfaces";
-import { getCookie } from "cookies-next";
-import { getAuthToken } from "utils/helpers";
-import { SWRConfig } from "swr";
+import { ReactElement } from "react";
+import { useContracts, useUser } from "hooks/apis";
 
 const Home: NextPageWithLayout = () => {
   const testContract = useSelector((state: IStore) => state.testContract);
-  const isEmpty = testContract.name.length === 0;
+  const { user } = useUser();
+  const { contracts } = useContracts();
+  const isEmpty = (user && !contracts?.length) || (!user && !testContract.name);
   return (
     <>
       {isEmpty ? (
@@ -31,37 +28,8 @@ const Home: NextPageWithLayout = () => {
   );
 };
 
-function HomePage({ fallback }: any) {
-  console.log("fallback", fallback);
-  return (
-    <SWRConfig value={{ fallback }}>
-      <Header />
-      {/* <DashboardLayout currentUser={user}> */}
-      <Home />
-      {/* </DashboardLayout> */}
-    </SWRConfig>
-  );
-}
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};
 
-export async function getServerSideProps(context: any) {
-  const url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/me`;
-  const { req, res } = context;
-  let user = await fetch(url, {
-    headers: {
-      authorization:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZTZjOWRkNThkMTEyMTFiNGUwZjAxMCIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjYwMDU2ODk2LCJleHAiOjE2NjAxNDMyOTZ9.pjbit0DiZSOVzyKpEcdMRqZHmk41-_3U8jznNtuWFnc",
-    },
-    method: "POST", //switch to GET on backend
-  });
-  user = (await user.json()).data;
-  console.log("user", user);
-  return {
-    props: {
-      fallback: {
-        [url]: user,
-      },
-    },
-  };
-}
-
-export default HomePage;
+export default Home;

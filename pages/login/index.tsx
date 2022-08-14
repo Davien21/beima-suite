@@ -5,11 +5,10 @@ import * as Yup from "yup";
 import { Input, Button } from "components";
 import { CircleCheckboxIcon, LogoIcon } from "assets/images";
 import Link from "next/link";
-import { loginAPI, verifyEmailAPI } from "services/authService";
+import { loginAPI } from "services/authService";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { errorMessage } from "utils/helpers";
-import { useLocalStorage } from "usehooks-ts";
 import { setCookie } from "cookies-next";
 
 const validationSchema = Yup.object({
@@ -32,7 +31,6 @@ const initialValues: valuesType = {
 export default function LoginPage() {
   const [isLoading, setisLoading] = useState<boolean>(false);
   const router = useRouter();
-  const [jwt, setJwt] = useLocalStorage("beima-auth-token", "");
   const handleSubmit = async (values: valuesType) => {
     setisLoading(true);
     let result = { ...values };
@@ -44,7 +42,6 @@ export default function LoginPage() {
 
     if (response) {
       setCookie("beima-auth-token", response.data.authToken);
-      setJwt(response.data.authToken);
       router.push("/");
     }
   };

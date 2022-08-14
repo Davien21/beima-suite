@@ -22,13 +22,10 @@ const LoaderIcon = () => {
   const pathClass = (step: number) => {
     if (step === activeStep || step < activeStep) return `${styles["active"]}`;
   };
-  useInterval(
-    () => {
-      if (activeStep === 4) setactiveStep(1);
-      else setactiveStep(activeStep + 1);
-    },
-    isPageLoading ? 800 : null
-  );
+  useInterval(() => {
+    if (activeStep === 4) setactiveStep(1);
+    else setactiveStep(activeStep + 1);
+  }, 800);
 
   return (
     <div className={`${styles["loader"]}`}>

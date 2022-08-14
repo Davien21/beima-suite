@@ -31,11 +31,10 @@ export const contractsSlice = createSlice({
     },
     toggleLinkTestEvent: (
       state,
-      action: PayloadAction<{ functionId: string; event: string }>
+      action: PayloadAction<{ itemId: string; event: string }>
     ) => {
-      const { functionId, event } = action.payload;
-      const item = getFunctionById(state, functionId);
-
+      const { itemId, event } = action.payload;
+      const item = getFunctionById(state, itemId);
       if (!item.linkedEvents) return;
       if (item.linkedEvents.includes(event))
         item.linkedEvents = ArrayMinusItem(item.linkedEvents, event);
@@ -47,7 +46,7 @@ export const contractsSlice = createSlice({
     ) => {
       const { _id, description } = action.payload;
       const item = getItemById(state, _id);
-      item.description = description;
+      if (item) item.description = description;
     },
     setTestContractDesc: (state, action: PayloadAction<string>) => {
       state.description = action.payload;

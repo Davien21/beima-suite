@@ -17,8 +17,8 @@ axios.interceptors.response.use(
     if (!expectedError) {
       // toast.error("An unexpected error occurred.");
     }
-
-    return { error, response: null };
+    // console.log(error.response.data);
+    return { error: error, response: null };
   }
 );
 

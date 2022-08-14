@@ -5,7 +5,7 @@ import { formatFileSize } from "./formatFileSize";
 import {
   capitalize,
   getLinkedEvents,
-  getEventsWithActiveState,
+  getTestEvents,
   getUserInitials,
   getFullName,
 } from "./helpers";
@@ -32,6 +32,6 @@ export {
   getLinkedEvents,
   getUserInitials,
   getFullName,
-  getEventsWithActiveState,
+  getTestEvents,
   getMeta,
 };

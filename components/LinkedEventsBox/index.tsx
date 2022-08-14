@@ -13,7 +13,6 @@ export function LinkedEventsBox({ events }: { events: string[] }) {
   let tableGroupsClass = "border-t grid grid-cols-2";
   // if (events.length) tableGroupsClass += " border-b";
   const willScroll = events.length > 4;
-
   return (
     <div className={`${styles["container"]} `}>
       <div className="p-5 flex gap-x-4 items-center">

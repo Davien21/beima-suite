@@ -17,3 +17,12 @@ export const signUpAction = (onAction: Function) => {
     title: "Hey Champ",
   };
 };
+
+export const multiTestUploadAction = (onAction: Function) => {
+  return {
+    btnText: "Sign In",
+    content: "You need to be signed in to add more than one contract.",
+    onAction,
+    title: "Hey Champ",
+  };
+};

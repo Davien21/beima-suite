@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+
 import styles from "./dashboard.module.css";
 import {
   Button,
@@ -10,6 +11,7 @@ import {
   ActionModal,
   BottomPanel,
   Header,
+  PageLoader,
 } from "components";
 
 import {
@@ -18,72 +20,88 @@ import {
   TooltipIcon,
   WorkspaceIcon,
 } from "assets/images";
+
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 
 import { setIsUploadModalOpen } from "store/slices/modalSlice";
-import { IAuth, IContract, IStore } from "interfaces";
-import { useEffectOnce, useLocalStorage } from "usehooks-ts";
-import { getUserAPI } from "services/authService";
-import { setUser } from "store/slices/authSlice";
+import { IContract, IStore } from "interfaces";
+import { useContracts, useUser } from "hooks/apis";
 import { uploadContractsAPI } from "services/contractsService";
-import { deleteTestContract } from "store/slices/testContractSlice";
-import { useGetContracts } from "hooks/apis/useGetContracts";
-import { setContracts } from "store/slices/contractSlice";
-import useSWR, { useSWRConfig } from "swr";
+import {
+  deleteTestContract,
+  setTestContract,
+} from "store/slices/testContractSlice";
+import { usePropsForContract } from "hooks";
+import produce from "immer";
+import { ArrayMinusItem } from "utils/helpers";
+import { deleteCookie } from "cookies-next";
+import { multiTestUploadAction } from "components/ContractDisplay/meta";
+import { useRouter } from "next/router";
+import action from "services/actionModalService";
 
-function DashboardLayout({
-  children,
-  currentUser,
-}: {
-  currentUser?: IAuth["user"];
-  children?: React.ReactNode;
-}) {
-  const dispatch = useDispatch();
-
-  useState(() => {
-    if (currentUser) dispatch(setUser(currentUser));
-  });
-  const { openedOptionId } = useSelector((state: IStore) => state.UIState);
-
+function DashboardLayout({ children }: { children?: React.ReactNode }) {
+  const router = useRouter();
   const [isShowingFilter, setisShowingFilter] = useState<boolean>(false);
+  const [activeTab, setactiveTab] = useState<string>("Workspace");
+  const dispatch = useDispatch();
+  const testContract = useSelector((state: IStore) => state.testContract);
+  const { user, isLoading: isUserLoading, apiMessage } = useUser();
+  const {
+    contracts,
+    isLoading: isContractsLoading,
+    mutate,
+  } = usePropsForContract();
+
+  const isLoading = isContractsLoading || isUserLoading;
+  const handleSync = useCallback(async () => {
+    if (isLoading) return;
+    let newData = produce((contracts: any) => {
+      contracts.data.push(testContract);
+    });
+    mutate(newData, false);
+
+    let oldData = produce((contracts: any) => {
+      (contracts.data as IContract[]).pop();
+    });
+    const { error, response } = await uploadContractsAPI([testContract]);
+    if (response) dispatch(deleteTestContract());
+    if (!error) return;
+    toast.error("Error uploading your existing contracts", { autoClose: 2000 });
+    mutate(oldData);
+  }, [isLoading, testContract, mutate, dispatch]);
+
+  useEffect(() => {
+    if (!!user?.firstName && !!testContract.name) {
+      handleSync();
+    }
+  }, [handleSync, testContract.name, user?.firstName]);
+
+  useEffect(() => {
+    if (apiMessage !== "Jwt expired") return;
+    toast.error("Your session has expired. Please login again.");
+    deleteCookie("beima-auth-token");
+  }, [apiMessage]);
+
+  if (isLoading) return <PageLoader />;
+
   const toggleFilter = () => {
     setisShowingFilter(!isShowingFilter);
     toast.info("Filter is coming soon!");
   };
-  const [activeTab, setactiveTab] = useState<string>("Workspace");
   const tabClass = (name: string) => {
     const defaults = `${styles["tab"]} block w-full px-4 xl:px-4 2xl:px-5`;
     if (name === activeTab) return `${defaults} ${styles["active"]}`;
     return defaults;
   };
-  const { user } = useSelector((state: IStore) => state.auth);
 
-  const testContract = useSelector((state: IStore) => state.testContract);
-  const isLoggedIn = !!user?.firstName;
-  let [authToken] = useLocalStorage("beima-auth-token", "");
-
-  const getUser = useCallback(async () => {
-    const { error, response } = await getUserAPI(authToken);
-    if (response) dispatch(setUser(response.data));
-  }, [authToken, dispatch]);
-
-  useEffectOnce(() => {
-    if (authToken && !isLoggedIn) getUser();
-  });
-
-  const handleSync = useCallback(async () => {
-    const { error, response } = await uploadContractsAPI(
-      [testContract],
-      authToken
-    );
-    if (response) dispatch(deleteTestContract());
-  }, [authToken, dispatch, testContract]);
-  useEffect(() => {
-    if (isLoggedIn && !!testContract.name) {
-      handleSync();
+  const handleImport = () => {
+    if (!testContract.name) dispatch(setIsUploadModalOpen(true));
+    if (!user && testContract.name) {
+      const onAction = () => router.push("/login");
+      action.warning(multiTestUploadAction(onAction));
     }
-  }, [handleSync, isLoggedIn, testContract.name]);
+  };
 
   return (
     <>
@@ -91,7 +109,7 @@ function DashboardLayout({
       <main className="hidden lg:block">
         <UploadModal />
         <ConfirmationModal />
-        {!!openedOptionId && <ContractDescModal />}
+        <ContractDescModal />
 
         <ActionModal />
         <section className={`${styles["container"]} flex w-full py`}>
@@ -149,11 +167,7 @@ function DashboardLayout({
                   <span className="hidden xl:inline">My </span>
                   <span>Workspace</span>
                 </div>
-                <Button
-                  onClick={() => dispatch(setIsUploadModalOpen(true))}
-                  secondary
-                  className="import"
-                >
+                <Button onClick={handleImport} secondary className="import">
                   <span className="text-sm">Import</span>
                 </Button>
               </div>
@@ -168,7 +182,9 @@ function DashboardLayout({
                   <FilterIcon />
                 </button>
               </div>
-              <ContractDisplay />
+              {!!!isContractsLoading && (
+                <ContractDisplay contracts={contracts} />
+              )}
             </div>
             <div
               className={`col-span-9 ${styles["right"]} w-full flex flex-col justify-between`}

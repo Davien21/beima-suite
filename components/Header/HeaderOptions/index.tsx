@@ -3,14 +3,13 @@ import { motion } from "framer-motion";
 import { useClickOutside, usePopper } from "hooks";
 import { menuVariants } from "animations";
 import styles from "./header-options.module.css";
-import { useDispatch } from "react-redux";
-import { triggerLogout } from "store/slices/authSlice";
-import { useLocalStorage } from "usehooks-ts";
-import { removeCookies } from "cookies-next";
+import { deleteCookie } from "cookies-next";
+import { useUser } from "hooks/apis";
+import { useRouter } from "next/router";
 
 export function HeaderOptions({ children }: { children: React.ReactNode }) {
-  const dispatch = useDispatch();
-
+  const router = useRouter();
+  const { mutate } = useUser();
   const optionsMenuRef = useRef<any>(null);
   const objectRef = useRef<any>(null);
 
@@ -20,12 +19,11 @@ export function HeaderOptions({ children }: { children: React.ReactNode }) {
 
   const closeMenu = () => setisOpen(false);
   const toggleMenu = () => setisOpen(!isOpen);
-  const [jwt, setJwt] = useLocalStorage("beima-auth-token", "");
   const logout = () => {
-    dispatch(triggerLogout());
-    setJwt("");
-    removeCookies("beima-auth-token");
+    mutate(null);
+    deleteCookie("beima-auth-token");
     closeMenu();
+    router.push("/");
   };
 
   useClickOutside(optionsMenuRef, closeMenu, objectRef);

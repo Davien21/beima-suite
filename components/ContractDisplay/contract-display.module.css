@@ -104,3 +104,12 @@
   /* background-color: var(--app-blue); */
   /* color: #fff; */
 }
+
+.inherited-functions-filter {
+  position: sticky;
+  top: 95px;
+  z-index: 10;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+}

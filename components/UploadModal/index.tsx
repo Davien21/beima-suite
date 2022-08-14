@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { CloseIcon } from "assets/images";
 
 import styles from "./upload-modal.module.css";
@@ -12,18 +12,17 @@ import {
   resetUploadState,
   setDocumentation,
 } from "store/slices/uploadSlice";
-import { useModal } from "hooks";
+import { useModal, usePropsForContract } from "hooks";
 import { setIsUploadModalOpen } from "store/slices/modalSlice";
 import { IStore } from "interfaces";
-import { setTestContract } from "store/slices/testContractSlice";
 
 export function UploadModal() {
   const { isUploadModalOpen } = useSelector((state: IStore) => state.modal);
   const { documentation } = useSelector((state: IStore) => state.upload);
-
   const closeModal = () => {
     dispatch(setIsUploadModalOpen(false));
   };
+  const { addContract } = usePropsForContract();
 
   const { activeTab, contractData, abiFile } = useSelector(
     (state: any) => state.upload
@@ -35,10 +34,9 @@ export function UploadModal() {
 
   useEffect(() => {
     if (documentation) {
-      dispatch(setTestContract(documentation));
-      dispatch(resetUploadState());
+      addContract(documentation);
     }
-  }, [dispatch, documentation]);
+  }, [addContract, documentation]);
 
   useModal(isUploadModalOpen, modalRef, closeModal);
 

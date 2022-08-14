@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import styles from "./verify-otp.module.css";
 import { Button, OTPInput } from "components";
 import Link from "next/link";
 
 import { LogoIcon } from "assets/images";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { verifyEmailAPI } from "services/authService";
 import { errorMessage } from "utils/helpers";
 import { toast } from "react-toastify";
-import { useLocalStorage } from "usehooks-ts";
+import { setCookie } from "cookies-next";
 
 export default function VerifySignup() {
   const router = useRouter();
@@ -18,7 +17,6 @@ export default function VerifySignup() {
   const [isVerified, setIsVerified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [jwt, setJwt] = useLocalStorage("beima-auth-token", "");
   const handleVerifyOTP = useCallback(
     async (token: string) => {
       setIsLoading(true);
@@ -27,12 +25,12 @@ export default function VerifySignup() {
       setIsLoading(false);
       if (response) {
         setIsVerified(true);
-        setJwt(response.data.authToken);
+        setCookie("beima-auth-token", response.data.authToken);
         toast.success("Email was successfully verified");
       }
       if (error) toast.error(errorMessage(error));
     },
-    [email, setJwt]
+    [email]
   );
 
   const handleContinue = () => {

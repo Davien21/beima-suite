@@ -1,15 +1,11 @@
 import { OpencontractIcon } from "assets/images";
-import React, { useCallback, useEffect, useState } from "react";
-import { Switch } from "components";
+import React from "react";
 import { ContractOptions } from "./options";
 import Pstyles from "./contract-display.module.css";
-import { ControlSwitch } from "./controlSwitch";
 import { ContractList } from "./contractList";
 import { useSelector, useDispatch } from "react-redux";
-import { capitalize } from "utils";
 import { useRouter } from "next/router";
-import { IContract, IQuery, IStore, ITypes } from "interfaces";
-import { setActiveControl, toggleInherited } from "store/slices/filterSlice";
+import { IContract, IQuery, IStore } from "interfaces";
 import { toggleOpenContract } from "store/slices/UIStateSlice";
 
 export function ContractTab({ contract }: { contract: IContract }) {
@@ -22,15 +18,12 @@ export function ContractTab({ contract }: { contract: IContract }) {
   const { openContracts } = useSelector((state: IStore) => state.UIState);
 
   const { contractId, itemId } = router.query as IQuery;
-  const isActive = contract._id === contractId;
   const isOpen = openContracts.includes(contract._id);
 
-  const handleChangeControl = (control: ITypes) => {
-    dispatch(setActiveControl(control));
-  };
+  const isActive = contract._id === contractId;
 
   const handleToggleOpenState = () => {
-    // console.log("toggleOpenState");
+    console.log("toggleOpenState");
     dispatch(toggleOpenContract(contract._id));
   };
 
@@ -38,20 +31,6 @@ export function ContractTab({ contract }: { contract: IContract }) {
   if (isActive) tabClass += ` ${Pstyles["active"]}`;
   return (
     <>
-      <div className="flex pb-3 justify-between">
-        <Switch
-          label={`Inherited ${capitalize(activeControl)}s`}
-          isDisabled={false}
-          checked={!showInherited[activeControl]}
-          setChecked={() => {
-            dispatch(toggleInherited());
-          }}
-        />
-        <ControlSwitch
-          onChangeControl={handleChangeControl}
-          activeControl={activeControl}
-        />
-      </div>
       <div className={`${tabClass}`}>
         <button
           onClick={handleToggleOpenState}

@@ -5,7 +5,11 @@ function useRouteChangeHandler() {
   const [routeChanging, setRouteChanging] = useState(false);
 
   useEffect(() => {
-    const routeChangeStartHandler = () => setRouteChanging(true);
+    const routeChangeStartHandler = () => {
+      const isNextRoute = router.router?._inFlightRoute;
+      if (isNextRoute?.match(/\/\w+\/\w+||\//)) return;
+      setRouteChanging(true);
+    };
 
     const routeChangeEndHandler = () => setRouteChanging(false);
 
