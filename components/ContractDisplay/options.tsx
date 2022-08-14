@@ -1,5 +1,6 @@
 import {
   EditIcon,
+  EyeIcon,
   OptionDotsIcon,
   PublishIcon,
   TrashIcon,
@@ -83,6 +84,14 @@ export function ContractOptions({ contract }: { contract: IContract }) {
     closeMenu();
   };
 
+  const handlePreview = () => {
+    closeMenu();
+    let baseURL = process.env.NEXT_PUBLIC_PREVIEW_BASE_URL;
+    const preview_id = contract.preview_id;
+    let url = `${baseURL}/${preview_id}`;
+    window.open(url, "_blank");
+  };
+
   useEffect(() => {
     if (isOpen) dispatch(setOpenedOptionId(contract._id));
   }, [contract._id, dispatch, isOpen]);
@@ -96,7 +105,6 @@ export function ContractOptions({ contract }: { contract: IContract }) {
         variants={arrowVariants}
         onClick={(e) => {
           setisOpen(!isOpen);
-          // closeMenu();
           e.stopPropagation();
         }}
         ref={dropDownArrowRef}
@@ -112,12 +120,18 @@ export function ContractOptions({ contract }: { contract: IContract }) {
               variants={menuVariants}
             >
               <ul className="options" onClick={(e) => e.stopPropagation()}>
-                <li className="p-4" onClick={handlePublish}>
+                <li
+                  className="p-4"
+                  onClick={contract.preview_id ? handlePreview : handlePublish}
+                >
                   <span className="flex items-center gap-x-2">
                     <span>
-                      <PublishIcon />
+                      {contract.preview_id ? <EyeIcon /> : <PublishIcon />}
                     </span>
-                    <span>Publish Documentation</span>
+                    <span>
+                      {contract.preview_id ? "Preview" : "Publish"}{" "}
+                      Documentation
+                    </span>
                   </span>
                 </li>
                 <li className="p-4" onClick={handleEdit}>

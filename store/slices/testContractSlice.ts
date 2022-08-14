@@ -14,6 +14,7 @@ const initialState: IContract = {
   alias: "",
   data: [],
   description: "",
+  preview_id: "",
 };
 
 export const contractsSlice = createSlice({

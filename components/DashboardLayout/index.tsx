@@ -171,7 +171,7 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
                   <span className="text-sm">Import</span>
                 </Button>
               </div>
-              <div className="sticky-default bg-color flex justify-between items-center px-6 py-7 border-b gap-x-3">
+              {/* <div className="sticky-default bg-color flex justify-between items-center px-6 py-7 border-b gap-x-3">
                 <SearchBox placeholder="Search using anything in the smart contract" />
                 <button
                   className={`${styles["filter"]} ${
@@ -181,7 +181,7 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
                 >
                   <FilterIcon />
                 </button>
-              </div>
+              </div> */}
               {!!!isContractsLoading && (
                 <ContractDisplay contracts={contracts} />
               )}

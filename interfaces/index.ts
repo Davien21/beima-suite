@@ -53,6 +53,7 @@ export interface IContract {
   alias: string;
   data: IItem[];
   description: string;
+  preview_id: string;
 }
 
 export interface ITestContract {
