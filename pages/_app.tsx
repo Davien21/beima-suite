@@ -13,7 +13,7 @@ import { persistor, store } from "../store";
 import { PersistGate } from "redux-persist/integration/react";
 import { PageLoader } from "components";
 import { NextPageWithLayout } from "interfaces";
-import React, { useEffect } from "react";
+import React from "react";
 
 import { useRouteChangeHandler } from "hooks";
 

@@ -68,6 +68,6 @@ export const PanelVariants = {
     padding: "10px",
   },
   grow: {
-    padding: "70px",
+    padding: "50px",
   },
 };

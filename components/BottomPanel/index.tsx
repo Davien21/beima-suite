@@ -2,7 +2,6 @@ import { PanelVariants } from "animations";
 import { ClosePanelIcon } from "assets/images";
 import { motion } from "framer-motion";
 import { useContracts } from "hooks/apis";
-import { useGetContracts } from "hooks/apis/useGetContracts";
 import { IStore } from "interfaces";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
