@@ -38,7 +38,7 @@ function Header() {
             </a>
           </Link>
 
-          <div className="flex gap-x-6 items-center">
+          <div className="gap-x-6 items-center hidden lg:flex">
             <div
               className="cursor-pointer"
               onClick={() => toast.info("This is coming soon!")}
