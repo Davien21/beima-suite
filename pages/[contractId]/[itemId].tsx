@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 
 import { Skeleton } from "antd";
 import { usePropsForItem } from "hooks";
+import NotFound from "components/NotFound";
 export default function ItemPage() {
   const { item, eventsWithState, linkEvent, isLoading } = usePropsForItem();
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export default function ItemPage() {
   const { activeControl } = useSelector((state: IStore) => state.filters);
 
   if (isLoading) return <Loader />;
+  if (!!!item) return <NotFound route={`/`} />;
 
   return (
     <>

@@ -20,6 +20,8 @@ import CheckboxIcon from "./checkbox.svg";
 import CircleCheckboxIcon from "./circle-checkbox.svg";
 import CircleCloseIcon from "./circle-close.svg";
 import EditIcon from "./edit.svg";
+import Error500Icon from "./500.svg";
+import Error404Icon from "./404.svg";
 import LoaderIcon from "./loader.svg";
 import CloseIcon from "./close.svg";
 import DangerIcon from "./danger.svg";
@@ -40,6 +42,8 @@ export {
   BigUploadIcon,
   PublishIcon,
   EditIcon,
+  Error404Icon,
+  Error500Icon,
   LoaderIcon,
   CloseIcon,
   EyeIcon,

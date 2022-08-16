@@ -1,0 +1,10 @@
+.container {
+  min-height: calc(100vh - var(--app-header-height)) !important;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+
+.container > section {
+  max-width: 440px
+}

@@ -10,6 +10,8 @@ export * from "./Header";
 export * from "./SearchBox";
 export * from "./EmptyWorkspace";
 export * from "./DashboardLayout";
+export * from "./NotFound";
+export * from "./ServerError";
 
 export * from "./Switch";
 export * from "./SegmentedControl";
