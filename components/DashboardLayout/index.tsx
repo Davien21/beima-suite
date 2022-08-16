@@ -12,6 +12,7 @@ import {
   BottomPanel,
   Header,
   PageLoader,
+  MobileScreen,
 } from "components";
 
 import {
@@ -195,13 +196,7 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
           </div>
         </section>
       </main>
-      <main className="lg:hidden">
-        <section className="container flex flex-col">
-          <h1 className="text-center text-4xl mt-40 screen-size-msg">
-            Please use a laptop or a bigger screen size to view Beima Suites
-          </h1>
-        </section>
-      </main>
+      <MobileScreen />
     </>
   );
 }

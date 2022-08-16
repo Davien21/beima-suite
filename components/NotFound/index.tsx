@@ -2,12 +2,12 @@ import { Error404Icon } from "assets/images";
 import { Button } from "components";
 import { useRouter } from "next/router";
 import React from "react";
-import styles from "./404.module.css";
+import styles from "./not-found.module.css";
 
 export default function NotFound({ route }: { route: string }) {
   const router = useRouter();
   const goToHome = () => router.push(route);
-  
+
   return (
     <div>
       <main className={`${styles["container"]}`}>

@@ -214,5 +214,9 @@ button:focus {
 }
 
 .ant-skeleton-title {
- height: 30px !important;
+  height: 30px !important;
+}
+
+.app-text-blue {
+  color: var(--app-blue);
 }

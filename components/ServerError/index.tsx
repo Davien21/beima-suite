@@ -1,7 +1,7 @@
 import { Error500Icon } from "assets/images";
 import { Button, Header } from "components";
 import React from "react";
-import styles from "./500.module.css";
+import styles from "./server-error.module.css";
 
 export default function ServerErrorPage() {
   const goToHome = () => window.location.replace("https://beima.app");

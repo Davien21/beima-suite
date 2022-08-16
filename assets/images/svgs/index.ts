@@ -25,6 +25,7 @@ import Error404Icon from "./404.svg";
 import LoaderIcon from "./loader.svg";
 import CloseIcon from "./close.svg";
 import DangerIcon from "./danger.svg";
+import LaptopIcon from "./laptop.svg";
 import SuccessIcon from "./success.svg";
 import WarningIcon from "./warning.svg";
 import InfoIcon from "./info.svg";
@@ -37,6 +38,7 @@ import SignupImg from "./signup-img.svg";
 
 export {
   LogoIcon,
+  LaptopIcon,
   UpIcon,
   UploadIcon,
   BigUploadIcon,

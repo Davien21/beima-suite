@@ -12,6 +12,7 @@ export * from "./EmptyWorkspace";
 export * from "./DashboardLayout";
 export * from "./NotFound";
 export * from "./ServerError";
+export * from "./MobileScreen";
 
 export * from "./Switch";
 export * from "./SegmentedControl";
