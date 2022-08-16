@@ -6,7 +6,7 @@ export function MobileScreen() {
   return (
     <div className="lg:hidden">
       <main className={`${styles["container"]}`}>
-        <section className="py-10 mt-20">
+        <section className="px-8 py-10 mt-6 lg:mt-20">
           <div className="pb-7 flex justify-center">
             <LaptopIcon />
           </div>
