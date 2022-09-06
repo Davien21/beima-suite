@@ -25,7 +25,7 @@ export function ContractTab({ contract }: { contract: IContract }) {
   const handleToggleOpenState = () => {
     // console.log("toggleOpenState");
     dispatch(toggleOpenContract(contract._id));
-  };a
+  };
 
   let tabClass = `${Pstyles["tab"]}`;
   if (isActive) tabClass += ` ${Pstyles["active"]}`;
