@@ -111,7 +111,6 @@ function DashboardLayout({ children }: { children?: React.ReactNode }) {
         <UploadModal />
         <ConfirmationModal />
         <ContractDescModal />
-
         <ActionModal />
         <section className={`${styles["container"]} flex w-full py`}>
           <div className={`flex flex-col ${styles["left"]}`}>

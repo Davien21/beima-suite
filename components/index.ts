@@ -13,6 +13,7 @@ export * from "./DashboardLayout";
 export * from "./NotFound";
 export * from "./ServerError";
 export * from "./MobileScreen";
+export * from "./ErrorBoundary";
 
 export * from "./Switch";
 export * from "./SegmentedControl";

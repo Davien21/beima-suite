@@ -16,15 +16,19 @@ import { NextPageWithLayout } from "interfaces";
 import React from "react";
 
 import { useRouteChangeHandler } from "hooks";
+import { ErrorBoundary } from "components/ErrorBoundary";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
 function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
+  const layout = Component.getLayout ?? ((page) => page);
+  const { routeChanging } = useRouteChangeHandler();
+  const BodyComponent = layout(<Component {...pageProps} />);
+
   return (
     <>
-      <ToastContainer position="top-center" autoClose={3000} />
       <Head>
         <link rel="icon" href="./favicon.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -39,30 +43,19 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
         ></meta>
         <title>Beima Suite | Document Smart Contract </title>
       </Head>
-      <StoreProvider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <AnimatePresence exitBeforeEnter={true}>
-            <Body Component={Component} pageProps={pageProps} router={router} />
-          </AnimatePresence>
-        </PersistGate>
-      </StoreProvider>
+      <ErrorBoundary>
+        <ToastContainer position="top-center" autoClose={3000} />
+
+        <StoreProvider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <AnimatePresence exitBeforeEnter={true}>
+              {routeChanging ? <PageLoader /> : BodyComponent}
+            </AnimatePresence>
+          </PersistGate>
+        </StoreProvider>
+      </ErrorBoundary>
     </>
   );
 }
-
-const Body = ({ Component, pageProps, router }: AppPropsWithLayout) => {
-  const getLayout = Component.getLayout ?? ((page) => page);
-  const { routeChanging } = useRouteChangeHandler();
-  // useEffect(() => {
-  //   console.log("route changing", routeChanging);
-  // }, [routeChanging]);
-  return (
-    <>
-      {/* {isPageLoading || routeChanging ? <PageLoader /> : ""} */}
-      {routeChanging ? <PageLoader /> : getLayout(<Component {...pageProps} />)}
-      {/* {getLayout(<Component {...pageProps} />)} */}
-    </>
-  );
-};
 
 export default MyApp;

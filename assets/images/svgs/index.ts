@@ -21,6 +21,7 @@ import CircleCheckboxIcon from "./circle-checkbox.svg";
 import CircleCloseIcon from "./circle-close.svg";
 import EditIcon from "./edit.svg";
 import Error500Icon from "./500.svg";
+import ErrorBoundaryIcon from "./error-boundary.svg";
 import Error404Icon from "./404.svg";
 import LoaderIcon from "./loader.svg";
 import CloseIcon from "./close.svg";
@@ -45,6 +46,7 @@ export {
   PublishIcon,
   EditIcon,
   Error404Icon,
+  ErrorBoundaryIcon,
   Error500Icon,
   LoaderIcon,
   CloseIcon,
