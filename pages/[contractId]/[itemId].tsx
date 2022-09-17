@@ -12,35 +12,37 @@ import {
   ItemDescBox,
 } from "components";
 import { useSelector, useDispatch } from "react-redux";
-import { IMetaTags, IStore } from "interfaces";
+import { IMetaTags, IQuery, IStore } from "interfaces";
 import styles from "./item-page.module.css";
 import { EditIcon, SettingsIcon } from "assets/images";
 import { capitalize, getMeta, getRandomKey } from "utils";
 import { setIsItemDescModalOpen } from "store/slices/modalSlice";
 import { toast } from "react-toastify";
-
+import router from "next/router";
 import { Skeleton } from "antd";
-import { usePropsForItem } from "hooks";
+import { usePropsForContract, usePropsForItem } from "hooks";
 import NotFound from "components/NotFound";
+
 export default function ItemPage() {
-  const { item, eventsWithState, linkEvent, isLoading } = usePropsForItem();
+  const { contractId, itemId } = router.query as IQuery;
+
+  const { contract } = usePropsForContract(contractId);
+  const { item, eventsWithState, isLoading, linkEvent, setDescription } =
+    usePropsForItem(contractId, itemId);
+
   const dispatch = useDispatch();
 
   const { activeControl } = useSelector((state: IStore) => state.filters);
 
-  if (isLoading) return <Loader />;
-  if (!!!item) return <NotFound route={`/`} />;
-
+  if (isLoading || !contractId) return <Loader />;
+  if (!!!item && contractId) return <NotFound route={`/`} />;
   return (
     <>
       {!!item && <ItemDescModal />}
       {!!item && (
         <div className="">
           <section className="px-8 3xl:px-16 py-10 border-b">
-            <Breadcrumbs
-              className="mb-2"
-              crumbs={[item.contract?.name, item.name]}
-            />
+            <Breadcrumbs className="mb-2" crumbs={[contract.name, item.name]} />
             <div className="mb-2 flex items-center justify-between">
               <Tooltip title={item.name}>
                 <h2 className={`${styles["itemId"]} text-3xl inline`}>
@@ -111,7 +113,7 @@ export default function ItemPage() {
                   </div>
                 )}
 
-                {activeControl === "function" && (
+                {!!item.linkedEvents && (
                   <div className="col-span-4">
                     <LinkedEventsBox events={item.linkedEvents} />
                   </div>

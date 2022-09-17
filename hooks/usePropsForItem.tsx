@@ -1,6 +1,6 @@
 import produce from "immer";
 import { IQuery, IStore } from "interfaces";
-import { useRouter } from "next/router";
+import router from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { toggleLinkEvent, updateContractItem } from "services/contractsService";
@@ -17,15 +17,18 @@ import {
 } from "utils/helpers";
 import { useItem, useUser } from "./apis";
 
-export function usePropsForItem() {
+export function usePropsForItem(contractId: string, itemId: string) {
   const { user } = useUser();
-  const router = useRouter();
   const dispatch = useDispatch();
-  const { contractId, itemId } = router.query as IQuery;
+  const { contractId: routeContractId, itemId: routeItemId } =
+    router.query as IQuery;
+  if (!contractId) contractId = routeContractId;
+  if (!itemId) itemId = routeItemId;
 
   const testContract = useSelector((state: IStore) => state.testContract);
   let testItem = getItemById(testContract, itemId);
-  if (testItem) testItem.contract = testContract;
+
+  // console.log("testItem", testItem);
   const testEventsWithState = getTestEvents(testContract, itemId);
   let { item, mutate, isLoading } = useItem({ contractId, itemId });
 
@@ -99,6 +102,5 @@ export function usePropsForItem() {
     item: item || testItem,
     isLoading,
   };
-
   return props;
 }

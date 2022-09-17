@@ -11,18 +11,19 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { useModal, usePropsForItem } from "hooks";
 import { setIsItemDescModalOpen } from "store/slices/modalSlice";
-import { IItem, IStore } from "interfaces";
+import { IItem, IQuery, IStore } from "interfaces";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { capitalize } from "utils/helpers";
-
+import router from "next/router";
 const validationSchema = Yup.object({ description: Yup.string() });
 interface IForm {
   description: string;
 }
 
 export function ItemDescModal() {
-  const { item, setDescription } = usePropsForItem();
+  const { contractId, itemId } = router.query as IQuery;
+  const { item, setDescription } = usePropsForItem(contractId, itemId);
   const dispatch = useDispatch();
   const { _id, description } = item as IItem;
   const initialValues: IForm = { description };

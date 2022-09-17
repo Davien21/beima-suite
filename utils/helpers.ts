@@ -87,9 +87,7 @@ export const errorMessage = (error: any) => {
 
 export const getItemById = (contract: IContract, _id: string) => {
   let index = contract.data.findIndex((x) => x._id === _id);
-  let item = contract.data[index] as IItem & { contract: IContract };
-  if (!item) return null;
-  item.contract = contract;
+  let item = contract.data[index];
   return item;
 };
 
