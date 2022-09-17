@@ -24,27 +24,30 @@ export function ContractDisplay({ contracts }: { contracts: IContract[] }) {
     dispatch(setActiveControl(control));
   };
 
-  const canShowTestContract = !user && !!testContract.name;
-  const canShowMainContracts = user && contracts?.length > 0;
+  const canShowTestContract = !!(!user && !!testContract.name);
+  const canShowMainContracts = !!(user && contracts?.length > 0);
 
   return (
     <div className="px-3 pb-3">
-      {canShowMainContracts === true && (
+      {(canShowTestContract || canShowMainContracts) && (
+        <div className={`py-3 ${styles["inherited-functions-filter"]}`}>
+          <Switch
+            label={`Inherited ${capitalize(activeControl)}s`}
+            isDisabled={false}
+            checked={!showInherited[activeControl]}
+            setChecked={() => {
+              dispatch(toggleInherited());
+            }}
+          />
+          <ControlSwitch
+            onChangeControl={handleChangeControl}
+            activeControl={activeControl}
+          />
+        </div>
+      )}
+
+      {canShowMainContracts && (
         <>
-          <div className={`py-3 ${styles["inherited-functions-filter"]}`}>
-            <Switch
-              label={`Inherited ${capitalize(activeControl)}s`}
-              isDisabled={false}
-              checked={!showInherited[activeControl]}
-              setChecked={() => {
-                dispatch(toggleInherited());
-              }}
-            />
-            <ControlSwitch
-              onChangeControl={handleChangeControl}
-              activeControl={activeControl}
-            />
-          </div>
           <div>
             {contracts.map((contract: IContract, index: number) => {
               return (
@@ -57,10 +60,8 @@ export function ContractDisplay({ contracts }: { contracts: IContract[] }) {
         </>
       )}
 
-      {canShowTestContract === true && <ContractTab contract={testContract} />}
-      {canShowMainContracts === false && canShowTestContract === false && (
-        <EmptyWorkspace />
-      )}
+      {canShowTestContract && <ContractTab contract={testContract} />}
+      {!canShowMainContracts && !canShowTestContract && <EmptyWorkspace />}
     </div>
   );
 }

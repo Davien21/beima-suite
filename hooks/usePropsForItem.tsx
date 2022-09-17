@@ -28,7 +28,6 @@ export function usePropsForItem(contractId: string, itemId: string) {
   const testContract = useSelector((state: IStore) => state.testContract);
   let testItem = getItemById(testContract, itemId);
 
-  // console.log("testItem", testItem);
   const testEventsWithState = getTestEvents(testContract, itemId);
   let { item, mutate, isLoading } = useItem({ contractId, itemId });
 
