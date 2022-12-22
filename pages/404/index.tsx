@@ -4,7 +4,7 @@ import React from "react";
 import styles from "./404.module.css";
 
 export default function NotFoundPage() {
-  const goToHome = () => window.location.replace("https://beima.app");
+  const goToHome = () => window.location.replace("https://app.beima-suite.com");
   return (
     <div>
       <Header />

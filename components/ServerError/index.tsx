@@ -4,7 +4,7 @@ import React from "react";
 import styles from "./server-error.module.css";
 
 export default function ServerErrorPage() {
-  const goToHome = () => window.location.replace("https://beima.app");
+  const goToHome = () => window.location.replace("https://app.beima-suite.com");
   return (
     <div>
       <Header />
