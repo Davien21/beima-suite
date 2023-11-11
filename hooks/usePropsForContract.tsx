@@ -112,7 +112,7 @@ export function usePropsForContract(contractId?: string) {
     }
     if (!error) return toast.dismiss(toastId);
     toast.update(toastId, {
-      render: "Error deleting this contract",
+      render: "Error adding this contract",
       type: "error",
       isLoading: false,
       autoClose: 2000,

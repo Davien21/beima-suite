@@ -9,6 +9,7 @@ import { signupAPI } from "services/authService";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { errorMessage } from "utils/helpers";
+import { setCookie } from "cookies-next";
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required("First name is required"),
@@ -45,11 +46,12 @@ export default function SignUpPage() {
 
     const { error, response } = await signupAPI(user);
     if (error) toast.error(errorMessage(error));
-
     setisLoading(false);
     if (response) {
-      toast.success("Successful, redirecting to Verification page", {
-        onClose: () => router.push(`/signup/verify-otp?email=${user.email}`),
+      console.log({ response });
+      setCookie("beima-auth-token", response.data.authToken);
+      toast.success("Registration was Successful, redirecting", {
+        onClose: () => router.push(`/`),
         autoClose: 3000,
       });
     }
